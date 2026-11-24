@@ -1,0 +1,14 @@
+.env
+.env.*
+*.pem
+*.key
+CanteenInvite.txt
+invitations/
+secrets/
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+*.log
+data/
+node_modules/

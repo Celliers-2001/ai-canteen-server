@@ -1,0 +1,1264 @@
+{
+  "guests": [
+    {
+      "id": "lin",
+      "name": "林澄",
+      "generosity": 65,
+      "personality": "好奇、健谈，喜欢追问食物的来历。",
+      "preference": "喜欢酸甜和酥脆，少吃辣。",
+      "visits": [
+        {
+          "id": "walk",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "兴奋、饥肠辘辘",
+          "situation": "第一次来这座城市旅游，在老街走了一下午",
+          "opening": "老街比我想的还大，走得我都饿了！有什么酸甜一点的？",
+          "craving": "",
+          "foodHint": "酸甜酥脆的鸡腿"
+        },
+        {
+          "id": "rain",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "有点扫兴、想找点暖意",
+          "situation": "旅行途中突然下雨，鞋子湿了，进店躲雨",
+          "opening": "外面雨好大，今天的路线全乱了。有什么热乎的？",
+          "craving": "",
+          "foodHint": "清淡的鸡腿汤面"
+        },
+        {
+          "id": "return",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "放松、很期待",
+          "situation": "旅行快结束了，特地留了一顿饭想吃新鲜的海味",
+          "opening": "明天就回去了，今天想找点平时吃不到的海味。",
+          "craving": "",
+          "foodHint": "新鲜的鱼料理"
+        }
+      ],
+      "voice": "兴致来得快，喜欢聊今天看到的事，再问对方一个问题"
+    },
+    {
+      "id": "zhou",
+      "name": "周宁",
+      "generosity": 40,
+      "personality": "慢热、话少，说话短而直接。",
+      "preference": "喜欢热汤和清淡的食物。",
+      "visits": [
+        {
+          "id": "night",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "疲惫、只想安静一会儿",
+          "situation": "刚下夜班，忙了一整夜没顾上吃东西",
+          "opening": "刚下夜班。有热的吗？",
+          "craving": "",
+          "foodHint": "清淡的鸡腿汤面"
+        },
+        {
+          "id": "rest",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "放松、心里踏实",
+          "situation": "难得休息，晨跑后顺路来吃早饭",
+          "opening": "今天休息。想吃点清淡的。",
+          "craving": "",
+          "foodHint": "清淡的鸡腿汤面"
+        },
+        {
+          "id": "deadline",
+          "hunger": "normal",
+          "timePressure": "rushed",
+          "mood": "烦躁、赶时间",
+          "situation": "临时收到返岗通知，只剩短短的吃饭时间",
+          "opening": "一会儿还得回去。什么快一点？",
+          "craving": "",
+          "foodHint": "清淡的鸡腿汤面"
+        }
+      ],
+      "voice": "话不多，直答问题，有心事也只透露一两个细节"
+    },
+    {
+      "id": "yano",
+      "name": "矢野三郎",
+      "generosity": 90,
+      "personality": "温厚随和，脾气很好，容易满足，缺少主见，喜欢把选择交给店主。",
+      "preference": "温和随和，大多菜都能吃得满意；非常反感持续冒犯和实在无法入口的菜。",
+      "roleRule": "通常让店主决定，绝不主动透露最爱。被直接问最爱时才可以说。很不舒服时也会先礼貌道别，在离店评价里可以用尖酸、毫不留情的语气说实际问题。",
+      "visits": [
+        {
+          "id": "neighbor",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "轻松、心情很好",
+          "situation": "路过街角看到开着门，想坐下随便吃点",
+          "opening": "晚上好。我都可以，您做什么我就吃什么。",
+          "craving": "",
+          "foodHint": "三文鱼寿司"
+        },
+        {
+          "id": "umbrella",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "略微尴尬、仍然温和",
+          "situation": "出门忘记带伞，借机在吧台休息",
+          "opening": "不好意思，能在这儿坐一会儿吗？饭菜听您推荐就好。",
+          "craving": "",
+          "foodHint": "三文鱼寿司"
+        },
+        {
+          "id": "errand",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "安稳、心怀感激",
+          "situation": "帮邻居搬完东西，对方送了他一张餐厅宣传单",
+          "opening": "有人推荐我来这儿，说您很会做饭。今天就麻烦您决定吧。",
+          "craving": "",
+          "foodHint": "三文鱼寿司"
+        }
+      ],
+      "secretFavorite": "sushi",
+      "voice": "有礼貌但有自己的生活，回答温和，别每句都让店主决定"
+    },
+    {
+      "id": "jack",
+      "name": "Jack Celliers",
+      "generosity": 15,
+      "personality": "非常挑剔，寡言少语，回答短，极少夸奖。",
+      "preference": "只爱西餐，尤其牛排和意面。非常排斥鸡汤面。",
+      "roleRule": "只喜欢西式菜，寡言直接。若端上鸡腿煮面一类的鸡汤面，他会给明显差评；严重不合口味时可以直接离开。",
+      "visits": [
+        {
+          "id": "late",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "不耐烦、克制",
+          "situation": "刚结束一场拖延很久的会议，想尽快吃顿像样的西餐",
+          "opening": "有牛排吗？",
+          "craving": "",
+          "foodHint": "煎得合适的牛肉"
+        },
+        {
+          "id": "quiet",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "冷静、审视",
+          "situation": "独自在附近散步，想找一家做西餐靠谱的小店",
+          "opening": "意面。怎么做的？",
+          "craving": "",
+          "foodHint": "西式意面"
+        },
+        {
+          "id": "disappointed",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "失望、戒备",
+          "situation": "刚在别处吃到一份过熟的牛排，换一间店再试",
+          "opening": "牛排。别煎过头。",
+          "craving": "",
+          "foodHint": "煎得合适的牛肉"
+        }
+      ],
+      "voice": "简短克制，讲究吃到的质地，闲聊不用扯牛排"
+    },
+    {
+      "id": "wang",
+      "name": "王圣杰",
+      "generosity": 32,
+      "personality": "刚开始创业。压力很大，聊天容易想到订单、资金和工作，口味经常转变。",
+      "preference": "没有稳定的菜品偏好；当下想吃的由来访状态决定，会犹豫，情绪紧张时更容易失去耐心。",
+      "roleRule": "把创业压力和本次的口味变化演出来，不和前一次来访沿用同一偏好；表达自然，不要每句都提创业。",
+      "visits": [
+        {
+          "id": "cashflow",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "焦虑、想缓一下",
+          "situation": "刚发现一笔回款延期，白天几乎没吃东西",
+          "opening": "上午那笔款又延了……算了，先喝口热汤吧。",
+          "craving": "今天想吃暖胃、清淡的热食，不想吃生冷的。",
+          "foodHint": "清淡的鸡腿汤面"
+        },
+        {
+          "id": "first_order",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "兴奋又忐忑",
+          "situation": "早上刚拿到第一个小订单，打算犒劳自己一顿",
+          "opening": "今天终于签下第一单。给我来点像庆祝的？",
+          "craving": "想吃有仪式感的西餐，这次更想要牛排。",
+          "foodHint": "煎得合适的牛肉"
+        },
+        {
+          "id": "pitch",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "慌乱、没什么胃口",
+          "situation": "明早要做第一次正式路演，刚改完一版材料",
+          "opening": "明早要上台，胃里有点紧。有什么清爽、能吃几口的？",
+          "craving": "今天偏好清爽的小份食物，怕油腻。",
+          "foodHint": "三文鱼寿司"
+        }
+      ],
+      "voice": "压力会写在表达上，但认真回应别人，不必每回都聊创业"
+    },
+    {
+      "id": "tang",
+      "name": "唐果",
+      "portraitId": "lin",
+      "generosity": 72,
+      "patience": 3,
+      "personality": "甜品师，热络，总想拆解香气",
+      "voice": "常作感官比喻，喜欢追问",
+      "preference": "酸甜适中",
+      "likes": "sweet",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "雀跃",
+          "situation": "柠檬挞全卖掉了",
+          "opening": "我今天想吃点酸的庆祝。",
+          "foodHint": "醋汁鸡腿",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "泄气",
+          "situation": "烤箱坏了",
+          "opening": "忙了一天还是没救回那两盘蛋糕。",
+          "foodHint": "热汤面",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "专注",
+          "situation": "在找咸甜平衡",
+          "opening": "你有试过用盐把甜味提出来吗？",
+          "foodHint": "微甜牛肉",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        }
+      ]
+    },
+    {
+      "id": "lu",
+      "name": "陆湛",
+      "portraitId": "zhou",
+      "generosity": 30,
+      "patience": 4,
+      "personality": "公交司机，务实，不爱绕弯",
+      "voice": "短句、直答",
+      "preference": "热汤和面",
+      "likes": "fromStock",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "疲惫",
+          "situation": "临时顶了一整班",
+          "opening": "今天多跑了两趟，给我碗热汤吧。",
+          "foodHint": "汤面",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "松快",
+          "situation": "难得准点收车",
+          "opening": "今天不用看表，你慢慢来。",
+          "foodHint": "炖鸡腿",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "焦急",
+          "situation": "马上要回车场",
+          "opening": "我还得回车上，先做你最顺手的一样。",
+          "foodHint": "炒洋葱",
+          "hunger": "normal",
+          "timePressure": "rushed"
+        }
+      ]
+    },
+    {
+      "id": "he",
+      "name": "何小满",
+      "portraitId": "lin",
+      "generosity": 52,
+      "patience": 4,
+      "personality": "植物管理员，细心温柔，擅长听别人说话",
+      "voice": "谈植物时才话多",
+      "preference": "清爽、香草",
+      "likes": "",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "惊喜",
+          "situation": "温室的花开了",
+          "opening": "一盆花开了第一朵，我拍了十几张。",
+          "foodHint": "香草番茄",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "担心",
+          "situation": "暴雨泡坏花苗",
+          "opening": "我刚搬了一批花苗进屋，希望还能救。",
+          "foodHint": "土豆炖汤",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "自在",
+          "situation": "休假修了香草",
+          "opening": "手上还有迷迭香味儿，你平时拿它配什么。",
+          "foodHint": "迷迭香土豆",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        }
+      ]
+    },
+    {
+      "id": "shen",
+      "name": "沈默",
+      "portraitId": "jack",
+      "generosity": 42,
+      "patience": 3,
+      "personality": "舞台音响师，冷幽默，对嘈杂敏感",
+      "voice": "干脆，偶尔用声音类比",
+      "preference": "外脆里嫩",
+      "likes": "crispFrying",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "烦躁",
+          "situation": "彩排音箱啸叫",
+          "opening": "我被音箱叫了一下午，这里安静就好。",
+          "foodHint": "脆皮鸡腿",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "得意",
+          "situation": "独立完成一场演出",
+          "opening": "今晚没啸叫一次，想听点不一样的响动，给我做点脆的。",
+          "foodHint": "炸虾",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "走神",
+          "situation": "翻到三年前录音",
+          "opening": "听到一个声音就想起一个地方，你有过吗？",
+          "foodHint": "烤鸡腿",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        }
+      ]
+    },
+    {
+      "id": "song",
+      "name": "宋阿姨",
+      "portraitId": "yano",
+      "generosity": 85,
+      "patience": 5,
+      "personality": "退休教师，爽朗，习惯照顾别人",
+      "voice": "热情直接，关心店主有没有照顾好自己",
+      "preference": "家常炖菜",
+      "likes": "fromStock",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "欣慰",
+          "situation": "收到学生的明信片",
+          "opening": "离校这么多年还有孩子给我寄明信片，今天来点家常的。",
+          "foodHint": "炖猪肉",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "忧心",
+          "situation": "家人的约饭取消",
+          "opening": "本来说好一家人吃，今天我也给自己安排点新鲜事。",
+          "foodHint": "软米饭",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "开怀",
+          "situation": "和同事跳错半首舞",
+          "opening": "跳错还让人夸有创意，你说有意思吧。",
+          "foodHint": "土豆炖菜",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        }
+      ]
+    },
+    {
+      "id": "lian",
+      "name": "连洲",
+      "portraitId": "jack",
+      "generosity": 68,
+      "patience": 3,
+      "personality": "独立电影剪辑师，观察细，有耐性",
+      "voice": "先讲画面再讲感受",
+      "preference": "黑胡椒和煎烤",
+      "likes": "peppered",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "入神",
+          "situation": "发现被忽略的表情镜头",
+          "opening": "删了半分钟对白，那个抬眼的镜头倒更好。",
+          "foodHint": "黑胡椒牛肉",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "挫败",
+          "situation": "被要求全盘重剪",
+          "opening": "片子得推倒重来，先吃口踏实的。",
+          "foodHint": "煎猪肉",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "释然",
+          "situation": "终于定下片尾",
+          "opening": "片尾定了，我突然觉得少说两句也挺好。",
+          "foodHint": "黑胡椒鸡腿",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        }
+      ]
+    },
+    {
+      "id": "gu",
+      "name": "顾南星",
+      "portraitId": "wang",
+      "generosity": 46,
+      "patience": 3,
+      "personality": "气象爱好者，好奇，习惯纠正随口猜测",
+      "voice": "爱分享今天观察到的小现象",
+      "preference": "酸口、热汤",
+      "likes": "fromStock",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "兴奋",
+          "situation": "刚追到彩虹",
+          "opening": "有道彩虹挂了不到一分钟，我看见了。",
+          "foodHint": "微酸热汤",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "低落",
+          "situation": "等流星却整夜有云",
+          "opening": "我昨晚等到天亮，云倒看够了。",
+          "foodHint": "鸡腿汤",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "镇定",
+          "situation": "猜中下雨时间",
+          "opening": "雨几点下我押中了，你们也会估什么时候客人多吗？",
+          "foodHint": "番茄汤面",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        }
+      ]
+    },
+    {
+      "id": "qiu",
+      "name": "邱禾",
+      "portraitId": "yano",
+      "generosity": 60,
+      "patience": 4,
+      "personality": "书店店员，内向，喜欢留白",
+      "voice": "词少却具体，遇到熟悉话题才打开",
+      "preference": "清淡蒸菜",
+      "likes": "",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "宁静",
+          "situation": "替人找到了绝版书",
+          "opening": "他翻第一页就笑了，我也想吃点简单的。",
+          "foodHint": "蒸鱼",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "窘迫",
+          "situation": "误收了别人托付的笔记",
+          "opening": "东西虽然找回来了，我还是有点糊涂。",
+          "foodHint": "蒸米饭",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "好奇",
+          "situation": "读到街角餐厅随笔",
+          "opening": "有人排队就为喝碗汤，你说好喝到底是什么样。",
+          "foodHint": "清汤",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        }
+      ]
+    },
+    {
+      "id": "du",
+      "name": "杜凌",
+      "portraitId": "wang",
+      "generosity": 38,
+      "patience": 2,
+      "personality": "采访记者，爱问细节，讨厌被敷衍",
+      "voice": "短问题，饿了很直接",
+      "preference": "清爽层次、黑胡椒",
+      "likes": "peppered",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "急切",
+          "situation": "马上要交稿",
+          "opening": "后半段稿子还空着，能来份容易吃完的吗？",
+          "foodHint": "煎牛肉",
+          "hunger": "normal",
+          "timePressure": "rushed"
+        },
+        {
+          "id": "day_2",
+          "mood": "惊奇",
+          "situation": "采访到修伞四十年的人",
+          "opening": "有人靠修伞养大三个孩子，我还在想这事。",
+          "foodHint": "煎三文鱼",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "疲惫",
+          "situation": "从夜间采访回来",
+          "opening": "我今天已经不想再发问了，来份简单的热菜。",
+          "foodHint": "牛肉炖土豆",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        }
+      ]
+    },
+    {
+      "id": "yan",
+      "name": "严美音",
+      "portraitId": "lin",
+      "generosity": 77,
+      "patience": 3,
+      "personality": "合唱指挥，外向讲究，乐于肯定别人",
+      "voice": "语气起伏，常先给具体夸赞",
+      "preference": "微辣香气",
+      "likes": "spicy",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "畅快",
+          "situation": "合唱团终于唱齐",
+          "opening": "最难那四小节终于齐了，来点带辣的。",
+          "foodHint": "微辣炒牛肉",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "心烦",
+          "situation": "排练没合上",
+          "opening": "今天我挥得再快也没用，想吃稳当不重口的。",
+          "foodHint": "炒番茄",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "柔和",
+          "situation": "送走毕业团员",
+          "opening": "唱到最后一句有点舍不得，今天想慢点吃。",
+          "foodHint": "香草鸡腿",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        }
+      ]
+    },
+    {
+      "id": "xu",
+      "name": "许砚",
+      "portraitId": "jack",
+      "generosity": 21,
+      "patience": 3,
+      "personality": "家具修复师，较真节俭，看重实用",
+      "voice": "夸得短，批评时给具体建议",
+      "preference": "煎牛肉和干脆质地",
+      "likes": "western",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "满意",
+          "situation": "用剩料补好旧桌",
+          "opening": "没换整块板就修好了，来份扎实的牛肉。",
+          "foodHint": "煎牛肉",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "别扭",
+          "situation": "有人只看外表就要求换",
+          "opening": "今天说了半天，人家还是看一眼就说换。",
+          "foodHint": "偏干煎牛肉",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "平静",
+          "situation": "磨好最后一把椅子",
+          "opening": "椅子磨好了不用赶工，今天吃份简单的西餐。",
+          "foodHint": "蒜香意面",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        }
+      ]
+    },
+    {
+      "id": "fei",
+      "name": "费青",
+      "portraitId": "zhou",
+      "generosity": 55,
+      "patience": 4,
+      "personality": "社区护士，直率体贴，在意是否被认真回应",
+      "voice": "体现在一句具体问候，不说大话",
+      "preference": "热汤和易消化的菜",
+      "likes": "fromStock",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "困倦",
+          "situation": "替同事换了夜班",
+          "opening": "我看了一夜白灯，想来碗没负担的热汤。",
+          "foodHint": "清淡炖汤",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "珍惜",
+          "situation": "康复病人送了个橘子",
+          "opening": "有人好起来了还送我个橘子，今天想好好吃。",
+          "foodHint": "番茄汤面",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "恼火",
+          "situation": "午饭三次被叫走",
+          "opening": "盒饭热了三回没吃上，现在想一次把饭吃完。",
+          "foodHint": "鸡腿配米饭",
+          "hunger": "high",
+          "timePressure": "flexible"
+        }
+      ]
+    },
+    {
+      "id": "mo",
+      "name": "莫朗",
+      "portraitId": "wang",
+      "generosity": 62,
+      "patience": 3,
+      "personality": "桌游设计师，顽皮健谈，喜欢追问规则",
+      "voice": "抛具体小问题，玩笑适可而止",
+      "preference": "脆口和甜辣",
+      "likes": "crispFrying",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "兴奋",
+          "situation": "有人主动要求再玩一局",
+          "opening": "今天有人想再来一局，菜也能让人想再吃一口吗？",
+          "foodHint": "炸虾",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "沮丧",
+          "situation": "玩家把机制用反",
+          "opening": "试了三轮大家都做反了，我今天想吃简单点。",
+          "foodHint": "清炒土豆",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "狡黠",
+          "situation": "准备给朋友惊喜",
+          "opening": "我今天攒着个惊喜，你做菜时也会藏一点香料吗？",
+          "foodHint": "甜辣鸡腿",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        }
+      ]
+    },
+    {
+      "id": "nie",
+      "name": "聂青青",
+      "portraitId": "lin",
+      "generosity": 66,
+      "patience": 3,
+      "personality": "自由插画师，想象力足，喜欢听他人意见",
+      "voice": "常用光线和颜色描述",
+      "preference": "番茄和清爽鱼",
+      "likes": "sushi",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "热切",
+          "situation": "画稿印到书封",
+          "opening": "画第一次上了封面，想吃一份看着开心的。",
+          "foodHint": "番茄三文鱼",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "失落",
+          "situation": "画到一半文件丢了",
+          "opening": "倒不是不能重画，就是今天不想看屏幕。",
+          "foodHint": "番茄汤",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "自在",
+          "situation": "买了彩铅去画街景",
+          "opening": "外墙的影子有两种灰，我饭后想画下来。",
+          "foodHint": "三文鱼",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        }
+      ]
+    },
+    {
+      "id": "peng",
+      "name": "彭峻",
+      "portraitId": "zhou",
+      "generosity": 38,
+      "patience": 3,
+      "personality": "长跑教练，有点好胜，专注节奏",
+      "voice": "干脆，从食物聊到身体感觉",
+      "preference": "米饭、瘦肉、分量实在",
+      "likes": "",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "振奋",
+          "situation": "团员跑完首个十公里",
+          "opening": "她还能在终点给我挥手，我也该吃份实在的。",
+          "foodHint": "牛肉配米饭",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "憋闷",
+          "situation": "天气原因停练",
+          "opening": "临时停练有点无处使劲，想吃热的。",
+          "foodHint": "炖牛肉",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "从容",
+          "situation": "训练提前结束",
+          "opening": "今天不跑快也不赶，你觉得土豆怎么做最顶饱。",
+          "foodHint": "土豆鸡腿",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        }
+      ]
+    },
+    {
+      "id": "jia",
+      "name": "贾芮",
+      "portraitId": "yano",
+      "generosity": 86,
+      "patience": 4,
+      "personality": "菜场摊主，坦率豪爽，对手艺好奇",
+      "voice": "讲生活里的例子，好吃会直夸",
+      "preference": "葱蒜足的家常菜",
+      "likes": "",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "得意",
+          "situation": "早晨的番茄卖光",
+          "opening": "番茄还没摆稳就卖没了，你挑番茄看哪里。",
+          "foodHint": "葱蒜炒番茄",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "烦闷",
+          "situation": "货车迟到错过开市",
+          "opening": "人都走了一半才来货，给我做点葱香的提劲。",
+          "foodHint": "煎猪肉",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "惬意",
+          "situation": "邻摊帮忙看生意",
+          "opening": "平时我尝得多坐得少，今天也吃人家做的饭。",
+          "foodHint": "蒜香鸡腿",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        }
+      ]
+    },
+    {
+      "id": "ba",
+      "name": "巴迪",
+      "portraitId": "wang",
+      "generosity": 48,
+      "patience": 4,
+      "personality": "街头魔术师，乐观，怕表演打扰人",
+      "voice": "幽默有分寸，常从小物件聊起",
+      "preference": "小份炸物",
+      "likes": "crispFrying",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "顽皮",
+          "situation": "硬币魔术骗过朋友",
+          "opening": "别急着猜手，朋友愣是没注意我的袖口。",
+          "foodHint": "酥炸土豆",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "尴尬",
+          "situation": "表演时纸牌散落",
+          "opening": "有人帮我捡牌，比自己站那儿发愣强多了。",
+          "foodHint": "小份炸虾",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "温和",
+          "situation": "收到小朋友送的纸花",
+          "opening": "有孩子送我一朵纸花，我打算留着。",
+          "foodHint": "小份土豆",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        }
+      ]
+    },
+    {
+      "id": "linq",
+      "name": "林乔",
+      "portraitId": "lin",
+      "generosity": 62,
+      "patience": 3,
+      "personality": "校刊编辑，追根究底，对空话耐心少",
+      "voice": "常就着上一句话问一个细节",
+      "preference": "酸味的鱼和番茄",
+      "likes": "",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "好奇",
+          "situation": "采访到每天只开两小时的店",
+          "opening": "刚听了个古怪营业时间，老板你为什么做餐饮。",
+          "foodHint": "醋香鱼",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "焦虑",
+          "situation": "稿件迟迟没回音",
+          "opening": "我想先把这顿饭吃完，再看手机。",
+          "foodHint": "番茄汤面",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "轻松",
+          "situation": "校对一次通过",
+          "opening": "全都交了，今天用点酸的庆祝一下。",
+          "foodHint": "酸甜番茄",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        }
+      ]
+    },
+    {
+      "id": "xi",
+      "name": "奚然",
+      "portraitId": "jack",
+      "generosity": 56,
+      "patience": 4,
+      "personality": "陶艺师，慢条斯理，在意质地",
+      "voice": "先说观察，停一停再说判断",
+      "preference": "嫩鱼和简单火候",
+      "likes": "",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "专注",
+          "situation": "烧出釉面均匀的一批碗",
+          "opening": "开窑的颜色正好，我也想尝尝你这里的火候。",
+          "foodHint": "清蒸鲫鱼",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "失望",
+          "situation": "一半器皿出裂纹",
+          "opening": "有些碗还没用过就裂了，今天来点温和的。",
+          "foodHint": "蒸三文鱼",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "放松",
+          "situation": "用旧泥捏了几个小杯",
+          "opening": "今天没接活，几个歪杯子倒让我挺开心。",
+          "foodHint": "番茄炖鱼",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        }
+      ]
+    },
+    {
+      "id": "wen",
+      "name": "温觉",
+      "portraitId": "zhou",
+      "generosity": 86,
+      "patience": 4,
+      "personality": "电台主持，擅长听别人说话",
+      "voice": "温和具体，让对方说完再承接",
+      "preference": "香草、热炖菜",
+      "likes": "sweet",
+      "visits": [
+        {
+          "id": "day_1",
+          "mood": "感激",
+          "situation": "收到老听众的来信",
+          "opening": "有的陪伴，原来自己一点都不知道。",
+          "foodHint": "炖鸡腿",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_2",
+          "mood": "寂寞",
+          "situation": "最后一期深夜节目播完",
+          "opening": "关了灯屋里突然特别安静，我还想坐一会儿。",
+          "foodHint": "土豆炖汤",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        },
+        {
+          "id": "day_3",
+          "mood": "惊喜",
+          "situation": "偶遇第一次上节目的搭档",
+          "opening": "当时我还以为只有自己在抖，原来他也紧张。",
+          "foodHint": "煎猪肉",
+          "hunger": "normal",
+          "timePressure": "flexible"
+        }
+      ]
+    }
+  ],
+  "ingredients": [
+    {
+      "id": "chicken",
+      "name": "鸡腿",
+      "cost": 12,
+      "shelfDays": 4,
+      "category": "meat",
+      "seasoning": false
+    },
+    {
+      "id": "egg",
+      "name": "鸡蛋",
+      "cost": 5,
+      "shelfDays": 7,
+      "category": "meat",
+      "seasoning": false
+    },
+    {
+      "id": "beef",
+      "name": "牛肉",
+      "cost": 20,
+      "shelfDays": 5,
+      "category": "meat",
+      "seasoning": false
+    },
+    {
+      "id": "salmon",
+      "name": "三文鱼",
+      "cost": 18,
+      "shelfDays": 3,
+      "category": "meat",
+      "seasoning": false
+    },
+    {
+      "id": "noodles",
+      "name": "面条",
+      "cost": 4,
+      "shelfDays": 5,
+      "category": "produce",
+      "seasoning": false
+    },
+    {
+      "id": "duck",
+      "name": "鸭",
+      "cost": 16,
+      "shelfDays": 4,
+      "category": "meat",
+      "seasoning": false
+    },
+    {
+      "id": "rice",
+      "name": "米",
+      "cost": 4,
+      "shelfDays": 8,
+      "category": "produce",
+      "seasoning": false
+    },
+    {
+      "id": "pork",
+      "name": "猪肉",
+      "cost": 14,
+      "shelfDays": 4,
+      "category": "meat",
+      "seasoning": false
+    },
+    {
+      "id": "rosemary",
+      "name": "迷迭香",
+      "cost": 5,
+      "category": "seasoning",
+      "seasoning": true
+    },
+    {
+      "id": "vinegar",
+      "name": "醋",
+      "cost": 4,
+      "category": "seasoning",
+      "seasoning": true
+    },
+    {
+      "id": "soy",
+      "name": "酱油",
+      "cost": 5,
+      "category": "seasoning",
+      "seasoning": true
+    },
+    {
+      "id": "salt",
+      "name": "盐",
+      "cost": 2,
+      "category": "seasoning",
+      "seasoning": true
+    },
+    {
+      "id": "chili",
+      "name": "辣椒",
+      "cost": 4,
+      "category": "seasoning",
+      "seasoning": true
+    },
+    {
+      "id": "scallion",
+      "name": "葱",
+      "cost": 3,
+      "category": "seasoning",
+      "seasoning": true
+    },
+    {
+      "id": "garlic",
+      "name": "蒜",
+      "cost": 3,
+      "category": "seasoning",
+      "seasoning": true
+    },
+    {
+      "id": "cilantro",
+      "name": "香菜",
+      "cost": 3,
+      "category": "seasoning",
+      "seasoning": true
+    },
+    {
+      "id": "water",
+      "name": "水",
+      "cost": 1,
+      "shelfDays": 8,
+      "category": "seasoning",
+      "seasoning": false,
+      "liquid": true
+    },
+    {
+      "id": "sushi_rice",
+      "name": "寿司米",
+      "cost": 6,
+      "shelfDays": 8,
+      "category": "produce",
+      "seasoning": false
+    },
+    {
+      "id": "sugar",
+      "name": "白糖",
+      "cost": 4,
+      "category": "seasoning",
+      "seasoning": true
+    },
+    {
+      "id": "black_pepper",
+      "name": "黑胡椒",
+      "cost": 6,
+      "category": "seasoning",
+      "seasoning": true
+    },
+    {
+      "id": "oil",
+      "name": "油",
+      "cost": 5,
+      "category": "seasoning",
+      "seasoning": true
+    },
+    {
+      "id": "stock",
+      "name": "汤底",
+      "cost": 7,
+      "shelfDays": 3,
+      "category": "seasoning",
+      "seasoning": false,
+      "liquid": true
+    },
+    {
+      "id": "potato",
+      "name": "土豆",
+      "cost": 4,
+      "shelfDays": 8,
+      "category": "produce",
+      "seasoning": false
+    },
+    {
+      "id": "tomato",
+      "name": "番茄",
+      "cost": 5,
+      "shelfDays": 5,
+      "category": "produce",
+      "seasoning": false
+    },
+    {
+      "id": "shrimp",
+      "name": "虾",
+      "cost": 15,
+      "shelfDays": 3,
+      "category": "meat",
+      "seasoning": false
+    },
+    {
+      "id": "crucian_carp",
+      "name": "鲫鱼",
+      "cost": 13,
+      "shelfDays": 3,
+      "category": "meat",
+      "seasoning": false
+    },
+    {
+      "id": "onion",
+      "name": "洋葱",
+      "cost": 4,
+      "shelfDays": 8,
+      "category": "produce",
+      "seasoning": false
+    }
+  ],
+  "methods": [
+    {
+      "id": "fry",
+      "name": "煎",
+      "adjustable": true
+    },
+    {
+      "id": "stirfry",
+      "name": "炒",
+      "adjustable": true
+    },
+    {
+      "id": "boil",
+      "name": "煮",
+      "adjustable": true
+    },
+    {
+      "id": "steam",
+      "name": "蒸",
+      "adjustable": true
+    },
+    {
+      "id": "roast",
+      "name": "烤",
+      "adjustable": true
+    },
+    {
+      "id": "mix",
+      "name": "凉拌",
+      "adjustable": false
+    },
+    {
+      "id": "stew",
+      "name": "炖",
+      "adjustable": true
+    },
+    {
+      "id": "direct",
+      "name": "直出",
+      "adjustable": false
+    },
+    {
+      "id": "deep_fry",
+      "name": "炸",
+      "adjustable": true
+    }
+  ]
+}
