@@ -13,9 +13,13 @@
           "timePressure": "flexible",
           "mood": "兴奋、饥肠辘辘",
           "situation": "第一次来这座城市旅游，在老街走了一下午",
-          "opening": "老街比我想的还大，走得我都饿了！有什么酸甜一点的？",
+          "opening": "老街比我想的还大，走得我都饿了！",
           "craving": "",
-          "foodHint": "酸甜酥脆的鸡腿"
+          "foodHint": "酸甜酥脆的鸡腿",
+          "followUps": [
+            "醋香一点也可以。",
+            "对了，辣放轻一点，我还想尝到鸡腿的味道。"
+          ]
         },
         {
           "id": "rain",
@@ -23,9 +27,13 @@
           "timePressure": "flexible",
           "mood": "有点扫兴、想找点暖意",
           "situation": "旅行途中突然下雨，鞋子湿了，进店躲雨",
-          "opening": "外面雨好大，今天的路线全乱了。有什么热乎的？",
+          "opening": "外面雨好大，今天的路线全乱了。",
           "craving": "",
-          "foodHint": "清淡的鸡腿汤面"
+          "foodHint": "清淡的鸡腿汤面",
+          "followUps": [
+            "先来点热乎的吧。",
+            "如果做面，汤别太浓。"
+          ]
         },
         {
           "id": "return",
@@ -33,12 +41,21 @@
           "timePressure": "flexible",
           "mood": "放松、很期待",
           "situation": "旅行快结束了，特地留了一顿饭想吃新鲜的海味",
-          "opening": "明天就回去了，今天想找点平时吃不到的海味。",
+          "opening": "明天就回去了，今天特地留了时间在这条街上逛。",
           "craving": "",
-          "foodHint": "新鲜的鱼料理"
+          "foodHint": "新鲜的鱼料理",
+          "followUps": [
+            "我在车站旁看了一早上的鱼摊。",
+            "有清爽一点的鱼就好，不一定要做得复杂。"
+          ]
         }
       ],
-      "voice": "兴致来得快，喜欢聊今天看到的事，再问对方一个问题"
+      "voice": "兴致来得快，喜欢聊今天看到的事，再问对方一个问题",
+      "gender": "女",
+      "age": 24,
+      "speechPace": "rapid",
+      "requestStyle": "gradual",
+      "background": "独自旅行的摄影爱好者"
     },
     {
       "id": "zhou",
@@ -78,7 +95,12 @@
           "foodHint": "清淡的鸡腿汤面"
         }
       ],
-      "voice": "话不多，直答问题，有心事也只透露一两个细节"
+      "voice": "话不多，直答问题，有心事也只透露一两个细节",
+      "gender": "男",
+      "age": 28,
+      "speechPace": "quiet",
+      "requestStyle": "direct",
+      "background": "经常轮夜班的维修工"
     },
     {
       "id": "yano",
@@ -120,7 +142,12 @@
         }
       ],
       "secretFavorite": "sushi",
-      "voice": "有礼貌但有自己的生活，回答温和，别每句都让店主决定"
+      "voice": "有礼貌但有自己的生活，回答温和，别每句都让店主决定",
+      "gender": "男",
+      "age": 32,
+      "speechPace": "steady",
+      "requestStyle": "delegates",
+      "background": "常替邻里帮忙的社区志愿者"
     },
     {
       "id": "jack",
@@ -161,7 +188,12 @@
           "foodHint": "煎得合适的牛肉"
         }
       ],
-      "voice": "简短克制，讲究吃到的质地，闲聊不用扯牛排"
+      "voice": "简短克制，讲究吃到的质地，闲聊不用扯牛排",
+      "gender": "男",
+      "age": 35,
+      "speechPace": "quiet",
+      "requestStyle": "direct",
+      "background": "对西式料理有固定标准的顾客"
     },
     {
       "id": "wang",
@@ -177,9 +209,13 @@
           "timePressure": "flexible",
           "mood": "焦虑、想缓一下",
           "situation": "刚发现一笔回款延期，白天几乎没吃东西",
-          "opening": "上午那笔款又延了……算了，先喝口热汤吧。",
+          "opening": "今天一笔回款又延了。我这会儿才发现还没坐下吃过饭。",
           "craving": "今天想吃暖胃、清淡的热食，不想吃生冷的。",
-          "foodHint": "清淡的鸡腿汤面"
+          "foodHint": "清淡的鸡腿汤面",
+          "followUps": [
+            "清一点就行。",
+            "让我想想，热汤带点面可能合适。"
+          ]
         },
         {
           "id": "first_order",
@@ -187,9 +223,13 @@
           "timePressure": "flexible",
           "mood": "兴奋又忐忑",
           "situation": "早上刚拿到第一个小订单，打算犒劳自己一顿",
-          "opening": "今天终于签下第一单。给我来点像庆祝的？",
+          "opening": "我第一次接到单子，刚才把那条消息看了三遍。",
           "craving": "想吃有仪式感的西餐，这次更想要牛排。",
-          "foodHint": "煎得合适的牛肉"
+          "foodHint": "煎得合适的牛肉",
+          "followUps": [
+            "今天可以稍微奢侈一点。",
+            "有牛肉的话，煎得嫩一些就好。"
+          ]
         },
         {
           "id": "pitch",
@@ -197,12 +237,21 @@
           "timePressure": "flexible",
           "mood": "慌乱、没什么胃口",
           "situation": "明早要做第一次正式路演，刚改完一版材料",
-          "opening": "明早要上台，胃里有点紧。有什么清爽、能吃几口的？",
+          "opening": "明早就得上台讲。脑子现在还在过稿。",
           "craving": "今天偏好清爽的小份食物，怕油腻。",
-          "foodHint": "三文鱼寿司"
+          "foodHint": "三文鱼寿司",
+          "followUps": [
+            "我只有一会儿时间。",
+            "能做点清爽的小份鱼吗？"
+          ]
         }
       ],
-      "voice": "压力会写在表达上，但认真回应别人，不必每回都聊创业"
+      "voice": "压力会写在表达上，但认真回应别人，不必每回都聊创业",
+      "gender": "男",
+      "age": 29,
+      "speechPace": "steady",
+      "requestStyle": "gradual",
+      "background": "公司刚起步的创业者"
     },
     {
       "id": "tang",
@@ -222,7 +271,11 @@
           "opening": "我今天想吃点酸的庆祝。",
           "foodHint": "醋汁鸡腿",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "酸味可以突出一点。",
+            "但我想拿它配鸡腿，甜味只要收个尾。"
+          ]
         },
         {
           "id": "day_2",
@@ -231,7 +284,11 @@
           "opening": "忙了一天还是没救回那两盘蛋糕。",
           "foodHint": "热汤面",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "我今天不想再闻到烤箱那股味道了。",
+            "来一碗热汤面，简单一点。"
+          ]
         },
         {
           "id": "day_3",
@@ -240,9 +297,18 @@
           "opening": "你有试过用盐把甜味提出来吗？",
           "foodHint": "微甜牛肉",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "我在琢磨甜味什么时候最合适。",
+            "如果做牛肉，可以带一点微甜吗？"
+          ]
         }
-      ]
+      ],
+      "gender": "女",
+      "age": 25,
+      "speechPace": "rapid",
+      "requestStyle": "gradual",
+      "background": "在面包房工作的甜点师"
     },
     {
       "id": "lu",
@@ -282,7 +348,12 @@
           "hunger": "normal",
           "timePressure": "rushed"
         }
-      ]
+      ],
+      "gender": "男",
+      "age": 41,
+      "speechPace": "quiet",
+      "requestStyle": "direct",
+      "background": "城市公交司机"
     },
     {
       "id": "he",
@@ -322,7 +393,12 @@
           "hunger": "normal",
           "timePressure": "flexible"
         }
-      ]
+      ],
+      "gender": "女",
+      "age": 27,
+      "speechPace": "quiet",
+      "requestStyle": "reserved",
+      "background": "在温室照管植物的园艺师"
     },
     {
       "id": "shen",
@@ -362,7 +438,12 @@
           "hunger": "normal",
           "timePressure": "flexible"
         }
-      ]
+      ],
+      "gender": "男",
+      "age": 28,
+      "speechPace": "steady",
+      "requestStyle": "direct",
+      "background": "负责现场音响的技术员"
     },
     {
       "id": "song",
@@ -382,7 +463,11 @@
           "opening": "离校这么多年还有孩子给我寄明信片，今天来点家常的。",
           "foodHint": "炖猪肉",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "收到信我就想到以前在家炖的那锅肉。",
+            "猪肉炖软就行，别给我做得太咸。"
+          ]
         },
         {
           "id": "day_2",
@@ -391,7 +476,11 @@
           "opening": "本来说好一家人吃，今天我也给自己安排点新鲜事。",
           "foodHint": "软米饭",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "我本来留了几样菜，现在一个人反倒想吃简单的。",
+            "给我点软米饭就够了。"
+          ]
         },
         {
           "id": "day_3",
@@ -400,9 +489,18 @@
           "opening": "跳错还让人夸有创意，你说有意思吧。",
           "foodHint": "土豆炖菜",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "错半拍也不耽误我们跳完，我现在还想笑。",
+            "有土豆就炖一点，软软的最好。"
+          ]
         }
-      ]
+      ],
+      "gender": "女",
+      "age": 58,
+      "speechPace": "rapid",
+      "requestStyle": "gradual",
+      "background": "退休教师，常和老学生联系"
     },
     {
       "id": "lian",
@@ -422,7 +520,10 @@
           "opening": "删了半分钟对白，那个抬眼的镜头倒更好。",
           "foodHint": "黑胡椒牛肉",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "黑胡椒香可以明显一点。"
+          ]
         },
         {
           "id": "day_2",
@@ -431,7 +532,10 @@
           "opening": "片子得推倒重来，先吃口踏实的。",
           "foodHint": "煎猪肉",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "猪肉外沿有点焦香就行，别太硬。"
+          ]
         },
         {
           "id": "day_3",
@@ -440,9 +544,17 @@
           "opening": "片尾定了，我突然觉得少说两句也挺好。",
           "foodHint": "黑胡椒鸡腿",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "鸡腿上带点黑胡椒，会很合我现在的胃口。"
+          ]
         }
-      ]
+      ],
+      "gender": "男",
+      "age": 33,
+      "speechPace": "steady",
+      "requestStyle": "gradual",
+      "background": "给纪录片剪辑的后期"
     },
     {
       "id": "gu",
@@ -462,7 +574,11 @@
           "opening": "有道彩虹挂了不到一分钟，我看见了。",
           "foodHint": "微酸热汤",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "空气里有股凉凉的潮气。",
+            "我想来一点微酸的热汤，喝了就舒服。"
+          ]
         },
         {
           "id": "day_2",
@@ -471,7 +587,11 @@
           "opening": "我昨晚等到天亮，云倒看够了。",
           "foodHint": "鸡腿汤",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "我在楼顶守了好久，最后还是空着肚子回来。",
+            "如果有鸡腿汤，给我一碗热的。"
+          ]
         },
         {
           "id": "day_3",
@@ -480,9 +600,18 @@
           "opening": "雨几点下我押中了，你们也会估什么时候客人多吗？",
           "foodHint": "番茄汤面",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "番茄的酸味和这种天气很配。",
+            "煮在汤面里就好。"
+          ]
         }
-      ]
+      ],
+      "gender": "男",
+      "age": 26,
+      "speechPace": "rapid",
+      "requestStyle": "gradual",
+      "background": "记录天气现象的观测爱好者"
     },
     {
       "id": "qiu",
@@ -522,7 +651,12 @@
           "hunger": "normal",
           "timePressure": "flexible"
         }
-      ]
+      ],
+      "gender": "男",
+      "age": 39,
+      "speechPace": "quiet",
+      "requestStyle": "reserved",
+      "background": "经营二手书铺"
     },
     {
       "id": "du",
@@ -562,7 +696,12 @@
           "hunger": "normal",
           "timePressure": "flexible"
         }
-      ]
+      ],
+      "gender": "男",
+      "age": 31,
+      "speechPace": "steady",
+      "requestStyle": "direct",
+      "background": "在不同街区跑采访的记者"
     },
     {
       "id": "yan",
@@ -582,7 +721,11 @@
           "opening": "最难那四小节终于齐了，来点带辣的。",
           "foodHint": "微辣炒牛肉",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "嗓子这会儿倒想尝点刺激的。",
+            "炒牛肉带一点辣就好，还想吃出肉香。"
+          ]
         },
         {
           "id": "day_2",
@@ -591,7 +734,11 @@
           "opening": "今天我挥得再快也没用，想吃稳当不重口的。",
           "foodHint": "炒番茄",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "排练今天不顺，我想换个口味。",
+            "来点鲜亮的番茄吧，炒一下就好。"
+          ]
         },
         {
           "id": "day_3",
@@ -600,9 +747,18 @@
           "opening": "唱到最后一句有点舍不得，今天想慢点吃。",
           "foodHint": "香草鸡腿",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "今天送走他们，心里还真空了一块。",
+            "香草味的鸡腿会很合适。"
+          ]
         }
-      ]
+      ],
+      "gender": "女",
+      "age": 36,
+      "speechPace": "rapid",
+      "requestStyle": "gradual",
+      "background": "负责社区合唱团的指挥"
     },
     {
       "id": "xu",
@@ -642,7 +798,12 @@
           "hunger": "normal",
           "timePressure": "flexible"
         }
-      ]
+      ],
+      "gender": "男",
+      "age": 44,
+      "speechPace": "quiet",
+      "requestStyle": "direct",
+      "background": "修家具的木工师傅"
     },
     {
       "id": "fei",
@@ -682,7 +843,12 @@
           "hunger": "high",
           "timePressure": "flexible"
         }
-      ]
+      ],
+      "gender": "男",
+      "age": 34,
+      "speechPace": "quiet",
+      "requestStyle": "reserved",
+      "background": "经常换班的康复科工作人员"
     },
     {
       "id": "mo",
@@ -702,7 +868,11 @@
           "opening": "今天有人想再来一局，菜也能让人想再吃一口吗？",
           "foodHint": "炸虾",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "有一点脆的东西就像多奖励了一回合。",
+            "比如炸虾，我今天很想吃这个。"
+          ]
         },
         {
           "id": "day_2",
@@ -711,7 +881,11 @@
           "opening": "试了三轮大家都做反了，我今天想吃简单点。",
           "foodHint": "清炒土豆",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "我刚弄明白为什么大家会把规则看反。",
+            "现在只想吃点简单的炒土豆。"
+          ]
         },
         {
           "id": "day_3",
@@ -720,9 +894,18 @@
           "opening": "我今天攒着个惊喜，你做菜时也会藏一点香料吗？",
           "foodHint": "甜辣鸡腿",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "这事儿得藏到晚上才行。",
+            "来点甜辣的鸡腿，别辣到只能喝水。"
+          ]
         }
-      ]
+      ],
+      "gender": "男",
+      "age": 24,
+      "speechPace": "rapid",
+      "requestStyle": "gradual",
+      "background": "给桌游做试玩的设计者"
     },
     {
       "id": "nie",
@@ -742,7 +925,10 @@
           "opening": "画第一次上了封面，想吃一份看着开心的。",
           "foodHint": "番茄三文鱼",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "番茄和三文鱼这两种颜色正好。"
+          ]
         },
         {
           "id": "day_2",
@@ -751,7 +937,10 @@
           "opening": "倒不是不能重画，就是今天不想看屏幕。",
           "foodHint": "番茄汤",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "番茄汤能给脑子缓一缓，酸味不必太重。"
+          ]
         },
         {
           "id": "day_3",
@@ -760,9 +949,17 @@
           "opening": "外墙的影子有两种灰，我饭后想画下来。",
           "foodHint": "三文鱼",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "如果有三文鱼，做得清爽一点就行。"
+          ]
         }
-      ]
+      ],
+      "gender": "女",
+      "age": 29,
+      "speechPace": "steady",
+      "requestStyle": "gradual",
+      "background": "插画师"
     },
     {
       "id": "peng",
@@ -802,7 +999,12 @@
           "hunger": "normal",
           "timePressure": "flexible"
         }
-      ]
+      ],
+      "gender": "男",
+      "age": 37,
+      "speechPace": "steady",
+      "requestStyle": "direct",
+      "background": "带跑团练习的教练"
     },
     {
       "id": "jia",
@@ -822,7 +1024,11 @@
           "opening": "番茄还没摆稳就卖没了，你挑番茄看哪里。",
           "foodHint": "葱蒜炒番茄",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "看了一早上番茄，自己倒一口没吃着。",
+            "如果还有的话，拿葱蒜快炒就好。"
+          ]
         },
         {
           "id": "day_2",
@@ -831,7 +1037,11 @@
           "opening": "人都走了一半才来货，给我做点葱香的提劲。",
           "foodHint": "煎猪肉",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "我一早就等着那辆车，到现在才得空。",
+            "煎一点猪肉吧，蒜味可以重些。"
+          ]
         },
         {
           "id": "day_3",
@@ -840,9 +1050,18 @@
           "opening": "平时我尝得多坐得少，今天也吃人家做的饭。",
           "foodHint": "蒜香鸡腿",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "今天邻摊帮了大忙，省我跑了两趟。",
+            "现在就想吃个蒜香鸡腿。"
+          ]
         }
-      ]
+      ],
+      "gender": "女",
+      "age": 45,
+      "speechPace": "rapid",
+      "requestStyle": "gradual",
+      "background": "在市场卖菜的摊主"
     },
     {
       "id": "ba",
@@ -882,7 +1101,12 @@
           "hunger": "normal",
           "timePressure": "flexible"
         }
-      ]
+      ],
+      "gender": "男",
+      "age": 27,
+      "speechPace": "steady",
+      "requestStyle": "reserved",
+      "background": "在小场地表演近景魔术"
     },
     {
       "id": "linq",
@@ -902,7 +1126,11 @@
           "opening": "刚听了个古怪营业时间，老板你为什么做餐饮。",
           "foodHint": "醋香鱼",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "人家店只开两个点钟，离场时我正好饿了。",
+            "有鱼的话给点醋香，别把鱼味盖住。"
+          ]
         },
         {
           "id": "day_2",
@@ -911,7 +1139,11 @@
           "opening": "我想先把这顿饭吃完，再看手机。",
           "foodHint": "番茄汤面",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "我没想好要不要再催一次稿。",
+            "先来碗番茄汤面吧，能喝到汤就行。"
+          ]
         },
         {
           "id": "day_3",
@@ -920,9 +1152,18 @@
           "opening": "全都交了，今天用点酸的庆祝一下。",
           "foodHint": "酸甜番茄",
           "hunger": "normal",
-          "timePressure": "flexible"
+          "timePressure": "flexible",
+          "followUps": [
+            "这次居然一句都没被退回来。",
+            "我想吃酸甜的番茄，别做成太厚的酱。"
+          ]
         }
-      ]
+      ],
+      "gender": "女",
+      "age": 31,
+      "speechPace": "rapid",
+      "requestStyle": "gradual",
+      "background": "写城市小店故事的撰稿人"
     },
     {
       "id": "xi",
@@ -962,7 +1203,12 @@
           "hunger": "normal",
           "timePressure": "flexible"
         }
-      ]
+      ],
+      "gender": "男",
+      "age": 34,
+      "speechPace": "quiet",
+      "requestStyle": "reserved",
+      "background": "经营陶作工坊"
     },
     {
       "id": "wen",
@@ -1001,6 +1247,1339 @@
           "foodHint": "煎猪肉",
           "hunger": "normal",
           "timePressure": "flexible"
+        }
+      ],
+      "gender": "男",
+      "age": 47,
+      "speechPace": "steady",
+      "requestStyle": "reserved",
+      "background": "主持过晚间广播节目"
+    },
+    {
+      "id": "ningan",
+      "name": "宁安",
+      "gender": "女",
+      "age": 26,
+      "portraitId": "lin",
+      "background": "旧衣修补师",
+      "generosity": 64,
+      "patience": 4,
+      "speechPace": "steady",
+      "requestStyle": "reserved",
+      "personality": "细心，怕给人添麻烦，愿意慢慢聊。",
+      "preference": "软糯、温热，偏爱番茄或土豆。",
+      "voice": "先从触感或冷暖聊起，停一下才答问题。",
+      "roleRule": "先说身体感受，店主追问时才说想吃哪样。空闲时也愿意彼此沉默。",
+      "likes": "wet",
+      "visits": [
+        {
+          "id": "patch",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "高兴",
+          "situation": "客户拿来补过三次的旧外套，今天终于改合身",
+          "opening": "我手在缝纫机前冻了一下午。",
+          "craving": "",
+          "foodHint": "番茄炖土豆"
+        },
+        {
+          "id": "jam",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "烦闷",
+          "situation": "缝纫机卡线，拆了一下午都没修好",
+          "opening": "今天想找个地方缓一缓，能闻到热气就挺好。",
+          "craving": "",
+          "foodHint": "软土豆"
+        },
+        {
+          "id": "rush",
+          "hunger": "normal",
+          "timePressure": "rushed",
+          "mood": "局促",
+          "situation": "还要去寄一批修好的衣服，快递站一会儿关门",
+          "opening": "我坐一小会儿，还得去寄东西。",
+          "craving": "",
+          "foodHint": "番茄热汤"
+        }
+      ]
+    },
+    {
+      "id": "tongyue",
+      "name": "童月",
+      "gender": "女",
+      "age": 23,
+      "portraitId": "lin",
+      "background": "夜市摊位的兼职摄影师",
+      "generosity": 68,
+      "patience": 3,
+      "speechPace": "rapid",
+      "requestStyle": "gradual",
+      "personality": "兴奋时话题拐得快，但记得自己答应的事。",
+      "preference": "酸辣、虾和酥皮，讨厌油腻。",
+      "voice": "先讲一件小事，再短短补两个条件。",
+      "roleRule": "分几句给出主料、味道和口感，不连成菜单。",
+      "likes": "crispFrying",
+      "visits": [
+        {
+          "id": "lantern",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "兴奋",
+          "situation": "拍到一盏被风吹跑的灯笼，收摊后一路跑来",
+          "opening": "我追一盏灯笼追了半条街，晚饭还没吃！",
+          "craving": "",
+          "foodHint": "酥虾带酸",
+          "followUps": [
+            "想吃虾，外面得脆一点。",
+            "最后可不可以给一点酸？比辣更解腻。"
+          ]
+        },
+        {
+          "id": "retake",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "不甘心",
+          "situation": "素材拍糊了，明早想重去拍一遍",
+          "opening": "明早我得再跑一趟。今晚上先吃点顺口的吧。",
+          "craving": "",
+          "foodHint": "微辣脆土豆",
+          "followUps": [
+            "有土豆就行，外面脆一点。",
+            "辣别太狠，照片糊了也不能把舌头辣没了。"
+          ]
+        },
+        {
+          "id": "gift",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "轻松",
+          "situation": "拿到合作摊主送的小相册，想坐下翻翻",
+          "opening": "你看这册子这么薄，我倒舍不得一下翻完。",
+          "craving": "",
+          "foodHint": "醋香虾",
+          "followUps": [
+            "来小份虾就够了。",
+            "加一点醋香，想吃完再慢慢翻。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "liuxi",
+      "name": "柳溪",
+      "gender": "女",
+      "age": 31,
+      "portraitId": "lin",
+      "background": "河道监测员",
+      "generosity": 48,
+      "patience": 4,
+      "speechPace": "quiet",
+      "requestStyle": "direct",
+      "personality": "习惯报结论，有主见，善意不张扬。",
+      "preference": "蒸鱼、少盐、清汤，避重辣。",
+      "voice": "每句短，只补充会改变结果的细节。",
+      "roleRule": "一次只给一个明确要求。满意时只说哪里恰好。",
+      "likes": "wet",
+      "visits": [
+        {
+          "id": "samples",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "满意",
+          "situation": "一早取完样本，比预计早回城",
+          "opening": "想吃清蒸鱼。少盐。",
+          "craving": "",
+          "foodHint": "清蒸鲫鱼"
+        },
+        {
+          "id": "bank",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "疲惫",
+          "situation": "沿河堤走了几公里，中间来不及吃饭",
+          "opening": "来碗热汤，别放辣。",
+          "craving": "",
+          "foodHint": "鲫鱼汤"
+        },
+        {
+          "id": "train",
+          "hunger": "normal",
+          "timePressure": "rushed",
+          "mood": "专注",
+          "situation": "等快到站的同事接班，还要转车",
+          "opening": "能做快一点的鱼吗？口味清。",
+          "craving": "",
+          "foodHint": "清蒸三文鱼"
+        }
+      ]
+    },
+    {
+      "id": "kangshi",
+      "name": "康时",
+      "gender": "男",
+      "age": 45,
+      "portraitId": "zhou",
+      "background": "钟表修理师",
+      "generosity": 26,
+      "patience": 3,
+      "speechPace": "steady",
+      "requestStyle": "direct",
+      "personality": "挑剔有条理，愿意解释自己为什么挑。",
+      "preference": "牛肉、土豆，介意焦苦和过量黑胡椒。",
+      "voice": "给反馈像在指一个看得见的小问题，话具体。",
+      "roleRule": "先讲能接受的边界，评价只说真正尝出的差别。",
+      "likes": "western",
+      "visits": [
+        {
+          "id": "spring",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "舒坦",
+          "situation": "为顾客配到缺失多年的一根游丝",
+          "opening": "来一份煎牛肉，边上最好别发苦。",
+          "craving": "",
+          "foodHint": "煎牛肉"
+        },
+        {
+          "id": "scratch",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "心烦",
+          "situation": "桌上老表被碰出一道划痕",
+          "opening": "今天想吃炖土豆，软一点，别抢味。",
+          "craving": "",
+          "foodHint": "炖土豆"
+        },
+        {
+          "id": "pickup",
+          "hunger": "high",
+          "timePressure": "rushed",
+          "mood": "着急",
+          "situation": "晚上还有人来取表，午饭漏掉了",
+          "opening": "牛肉来一小份吧，黑胡椒轻些。",
+          "craving": "",
+          "foodHint": "少胡椒牛肉"
+        }
+      ]
+    },
+    {
+      "id": "zhongqing",
+      "name": "钟晴",
+      "gender": "女",
+      "age": 30,
+      "portraitId": "lin",
+      "background": "幼儿园活动老师",
+      "generosity": 82,
+      "patience": 4,
+      "speechPace": "rapid",
+      "requestStyle": "gradual",
+      "personality": "有感染力，会自己纠正越说越多的毛病。",
+      "preference": "酸甜、软鸡腿，怕干柴。",
+      "voice": "说快了会冒出一句我讲慢一点，然后补重点。",
+      "roleRule": "先说想要的口感，再补自己不想要的调味。",
+      "likes": "sweet",
+      "visits": [
+        {
+          "id": "kites",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "高兴",
+          "situation": "班里第一次把所有纸风筝都放起来",
+          "opening": "他们一跑，天上好像全是彩纸。讲得有点快啊。",
+          "craving": "",
+          "foodHint": "酸甜鸡腿",
+          "followUps": [
+            "我今天想吃鸡腿，软一点。",
+            "带酸甜就行，别甜到抢味。"
+          ]
+        },
+        {
+          "id": "craft",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "大意后想笑",
+          "situation": "做手工时把两袋纸条颜色发反了",
+          "opening": "我今天看见红色和绿色就想笑。",
+          "craving": "",
+          "foodHint": "温热番茄",
+          "followUps": [
+            "给点温热的番茄就好。",
+            "酸口更好，不用加很多糖。"
+          ]
+        },
+        {
+          "id": "trip",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "又饿又兴奋",
+          "situation": "带队出门一天，顾不上坐下吃午餐",
+          "opening": "我能坐这儿吗？站了一天了。",
+          "craving": "",
+          "foodHint": "松软鸡腿饭",
+          "followUps": [
+            "最好能有米饭。",
+            "再配小份鸡腿，做软一点。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "songyun",
+      "name": "松云",
+      "gender": "男",
+      "age": 62,
+      "portraitId": "yano",
+      "background": "海边书店的退休管理员",
+      "generosity": 74,
+      "patience": 5,
+      "speechPace": "quiet",
+      "requestStyle": "delegates",
+      "personality": "耐心、爱琢磨，不喜欢让别人忙乱。",
+      "preference": "简单热饭、热汤，几乎不挑。",
+      "voice": "短短一句就把话交回给对方。",
+      "roleRule": "先请店主拿主意。别人问细了才说想吃温热的。",
+      "likes": "fromStock",
+      "visits": [
+        {
+          "id": "shelves",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "安稳",
+          "situation": "回来给新店主整理一排旧书",
+          "opening": "我坐一会儿。您方便做什么？",
+          "craving": "",
+          "foodHint": "温热的米饭"
+        },
+        {
+          "id": "sea",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "想念",
+          "situation": "去海边给旧友写了张明信片",
+          "opening": "这会儿有点凉，给我一点热的就好。",
+          "craving": "",
+          "foodHint": "清汤"
+        },
+        {
+          "id": "quiet",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "平静",
+          "situation": "等书店进新书，不急着回去",
+          "opening": "您先忙。我吃什么都方便。",
+          "craving": "",
+          "foodHint": "软土豆"
+        }
+      ]
+    },
+    {
+      "id": "maoqi",
+      "name": "毛祺",
+      "gender": "男",
+      "age": 22,
+      "portraitId": "wang",
+      "background": "电影院放映员",
+      "generosity": 34,
+      "patience": 3,
+      "speechPace": "rapid",
+      "requestStyle": "gradual",
+      "personality": "报起细节很快，自嘲多，挑嘴却怕扫兴。",
+      "preference": "蒜香、油炸小食，分量小一些。",
+      "voice": "三句各说一件事，少用长解释。",
+      "roleRule": "不把想吃的菜堆成清单，先挑一个方向。",
+      "likes": "crispFrying",
+      "visits": [
+        {
+          "id": "projector",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "来劲",
+          "situation": "紧急救回一场差点播不出的老电影",
+          "opening": "刚才全厅那口气我现在还记得。",
+          "craving": "",
+          "foodHint": "蒜香炸土豆",
+          "followUps": [
+            "现在我只想吃点脆的。",
+            "有土豆就炸一小份，给点蒜香。"
+          ]
+        },
+        {
+          "id": "credits",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "兴奋",
+          "situation": "看到名字第一次出现在本地短片片尾",
+          "opening": "自己那一行就闪了一下，我还是看见了！",
+          "craving": "",
+          "foodHint": "小份炸虾",
+          "followUps": [
+            "我不太饿，给我点咬起来有声的吧。",
+            "有虾就炸两口，分量小点。"
+          ]
+        },
+        {
+          "id": "double",
+          "hunger": "high",
+          "timePressure": "rushed",
+          "mood": "着急",
+          "situation": "连放两场，中间只有一段不长的空档",
+          "opening": "下一场马上进人，我先抓紧吃一口。",
+          "craving": "",
+          "foodHint": "蒜香煎鸡腿",
+          "followUps": [
+            "有鸡腿就做一点。",
+            "蒜香可以多点，但我真的得快些。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jingshu",
+      "name": "景书",
+      "gender": "女",
+      "age": 38,
+      "portraitId": "lin",
+      "background": "在音像档案馆工作的修复员",
+      "generosity": 49,
+      "patience": 4,
+      "speechPace": "quiet",
+      "requestStyle": "reserved",
+      "personality": "警觉，喜欢听别人把话讲完，熟了会开玩笑。",
+      "preference": "清汤、面、香菜另少放。",
+      "voice": "短句，先说余味或温度，避免直接报菜名。",
+      "roleRule": "对普通招呼只回一个观察。被认真追问才说主料。",
+      "likes": "fromStock",
+      "visits": [
+        {
+          "id": "tape",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "专注",
+          "situation": "在底片上认出已撤掉的街名",
+          "opening": "这几天耳朵里全是旧录音，现在想安静一点。",
+          "craving": "",
+          "foodHint": "清汤面"
+        },
+        {
+          "id": "pause",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "放松",
+          "situation": "修复的采访终于能连贯放完",
+          "opening": "突然能听清别人说话的尾音了，挺奇妙的。",
+          "craving": "",
+          "foodHint": "少香菜汤面"
+        },
+        {
+          "id": "rain",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "沉郁",
+          "situation": "故障检修拖到很晚，回去前想找盏亮灯",
+          "opening": "能坐靠暖一点的地方吗？",
+          "craving": "",
+          "foodHint": "温热的鸡腿汤面"
+        }
+      ]
+    },
+    {
+      "id": "ximing",
+      "name": "席明",
+      "gender": "男",
+      "age": 36,
+      "portraitId": "jack",
+      "background": "渡轮轮机员",
+      "generosity": 58,
+      "patience": 3,
+      "speechPace": "steady",
+      "requestStyle": "direct",
+      "personality": "直爽，夸奖有依据，烦恼时也能讲清。",
+      "preference": "蒜香、鱼和热汤，避免甜口。",
+      "voice": "说事情先说结果，偶尔用海上天气打比方。",
+      "roleRule": "忙船时先说要赶时间。遇到合口的菜直接指出。",
+      "likes": "wet",
+      "visits": [
+        {
+          "id": "dock",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "疲惫",
+          "situation": "连续做完两次靠泊，没吃午饭",
+          "opening": "做点热鱼吧，味道别偏甜。",
+          "craving": "",
+          "foodHint": "蒜香鲫鱼"
+        },
+        {
+          "id": "shore",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "畅快",
+          "situation": "久违地和船员一起在岸上休息",
+          "opening": "有鱼汤吗？蒜味可以重一点。",
+          "craving": "",
+          "foodHint": "热鱼汤"
+        },
+        {
+          "id": "wave",
+          "hunger": "normal",
+          "timePressure": "rushed",
+          "mood": "焦急",
+          "situation": "临时通知提早返船检查设备",
+          "opening": "我得赶船，能快做一份三文鱼吗？",
+          "craving": "",
+          "foodHint": "快煎三文鱼"
+        }
+      ]
+    },
+    {
+      "id": "weilan",
+      "name": "卫岚",
+      "gender": "女",
+      "age": 24,
+      "portraitId": "lin",
+      "background": "攀岩馆前台兼保护员",
+      "generosity": 61,
+      "patience": 3,
+      "speechPace": "steady",
+      "requestStyle": "gradual",
+      "personality": "敢讲怕什么，观察准，不逞强。",
+      "preference": "饱腹、番茄配米饭，喜欢一点辣。",
+      "voice": "先说最在意的口感，再补一点份量。",
+      "roleRule": "分开说实在的约束。认出想吃的菜时能干脆决定。",
+      "likes": "spicy",
+      "visits": [
+        {
+          "id": "wall",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "昂扬",
+          "situation": "第一次完成卡了几周的一条路线",
+          "opening": "今天终于摸到最后那个点了，我现在饿得站不稳。",
+          "craving": "",
+          "foodHint": "辣番茄盖饭",
+          "followUps": [
+            "我想吃米饭。",
+            "番茄可以带一点辣，吃着有劲。"
+          ]
+        },
+        {
+          "id": "glove",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "烦躁",
+          "situation": "保护手套落在车上，折返两趟才到店",
+          "opening": "我今天把路都走两遍了，想吃得简单一点。",
+          "craving": "",
+          "foodHint": "番茄米饭",
+          "followUps": [
+            "番茄配米饭就行，别勉强我点第二道。"
+          ]
+        },
+        {
+          "id": "newcomer",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "欣慰",
+          "situation": "一个怕高的新客人终于肯上墙",
+          "opening": "有人今天往上多爬了一步，我替她高兴。",
+          "craving": "",
+          "foodHint": "土豆和米饭",
+          "followUps": [
+            "想吃分量实在的，土豆配饭就挺好。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chengdu",
+      "name": "程度",
+      "gender": "男",
+      "age": 43,
+      "portraitId": "yano",
+      "background": "照料社区共享花坛的木匠",
+      "generosity": 82,
+      "patience": 5,
+      "speechPace": "steady",
+      "requestStyle": "delegates",
+      "personality": "会等人把事做好，习惯和气确认。",
+      "preference": "鸡腿、土豆、软一点的家常做法。",
+      "voice": "先肯定对方手头有的东西，不把要求说成命令。",
+      "roleRule": "把选菜交给店主，细问时说温热和软一点。",
+      "likes": "wet",
+      "visits": [
+        {
+          "id": "bench",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "愉快",
+          "situation": "给邻居修好的板凳被孩子贴上彩纸",
+          "opening": "我今天来坐坐。您手上有合适的就做一点。",
+          "craving": "",
+          "foodHint": "土豆鸡腿"
+        },
+        {
+          "id": "soil",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "倦怠",
+          "situation": "铲土后错过了饭点，肩膀发酸",
+          "opening": "今天确实有点饿，做温热的就行。",
+          "craving": "",
+          "foodHint": "土豆炖汤"
+        },
+        {
+          "id": "wood",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "平和",
+          "situation": "刚量好一块准备补在花坛边的木板",
+          "opening": "您先弄自己的。我就想吃一小碗。",
+          "craving": "",
+          "foodHint": "软米饭"
+        }
+      ]
+    },
+    {
+      "id": "hesheng",
+      "name": "何笙",
+      "gender": "男",
+      "age": 30,
+      "portraitId": "zhou",
+      "background": "剧场道具师",
+      "generosity": 46,
+      "patience": 3,
+      "speechPace": "quiet",
+      "requestStyle": "reserved",
+      "personality": "敏感、嘴严，喜欢别人留一点空白。",
+      "preference": "香草、煎得不干的猪肉，避免浓甜。",
+      "voice": "回答只说观察，追问时才带一个口味细节。",
+      "roleRule": "不主动点菜。别人问想不想尝，可以用口感作答。",
+      "likes": "finalDry",
+      "visits": [
+        {
+          "id": "box",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "心神不宁",
+          "situation": "演出前找不到一个备用道具箱",
+          "opening": "想坐这儿透口气，今天后台闷。",
+          "craving": "",
+          "foodHint": "香草煎猪肉"
+        },
+        {
+          "id": "paint",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "松快",
+          "situation": "旧布景重新上色后比预期好看",
+          "opening": "这边闻得到一点香草味。",
+          "craving": "",
+          "foodHint": "迷迭香土豆"
+        },
+        {
+          "id": "move",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "疲惫",
+          "situation": "搬了半下午布景，结束时天已经黑了",
+          "opening": "后背还像背着块木板似的。",
+          "craving": "",
+          "foodHint": "煎嫩猪肉"
+        }
+      ]
+    },
+    {
+      "id": "liangmi",
+      "name": "梁米",
+      "gender": "女",
+      "age": 34,
+      "portraitId": "lin",
+      "background": "骑行修配店店主",
+      "generosity": 73,
+      "patience": 4,
+      "speechPace": "rapid",
+      "requestStyle": "gradual",
+      "personality": "爽朗、切换话题快，遇到做得好会诚心夸。",
+      "preference": "蒜香、辣味，喜欢牛肉，也肯吃蔬菜。",
+      "voice": "说完主意常补一句不过今天；每句只补一个信息。",
+      "roleRule": "快节奏拆开说味道、主料和忌口，避免无关碎念。",
+      "likes": "peppered",
+      "visits": [
+        {
+          "id": "chain",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "畅快",
+          "situation": "帮人从十字路口救回脱链的公路车",
+          "opening": "刚才那个人车链啪地一响，人倒比车紧张！",
+          "craving": "",
+          "foodHint": "蒜香牛肉",
+          "followUps": [
+            "我午饭没顾上吃，想来点牛肉。",
+            "蒜多一点，今天就想吃香的。"
+          ]
+        },
+        {
+          "id": "puddle",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "不痛快",
+          "situation": "雨天路滑，答应的试车只好取消",
+          "opening": "今天出门看见水坑就想绕路。",
+          "craving": "",
+          "foodHint": "微辣番茄",
+          "followUps": [
+            "来点番茄，把胃口叫醒。",
+            "辣味点到就好，别压过酸。"
+          ]
+        },
+        {
+          "id": "pump",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "满足",
+          "situation": "把用了八年的旧打气筒收拾好又能用",
+          "opening": "修好一件还能使的东西，比买新的痛快。",
+          "craving": "",
+          "foodHint": "黑胡椒土豆",
+          "followUps": [
+            "我吃不了多少。",
+            "土豆加点黑胡椒，大概就刚好。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "qiaoyu",
+      "name": "乔雨",
+      "gender": "女",
+      "age": 37,
+      "portraitId": "lin",
+      "background": "做同声口译的自由职业者",
+      "generosity": 36,
+      "patience": 2,
+      "speechPace": "steady",
+      "requestStyle": "direct",
+      "personality": "重视精确，容忍错误但反感敷衍。",
+      "preference": "焦香牛肉或清蒸鱼，忌太咸。",
+      "voice": "先说自己要什么，再指出最重要的一个条件。",
+      "roleRule": "不猜厨师过程，只评价味道，赶时间时直接说。",
+      "likes": "western",
+      "visits": [
+        {
+          "id": "brief",
+          "hunger": "normal",
+          "timePressure": "rushed",
+          "mood": "专注",
+          "situation": "刚接到提前半小时发来的会前材料",
+          "opening": "煎牛肉，小份就好。请别做咸了。",
+          "craving": "",
+          "foodHint": "少盐煎牛肉"
+        },
+        {
+          "id": "voice",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "声音发紧",
+          "situation": "长时间口译结束，喉咙有点干",
+          "opening": "做份清蒸鱼吧，淡一些。",
+          "craving": "",
+          "foodHint": "清蒸鲫鱼"
+        },
+        {
+          "id": "walk",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "舒展",
+          "situation": "临时客户取消，沿着河散了很久的步",
+          "opening": "我要米饭配牛肉，别做太重的调味。",
+          "craving": "",
+          "foodHint": "牛肉米饭"
+        }
+      ]
+    },
+    {
+      "id": "yingshi",
+      "name": "应时",
+      "gender": "男",
+      "age": 29,
+      "portraitId": "wang",
+      "background": "常在山里走的测绘员",
+      "generosity": 54,
+      "patience": 4,
+      "speechPace": "steady",
+      "requestStyle": "reserved",
+      "personality": "随和但慢热，习惯先说眼前的风和光。",
+      "preference": "热汤、煮面、少放盐。",
+      "voice": "第一句通常说路况或温度，具体需求要问。",
+      "roleRule": "给店主一两条口味线索，少用抽象抒情。",
+      "likes": "fromStock",
+      "visits": [
+        {
+          "id": "hill",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "疲乏",
+          "situation": "爬了两段山坡补测，午饭在包里没动",
+          "opening": "今天山上的风直往袖口钻。",
+          "craving": "",
+          "foodHint": "少盐汤面"
+        },
+        {
+          "id": "print",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "开心",
+          "situation": "新地图通过比对，终于能出图",
+          "opening": "今天那层雾散了以后，远坡看得真清楚。",
+          "craving": "",
+          "foodHint": "鸡腿汤面"
+        },
+        {
+          "id": "mist",
+          "hunger": "normal",
+          "timePressure": "rushed",
+          "mood": "心里惦记着事",
+          "situation": "同事发来一条路线改道消息",
+          "opening": "我得早点到下一个路口，只坐一会儿。",
+          "craving": "",
+          "foodHint": "简单热汤"
+        }
+      ]
+    },
+    {
+      "id": "sunbei",
+      "name": "孙北",
+      "gender": "男",
+      "age": 54,
+      "portraitId": "zhou",
+      "background": "海鲜早市收档的商户",
+      "generosity": 65,
+      "patience": 4,
+      "speechPace": "quiet",
+      "requestStyle": "direct",
+      "personality": "务实，认真尝菜，夸鲜味时很诚恳。",
+      "preference": "鲫鱼、葱、清淡，不喜欢甜汁。",
+      "voice": "用很短的词说温度和质地，很少追问闲事。",
+      "roleRule": "一开始直接点清楚，吃到问题时给一句具体评价。",
+      "likes": "wet",
+      "visits": [
+        {
+          "id": "sale",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "舒坦",
+          "situation": "天刚亮就卖完今天的鱼",
+          "opening": "有鲫鱼就蒸。葱可以多放。",
+          "craving": "",
+          "foodHint": "葱香鲫鱼"
+        },
+        {
+          "id": "ice",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "累",
+          "situation": "抬了一上午冰箱，回家前才顾上吃",
+          "opening": "给我煮条鱼。汤热，少盐。",
+          "craving": "",
+          "foodHint": "清鱼汤"
+        },
+        {
+          "id": "boat",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "平静",
+          "situation": "接货船晚到，多出一点闲工夫",
+          "opening": "小份虾就行。不要甜。",
+          "craving": "",
+          "foodHint": "清蒸小份虾"
+        }
+      ]
+    },
+    {
+      "id": "yuqing",
+      "name": "俞青",
+      "gender": "女",
+      "age": 28,
+      "portraitId": "lin",
+      "background": "乐器店调音师",
+      "generosity": 76,
+      "patience": 4,
+      "speechPace": "rapid",
+      "requestStyle": "gradual",
+      "personality": "精力旺，容易被有趣细节带跑。",
+      "preference": "清爽醋味、虾、偶尔想吃甜辣。",
+      "voice": "像一句短句接一句短句的试音，常说对了。",
+      "roleRule": "在两三句里给主料、份量或酸辣程度，各讲一项。",
+      "likes": "spicy",
+      "visits": [
+        {
+          "id": "piano",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "兴奋",
+          "situation": "一架老钢琴调完后首次能弹完整的和弦",
+          "opening": "那几个音终于能一起站住了！",
+          "craving": "",
+          "foodHint": "少辣醋香虾",
+          "followUps": [
+            "我想吃虾。",
+            "对了，醋香重一点，辣味只放一点。"
+          ]
+        },
+        {
+          "id": "noise",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "累但想笑",
+          "situation": "两组顾客用不同节拍试琴打到同一刻",
+          "opening": "今天一天都像有人在跟我打拍子。",
+          "craving": "",
+          "foodHint": "甜辣鸡腿",
+          "followUps": [
+            "我真饿了，来点鸡腿。",
+            "甜辣都要有，但别做得太油。"
+          ]
+        },
+        {
+          "id": "show",
+          "hunger": "normal",
+          "timePressure": "rushed",
+          "mood": "期待",
+          "situation": "晚上要去看好朋友的第一次公开演出",
+          "opening": "今晚我要替朋友在前排占个位置。",
+          "craving": "",
+          "foodHint": "清爽小份虾",
+          "followUps": [
+            "给我一小份虾吧。",
+            "味道清爽一些就好，我得快点走。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "qingyuan",
+      "name": "秦原",
+      "gender": "男",
+      "age": 38,
+      "portraitId": "jack",
+      "background": "社区线路的临时司机",
+      "generosity": 55,
+      "patience": 3,
+      "speechPace": "steady",
+      "requestStyle": "direct",
+      "personality": "放得开，有事也不绕弯。",
+      "preference": "稠一点的炖肉、土豆和黑胡椒。",
+      "voice": "用干脆的两句话，一句说事一句说想吃的。",
+      "roleRule": "饿了会说明，愿意让厨师选工序但口味要实在。",
+      "likes": "peppered",
+      "visits": [
+        {
+          "id": "snow",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "稍累",
+          "situation": "雪天把最后一班乘客送到终点",
+          "opening": "我想吃点热乎的炖牛肉，汤稠点儿。",
+          "craving": "",
+          "foodHint": "胡椒炖牛肉"
+        },
+        {
+          "id": "detour",
+          "hunger": "normal",
+          "timePressure": "rushed",
+          "mood": "急",
+          "situation": "上午绕了几次路，快到交车时间",
+          "opening": "土豆加点胡椒就行，我得早点交车。",
+          "craving": "",
+          "foodHint": "胡椒土豆"
+        },
+        {
+          "id": "paper",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "平静",
+          "situation": "车上的遗失钱包终于交回了失主",
+          "opening": "今天想吃炖猪肉，料的味道可以重一点。",
+          "craving": "",
+          "foodHint": "胡椒炖猪肉"
+        }
+      ]
+    },
+    {
+      "id": "luowei",
+      "name": "罗微",
+      "gender": "女",
+      "age": 46,
+      "portraitId": "lin",
+      "background": "修复照片的店主",
+      "generosity": 44,
+      "patience": 5,
+      "speechPace": "quiet",
+      "requestStyle": "reserved",
+      "personality": "温和克制，认真听，熟了也能直接提出意见。",
+      "preference": "喜欢番茄和软土豆，怕过酸。",
+      "voice": "先说很具体的一点回忆，饮食要求常留半句。",
+      "roleRule": "不在开场报菜名，被追问才说具体主料，反馈不夸张。",
+      "likes": "wet",
+      "visits": [
+        {
+          "id": "album",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "怀念",
+          "situation": "给客人补好一本水浸过的家庭相册",
+          "opening": "今天修到一张厨房照片，锅上还冒着热气。",
+          "craving": "",
+          "foodHint": "软炖土豆"
+        },
+        {
+          "id": "glass",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "松口气",
+          "situation": "扫描台重新通电，赶出了最后一张照片",
+          "opening": "刚才总算把灯打开了，眼睛还有点涩。",
+          "craving": "",
+          "foodHint": "温番茄汤"
+        },
+        {
+          "id": "visit",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "静下来",
+          "situation": "从旧友家回来，路上经过以前常买菜的街",
+          "opening": "以前这条街的菜香挺淡的，走过还会回头看一眼。",
+          "craving": "",
+          "foodHint": "少酸番茄炖土豆"
+        }
+      ]
+    },
+    {
+      "id": "youdao",
+      "name": "游岛",
+      "gender": "男",
+      "age": 22,
+      "portraitId": "wang",
+      "background": "刚搬到城里的见习灯光师",
+      "generosity": 56,
+      "patience": 3,
+      "speechPace": "rapid",
+      "requestStyle": "gradual",
+      "personality": "外向，遇事先笑，饿了就说重点。",
+      "preference": "炸土豆、嫩鸡腿、黑胡椒。",
+      "voice": "一句讲现场，一句补口感，很少一口气交代全部。",
+      "roleRule": "跟着场景节奏说，不靠无意义的感叹词填满聊天。",
+      "likes": "crispFrying",
+      "visits": [
+        {
+          "id": "stage",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "得意",
+          "situation": "独自操控完第一次舞台转场",
+          "opening": "刚才最后一盏灯合上时，观众居然没发现换景！",
+          "craving": "",
+          "foodHint": "脆炸土豆",
+          "followUps": [
+            "我还没吃晚饭。",
+            "先做点脆土豆，想吃到嘎嘣一下的。"
+          ]
+        },
+        {
+          "id": "tunnel",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "烦躁",
+          "situation": "暗场工作过久，出门才知道下雨了",
+          "opening": "我才出来，外面怎么一下就凉了？",
+          "craving": "",
+          "foodHint": "胡椒鸡腿",
+          "followUps": [
+            "给我一点热鸡腿。",
+            "再来点黑胡椒，暖和些。"
+          ]
+        },
+        {
+          "id": "gels",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "好奇",
+          "situation": "用不同色片试出喜欢的灯光效果",
+          "opening": "今天把两种蓝叠在一起，反而出了点灰。",
+          "craving": "",
+          "foodHint": "小份胡椒土豆",
+          "followUps": [
+            "我只想吃一小份土豆。",
+            "胡椒可以出来一点，我想尝清楚。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "haixin",
+      "name": "海心",
+      "gender": "女",
+      "age": 32,
+      "portraitId": "lin",
+      "background": "社区动物照护员",
+      "generosity": 80,
+      "patience": 5,
+      "speechPace": "steady",
+      "requestStyle": "delegates",
+      "personality": "热心，不愿干涉别人的手艺。",
+      "preference": "温热、清淡，主料随意。",
+      "voice": "先问对方方便做什么，关心细小的不舒服。",
+      "roleRule": "允许店主决定，要确认时给一个宽松范围。",
+      "likes": "fromStock",
+      "visits": [
+        {
+          "id": "cat",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "放心",
+          "situation": "照护了很久的老猫终于肯自己喝水",
+          "opening": "今天总算放心了。您拿什么方便就做一点。",
+          "craving": "",
+          "foodHint": "热汤"
+        },
+        {
+          "id": "blanket",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "倦意",
+          "situation": "洗了一下午毯子，差点错过吃饭",
+          "opening": "我手还带着洗衣皂味。想吃点热的，具体听您的。",
+          "craving": "",
+          "foodHint": "清淡炖鸡腿"
+        },
+        {
+          "id": "rounds",
+          "hunger": "normal",
+          "timePressure": "rushed",
+          "mood": "着急",
+          "situation": "有一轮夜间照护要交接",
+          "opening": "我待不了多久，找一样方便的就够了。",
+          "craving": "",
+          "foodHint": "快捷热面"
+        }
+      ]
+    },
+    {
+      "id": "junxiao",
+      "name": "君晓",
+      "gender": "男",
+      "age": 50,
+      "portraitId": "yano",
+      "background": "给旧电影做字幕的译者",
+      "generosity": 88,
+      "patience": 5,
+      "speechPace": "quiet",
+      "requestStyle": "reserved",
+      "personality": "谦虚谨慎，会为一个词想很久。",
+      "preference": "三文鱼、米饭，清淡无甜汁。",
+      "voice": "留白，多用简短完整句，偶尔讲一处用字。",
+      "roleRule": "不立刻解释自己想吃什么。别人把问题问具体就认真回答。",
+      "likes": "sushi",
+      "visits": [
+        {
+          "id": "subtitle",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "从容",
+          "situation": "调完了一场无对白电影的字幕时间",
+          "opening": "刚做完一部特别安静的片子。",
+          "craving": "",
+          "foodHint": "清爽三文鱼"
+        },
+        {
+          "id": "frame",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "困倦",
+          "situation": "有一句字幕来回改了十几遍",
+          "opening": "想歇歇眼睛，找个光别太亮的地方。",
+          "craving": "",
+          "foodHint": "清淡米饭"
+        },
+        {
+          "id": "small",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "欣慰",
+          "situation": "以前帮过的同行寄来一张观影票",
+          "opening": "我原来以为他忘了这件事。",
+          "craving": "",
+          "foodHint": "三文鱼配米饭"
+        }
+      ]
+    },
+    {
+      "id": "yuwen",
+      "name": "余闻",
+      "gender": "男",
+      "age": 27,
+      "portraitId": "zhou",
+      "background": "修理录音设备的技师",
+      "generosity": 43,
+      "patience": 3,
+      "speechPace": "steady",
+      "requestStyle": "gradual",
+      "personality": "腼腆、好奇，很愿意听别人谈擅长的事。",
+      "preference": "椒香、煎猪肉和面，忌口过多咸味。",
+      "voice": "先把手头的小意外讲清，再补自己的一点口味。",
+      "roleRule": "不用每次都说马上点单，有食物话题才接上。",
+      "likes": "peppered",
+      "visits": [
+        {
+          "id": "buzz",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "烦闷",
+          "situation": "一个杂音查到晚上还是偶尔出现",
+          "opening": "我今天盯着一个杂音，越听越像自己的呼吸。",
+          "craving": "",
+          "foodHint": "黑胡椒煎猪肉",
+          "followUps": [
+            "来点有嚼劲的猪肉吧，有点胡椒会好。"
+          ]
+        },
+        {
+          "id": "repair",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "惊喜",
+          "situation": "找来一块旧零件修好了老磁带机",
+          "opening": "第一次听到它转起来，才发现天都黑了。",
+          "craving": "",
+          "foodHint": "黑胡椒面条",
+          "followUps": [
+            "先来点面，胡椒能闻到就行。"
+          ]
+        },
+        {
+          "id": "speaker",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "放松",
+          "situation": "替朋友修好了车载扬声器",
+          "opening": "他放第一首歌的时候还专门让我听。",
+          "craving": "",
+          "foodHint": "小份煎猪肉",
+          "followUps": [
+            "有猪肉就煎一小份，盐轻些。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hexing",
+      "name": "何行",
+      "gender": "男",
+      "age": 34,
+      "portraitId": "jack",
+      "background": "跑长途的货运司机",
+      "generosity": 33,
+      "patience": 2,
+      "speechPace": "quiet",
+      "requestStyle": "direct",
+      "personality": "惜字、现实，饿或急时会明确说出来。",
+      "preference": "饭菜实在、喜欢猪肉和米饭，讨厌甜腻。",
+      "voice": "句尾利落，夸奖说得少但具体。",
+      "roleRule": "一开始直说主料，赶路时不扯闲话。",
+      "likes": "finalDry",
+      "visits": [
+        {
+          "id": "road",
+          "hunger": "high",
+          "timePressure": "flexible",
+          "mood": "很饿",
+          "situation": "连续开出很远，只在加油站停过一次",
+          "opening": "想吃米饭配猪肉。别给我做甜的。",
+          "craving": "",
+          "foodHint": "煎猪肉饭"
+        },
+        {
+          "id": "hub",
+          "hunger": "normal",
+          "timePressure": "rushed",
+          "mood": "有点急",
+          "situation": "要去离城的仓库换车",
+          "opening": "有什么肉能快做？还得开车。",
+          "craving": "",
+          "foodHint": "煎猪肉"
+        },
+        {
+          "id": "rest",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "松快",
+          "situation": "这次换完班终于有完整一晚休息",
+          "opening": "今天不赶，来份炖猪肉吧。",
+          "craving": "",
+          "foodHint": "炖猪肉"
+        }
+      ]
+    },
+    {
+      "id": "shiyu",
+      "name": "施语",
+      "gender": "女",
+      "age": 25,
+      "portraitId": "lin",
+      "background": "广播剧编辑",
+      "generosity": 67,
+      "patience": 3,
+      "speechPace": "rapid",
+      "requestStyle": "gradual",
+      "personality": "活泼、爱听细节，不怕把自己说错的话改口。",
+      "preference": "番茄、米饭、黑胡椒，怕特别咸。",
+      "voice": "快，但不是句句惊叹。偶尔停一下作补充。",
+      "roleRule": "想吃的方向和调味分开交代，有时临时改变主意。",
+      "likes": "peppered",
+      "visits": [
+        {
+          "id": "voices",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "兴奋",
+          "situation": "众人同时录完一场戏，现场出奇地默契",
+          "opening": "今天他们那几句跟一直接上的接力一样。",
+          "craving": "",
+          "foodHint": "番茄黑胡椒饭",
+          "followUps": [
+            "我现在想吃番茄配饭。",
+            "黑胡椒能放一点吗？盐就少一点。"
+          ]
+        },
+        {
+          "id": "edit",
+          "hunger": "normal",
+          "timePressure": "flexible",
+          "mood": "失落",
+          "situation": "一段喜欢的剪辑为了时长被删",
+          "opening": "删掉的反而是我今天最舍不得的一段。",
+          "craving": "",
+          "foodHint": "无辣番茄汤",
+          "followUps": [
+            "我看见热汤就能舒服点。",
+            "番茄那种，别加辣。"
+          ]
+        },
+        {
+          "id": "silence",
+          "hunger": "low",
+          "timePressure": "flexible",
+          "mood": "满意",
+          "situation": "说服团队在结尾留下几秒安静",
+          "opening": "大家终于同意那儿可以静一静。",
+          "craving": "",
+          "foodHint": "小份番茄炒饭",
+          "followUps": [
+            "我不太饿，来一小份。",
+            "番茄和米饭就好。"
+          ]
         }
       ]
     }
