@@ -127,8 +127,10 @@ export function foodTraits(recipe) {
     amount("vinegar") * .45 + amount("soy") * .35 + amount("rosemary") * .35 +
     amount("cilantro") * .3 + amount("sugar") * .28;
   const staleTaste = staleShare > 0 && strongFlavor < 45 + staleShare * 28;
+  const mainStale = staleTaste ? food.reduce((worst, item) =>
+    (item.staleAmount || 0) > (worst?.staleAmount || 0) ? item : worst, null) : null;
   return {
-    ruined, salty, noHeat, raw: undercooked, overcooked, staleTaste,
+    ruined, salty, noHeat, raw: undercooked, overcooked, staleTaste, staleIngredient: mainStale?.id,
     spicy: amount("chili") >= 50,
     sweet: amount("sugar") >= 75,
     peppered: amount("black_pepper") >= 35,
@@ -153,7 +155,32 @@ export function foodTraits(recipe) {
 export function readDish(demo, payload) {
   const recipe = readRecipe(demo, payload?.recipe);
   if (!recipe || typeof payload.description !== "string" || payload.description.length > 150) return null;
-  return { description: payload.description, recipe };
+  if (!payload.offeredPortions) return { description: payload.description, recipe };
+
+  const offered = recipe.items.reduce((total, item) => total + (item.seasoning || item.liquid ? 0 : item.amount), 0);
+  const accepted = payload.acceptedPortions;
+  const remaining = payload.mealRemaining;
+  if (offered !== payload.offeredPortions || !Number.isInteger(accepted) || !Number.isInteger(remaining) ||
+      accepted < 0 || remaining < 0 || accepted > offered || accepted + remaining > 6) return null;
+  return { description: payload.description, recipe, meal: { offered, accepted, remaining } };
+}
+
+export function freshnessImpression(ingredient) {
+  switch (ingredient) {
+    case "shrimp": return "虾肉松软，咽下去有股腥味一直挂着。";
+    case "crucian_carp": return "鱼肉吃着发散，嘴里留着一层不太舒服的腥气。";
+    case "salmon": return "鱼肉少了该有的紧实感，尾味有点闷腥。";
+    case "duck":
+    case "pork": return "肉香上不来，嚼完后嘴里还粘着一股发闷的油味。";
+    case "chicken":
+    case "beef": return "刚入口还能尝到调味，嚼久了有一股不舒服的闷味。";
+    case "rice":
+    case "sushi_rice":
+    case "noodles": return "主食入口不够利落，嚼着有一点黏滞的余味。";
+    case "stock":
+    case "water": return "汤汁的香味散得很快，舌根有一点发闷。";
+    default: return "菜的清香很弱，嚼开后有一点不该有的酸涩。";
+  }
 }
 
 export function recipeFacts(recipe) {
@@ -172,7 +199,7 @@ export function recipeFacts(recipe) {
         traits.oilFreeFrying ? "外层没有形成明显的脆壳。" : "",
         traits.greasy ? "油分偏多，入口发腻。" : "",
         traits.fromStock ? "汁水鲜味明显。" : ""].filter(Boolean).join("");
-  const freshness = traits.staleTaste ? "后味有明显陈味，鲜香不足。" : "";
+  const freshness = traits.staleTaste ? freshnessImpression(traits.staleIngredient) : "";
   return texture + taste + freshness || "口味和质地没有明显的失衡。";
 }
 
@@ -219,8 +246,10 @@ export function updateVisit(context, reaction) {
   satisfaction = Math.min(12, satisfaction);
   const limit = guest.patience || (guest.id === "yano" ? 4 : guest.id === "jack" ||
     (guest.id === "wang" && visit.id !== "first_order") ? 2 : 3);
+  const meal = servedDishes.at(-1)?.meal;
+  const satisfied = meal ? meal.remaining === 0 && satisfaction >= 1 : satisfaction >= 2;
   const departure = tension >= limit ? "unhappy"
-    : servedDishes.length && satisfaction >= 2 && tension === 0 ? "satisfied" : "";
+    : servedDishes.length && satisfied && tension === 0 ? "satisfied" : "";
   return { tension, satisfaction, departure };
 }
 

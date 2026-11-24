@@ -55,7 +55,8 @@
       "age": 24,
       "speechPace": "rapid",
       "requestStyle": "gradual",
-      "background": "独自旅行的摄影爱好者"
+      "background": "独自旅行的摄影爱好者",
+      "reviewHabit": "always"
     },
     {
       "id": "zhou",
@@ -100,7 +101,8 @@
       "age": 28,
       "speechPace": "quiet",
       "requestStyle": "direct",
-      "background": "经常轮夜班的维修工"
+      "background": "经常轮夜班的维修工",
+      "reviewHabit": "never"
     },
     {
       "id": "yano",
@@ -147,7 +149,8 @@
       "age": 32,
       "speechPace": "steady",
       "requestStyle": "delegates",
-      "background": "常替邻里帮忙的社区志愿者"
+      "background": "常替邻里帮忙的社区志愿者",
+      "reviewHabit": "always"
     },
     {
       "id": "jack",
@@ -193,7 +196,8 @@
       "age": 35,
       "speechPace": "quiet",
       "requestStyle": "direct",
-      "background": "对西式料理有固定标准的顾客"
+      "background": "对西式料理有固定标准的顾客",
+      "reviewHabit": "negative"
     },
     {
       "id": "wang",
@@ -251,7 +255,8 @@
       "age": 29,
       "speechPace": "steady",
       "requestStyle": "gradual",
-      "background": "公司刚起步的创业者"
+      "background": "公司刚起步的创业者",
+      "reviewHabit": "always"
     },
     {
       "id": "tang",
@@ -308,7 +313,8 @@
       "age": 25,
       "speechPace": "rapid",
       "requestStyle": "gradual",
-      "background": "在面包房工作的甜点师"
+      "background": "在面包房工作的甜点师",
+      "reviewHabit": "always"
     },
     {
       "id": "lu",
@@ -353,7 +359,8 @@
       "age": 41,
       "speechPace": "quiet",
       "requestStyle": "direct",
-      "background": "城市公交司机"
+      "background": "城市公交司机",
+      "reviewHabit": "never"
     },
     {
       "id": "he",
@@ -398,7 +405,8 @@
       "age": 27,
       "speechPace": "quiet",
       "requestStyle": "reserved",
-      "background": "在温室照管植物的园艺师"
+      "background": "在温室照管植物的园艺师",
+      "reviewHabit": "positive"
     },
     {
       "id": "shen",
@@ -443,7 +451,8 @@
       "age": 28,
       "speechPace": "steady",
       "requestStyle": "direct",
-      "background": "负责现场音响的技术员"
+      "background": "负责现场音响的技术员",
+      "reviewHabit": "extremes"
     },
     {
       "id": "song",
@@ -500,7 +509,8 @@
       "age": 58,
       "speechPace": "rapid",
       "requestStyle": "gradual",
-      "background": "退休教师，常和老学生联系"
+      "background": "退休教师，常和老学生联系",
+      "reviewHabit": "positive"
     },
     {
       "id": "lian",
@@ -554,7 +564,8 @@
       "age": 33,
       "speechPace": "steady",
       "requestStyle": "gradual",
-      "background": "给纪录片剪辑的后期"
+      "background": "给纪录片剪辑的后期",
+      "reviewHabit": "always"
     },
     {
       "id": "gu",
@@ -611,7 +622,8 @@
       "age": 26,
       "speechPace": "rapid",
       "requestStyle": "gradual",
-      "background": "记录天气现象的观测爱好者"
+      "background": "记录天气现象的观测爱好者",
+      "reviewHabit": "extremes"
     },
     {
       "id": "qiu",
@@ -656,7 +668,8 @@
       "age": 39,
       "speechPace": "quiet",
       "requestStyle": "reserved",
-      "background": "经营二手书铺"
+      "background": "经营二手书铺",
+      "reviewHabit": "never"
     },
     {
       "id": "du",
@@ -701,7 +714,8 @@
       "age": 31,
       "speechPace": "steady",
       "requestStyle": "direct",
-      "background": "在不同街区跑采访的记者"
+      "background": "在不同街区跑采访的记者",
+      "reviewHabit": "negative"
     },
     {
       "id": "yan",
@@ -758,7 +772,8 @@
       "age": 36,
       "speechPace": "rapid",
       "requestStyle": "gradual",
-      "background": "负责社区合唱团的指挥"
+      "background": "负责社区合唱团的指挥",
+      "reviewHabit": "always"
     },
     {
       "id": "xu",
@@ -803,7 +818,8 @@
       "age": 44,
       "speechPace": "quiet",
       "requestStyle": "direct",
-      "background": "修家具的木工师傅"
+      "background": "修家具的木工师傅",
+      "reviewHabit": "negative"
     },
     {
       "id": "fei",
@@ -848,7 +864,8 @@
       "age": 34,
       "speechPace": "quiet",
       "requestStyle": "reserved",
-      "background": "经常换班的康复科工作人员"
+      "background": "经常换班的康复科工作人员",
+      "reviewHabit": "positive"
     },
     {
       "id": "mo",
@@ -905,7 +922,8 @@
       "age": 24,
       "speechPace": "rapid",
       "requestStyle": "gradual",
-      "background": "给桌游做试玩的设计者"
+      "background": "给桌游做试玩的设计者",
+      "reviewHabit": "extremes"
     },
     {
       "id": "nie",
@@ -959,7 +977,8 @@
       "age": 29,
       "speechPace": "steady",
       "requestStyle": "gradual",
-      "background": "插画师"
+      "background": "插画师",
+      "reviewHabit": "always"
     },
     {
       "id": "peng",
@@ -1004,7 +1023,8 @@
       "age": 37,
       "speechPace": "steady",
       "requestStyle": "direct",
-      "background": "带跑团练习的教练"
+      "background": "带跑团练习的教练",
+      "reviewHabit": "always"
     },
     {
       "id": "jia",
@@ -1061,7 +1081,8 @@
       "age": 45,
       "speechPace": "rapid",
       "requestStyle": "gradual",
-      "background": "在市场卖菜的摊主"
+      "background": "在市场卖菜的摊主",
+      "reviewHabit": "always"
     },
     {
       "id": "ba",
@@ -1106,7 +1127,8 @@
       "age": 27,
       "speechPace": "steady",
       "requestStyle": "reserved",
-      "background": "在小场地表演近景魔术"
+      "background": "在小场地表演近景魔术",
+      "reviewHabit": "always"
     },
     {
       "id": "linq",
@@ -1163,7 +1185,8 @@
       "age": 31,
       "speechPace": "rapid",
       "requestStyle": "gradual",
-      "background": "写城市小店故事的撰稿人"
+      "background": "写城市小店故事的撰稿人",
+      "reviewHabit": "always"
     },
     {
       "id": "xi",
@@ -1208,7 +1231,8 @@
       "age": 34,
       "speechPace": "quiet",
       "requestStyle": "reserved",
-      "background": "经营陶作工坊"
+      "background": "经营陶作工坊",
+      "reviewHabit": "always"
     },
     {
       "id": "wen",
@@ -1253,7 +1277,8 @@
       "age": 47,
       "speechPace": "steady",
       "requestStyle": "reserved",
-      "background": "主持过晚间广播节目"
+      "background": "主持过晚间广播节目",
+      "reviewHabit": "always"
     },
     {
       "id": "ningan",
@@ -1302,7 +1327,8 @@
           "craving": "",
           "foodHint": "番茄热汤"
         }
-      ]
+      ],
+      "reviewHabit": "always"
     },
     {
       "id": "tongyue",
@@ -1363,7 +1389,8 @@
             "加一点醋香，想吃完再慢慢翻。"
           ]
         }
-      ]
+      ],
+      "reviewHabit": "always"
     },
     {
       "id": "liuxi",
@@ -1412,7 +1439,8 @@
           "craving": "",
           "foodHint": "清蒸三文鱼"
         }
-      ]
+      ],
+      "reviewHabit": "always"
     },
     {
       "id": "kangshi",
@@ -1461,7 +1489,8 @@
           "craving": "",
           "foodHint": "少胡椒牛肉"
         }
-      ]
+      ],
+      "reviewHabit": "always"
     },
     {
       "id": "zhongqing",
@@ -1522,7 +1551,8 @@
             "再配小份鸡腿，做软一点。"
           ]
         }
-      ]
+      ],
+      "reviewHabit": "always"
     },
     {
       "id": "songyun",
@@ -1571,7 +1601,8 @@
           "craving": "",
           "foodHint": "软土豆"
         }
-      ]
+      ],
+      "reviewHabit": "positive"
     },
     {
       "id": "maoqi",
@@ -1632,7 +1663,8 @@
             "蒜香可以多点，但我真的得快些。"
           ]
         }
-      ]
+      ],
+      "reviewHabit": "extremes"
     },
     {
       "id": "jingshu",
@@ -1681,7 +1713,8 @@
           "craving": "",
           "foodHint": "温热的鸡腿汤面"
         }
-      ]
+      ],
+      "reviewHabit": "never"
     },
     {
       "id": "ximing",
@@ -1730,7 +1763,8 @@
           "craving": "",
           "foodHint": "快煎三文鱼"
         }
-      ]
+      ],
+      "reviewHabit": "always"
     },
     {
       "id": "weilan",
@@ -1789,7 +1823,8 @@
             "想吃分量实在的，土豆配饭就挺好。"
           ]
         }
-      ]
+      ],
+      "reviewHabit": "extremes"
     },
     {
       "id": "chengdu",
@@ -1838,7 +1873,8 @@
           "craving": "",
           "foodHint": "软米饭"
         }
-      ]
+      ],
+      "reviewHabit": "always"
     },
     {
       "id": "hesheng",
@@ -1887,7 +1923,8 @@
           "craving": "",
           "foodHint": "煎嫩猪肉"
         }
-      ]
+      ],
+      "reviewHabit": "always"
     },
     {
       "id": "liangmi",
@@ -1948,7 +1985,8 @@
             "土豆加点黑胡椒，大概就刚好。"
           ]
         }
-      ]
+      ],
+      "reviewHabit": "always"
     },
     {
       "id": "qiaoyu",
@@ -1997,7 +2035,8 @@
           "craving": "",
           "foodHint": "牛肉米饭"
         }
-      ]
+      ],
+      "reviewHabit": "negative"
     },
     {
       "id": "yingshi",
@@ -2046,7 +2085,8 @@
           "craving": "",
           "foodHint": "简单热汤"
         }
-      ]
+      ],
+      "reviewHabit": "always"
     },
     {
       "id": "sunbei",
@@ -2095,7 +2135,8 @@
           "craving": "",
           "foodHint": "清蒸小份虾"
         }
-      ]
+      ],
+      "reviewHabit": "always"
     },
     {
       "id": "yuqing",
@@ -2156,7 +2197,8 @@
             "味道清爽一些就好，我得快点走。"
           ]
         }
-      ]
+      ],
+      "reviewHabit": "always"
     },
     {
       "id": "qingyuan",
@@ -2205,7 +2247,8 @@
           "craving": "",
           "foodHint": "胡椒炖猪肉"
         }
-      ]
+      ],
+      "reviewHabit": "always"
     },
     {
       "id": "luowei",
@@ -2254,7 +2297,8 @@
           "craving": "",
           "foodHint": "少酸番茄炖土豆"
         }
-      ]
+      ],
+      "reviewHabit": "always"
     },
     {
       "id": "youdao",
@@ -2315,7 +2359,8 @@
             "胡椒可以出来一点，我想尝清楚。"
           ]
         }
-      ]
+      ],
+      "reviewHabit": "always"
     },
     {
       "id": "haixin",
@@ -2364,7 +2409,8 @@
           "craving": "",
           "foodHint": "快捷热面"
         }
-      ]
+      ],
+      "reviewHabit": "positive"
     },
     {
       "id": "junxiao",
@@ -2413,7 +2459,8 @@
           "craving": "",
           "foodHint": "三文鱼配米饭"
         }
-      ]
+      ],
+      "reviewHabit": "never"
     },
     {
       "id": "yuwen",
@@ -2471,7 +2518,8 @@
             "有猪肉就煎一小份，盐轻些。"
           ]
         }
-      ]
+      ],
+      "reviewHabit": "always"
     },
     {
       "id": "hexing",
@@ -2520,7 +2568,8 @@
           "craving": "",
           "foodHint": "炖猪肉"
         }
-      ]
+      ],
+      "reviewHabit": "negative"
     },
     {
       "id": "shiyu",
@@ -2581,7 +2630,8 @@
             "番茄和米饭就好。"
           ]
         }
-      ]
+      ],
+      "reviewHabit": "always"
     }
   ],
   "ingredients": [
