@@ -1,5 +1,7 @@
+import { createHash } from "node:crypto";
 import { createServer } from "node:http";
-import { openInvites } from "./invites.mjs";
+import { isIP } from "node:net";
+import { openQuotaStore } from "./quota.mjs";
 
 const port = setting("CANTEEN_DIALOGUE_GATEWAY_PORT", 18767, 65535);
 const localPort = setting("CANTEEN_DIALOGUE_UPSTREAM_PORT", 18765, 65535);
@@ -9,7 +11,8 @@ const limits = {
   daily: setting("CANTEEN_DIALOGUE_PER_DAY", 180),
   global: setting("CANTEEN_DIALOGUE_GLOBAL_PER_DAY", 800),
 };
-const store = openInvites();
+const trustProxy = process.env.CANTEEN_DIALOGUE_TRUST_PROXY === "1";
+const store = openQuotaStore();
 const active = new Map();
 let running = 0;
 
@@ -18,6 +21,16 @@ function setting(name, initial, maximum = 1000000) {
   const value = Number(process.env[name]);
   if (!Number.isSafeInteger(value) || value < 1 || value > maximum) throw new Error("Invalid setting: " + name);
   return value;
+}
+
+function sourceId(req) {
+  const peer = req.socket.remoteAddress;
+  const realIp = req.headers["x-real-ip"];
+  // A trusted local HTTPS proxy must replace this header with the actual peer address.
+  const fromProxy = trustProxy && peer === "127.0.0.1" && typeof realIp === "string" && isIP(realIp);
+  const address = (fromProxy ? realIp : peer).replace(/^::ffff:(?=\d)/i, "");
+  const canonical = isIP(address) === 6 ? new URL("http://[" + address.split("%")[0] + "]").hostname : address;
+  return "direct:" + createHash("sha256").update(canonical).digest("hex");
 }
 
 function send(res, status, payload) {
@@ -44,19 +57,17 @@ const server = createServer({ requestTimeout: 15000, headersTimeout: 10000 }, as
   let locked = false;
   try {
     if (req.method === "GET" && req.url === "/api/v1/dialogue/health")
-      return send(res, 200, { status: "ok" });
+      return send(res, 200, { status: "ok", access: "direct" });
     if (req.method !== "POST" || req.url !== "/api/v1/dialogue")
       return send(res, 404, { error: "not_found" });
 
-    const invite = /^Bearer ([a-f0-9]{64})$/.exec(req.headers.authorization || "")?.[1];
-    id = invite && store.identify(invite);
-    if (!id) return send(res, 401, { error: "invalid_invite" });
     if (!/^application\/json(?:;|$)/i.test(req.headers["content-type"] || ""))
       return send(res, 415, { error: "invalid_request" });
+    id = sourceId(req);
     if (running >= maxActive || (active.get(id) || 0) >= 2)
       return send(res, 429, { error: "busy" });
 
-    // Restrict authenticated connections before reading their bodies.
+    // Limit concurrent connections before reading their bodies.
     locked = true;
     running++;
     active.set(id, (active.get(id) || 0) + 1);
@@ -70,7 +81,7 @@ const server = createServer({ requestTimeout: 15000, headersTimeout: 10000 }, as
       return send(res, 400, { error: "invalid_request" });
 
     const limit = store.reserve(id, Date.now(), limits);
-    if (limit) return send(res, limit === "invalid_invite" ? 401 : 429, { error: limit });
+    if (limit) return send(res, 429, { error: limit });
 
     const disconnected = new AbortController();
     res.on("close", () => { if (!res.writableEnded) disconnected.abort(); });
