@@ -625,7 +625,7 @@ const server = createServer(async (req, res) => {
     return;
   }
   if (req.method === "GET" && req.url === "/health") {
-    send(res, 200, { mode: mock ? "mock" : "deepseek", protocol });
+    send(res, 200, { mode: mock ? "mock" : "deepseek", protocol, guests: demo.guests.length });
     return;
   }
   if (req.method !== "POST" || req.url !== "/reply") {
@@ -637,10 +637,19 @@ const server = createServer(async (req, res) => {
     return;
   }
 
+  let payload;
   let context;
-  try { context = getContext(await readPayload(req)); }
-  catch { context = null; }
-  if (!context) { send(res, 400, { error: "invalid_request" }); return; }
+  try {
+    payload = await readPayload(req);
+    context = getContext(payload);
+  } catch { context = null; }
+  if (!context) {
+    const unknownVisit = [9, 10, protocol].includes(payload?.protocol) &&
+      typeof payload.guestId === "string" && typeof payload.visitId === "string" &&
+      !demo.guests.some(guest => guest.id === payload.guestId && guest.visits.some(visit => visit.id === payload.visitId));
+    send(res, unknownVisit ? 409 : 400, { error: unknownVisit ? "roster_mismatch" : "invalid_request" });
+    return;
+  }
   if (activeRequests >= maxActive) { send(res, 429, { error: "busy" }); return; }
 
   activeRequests++;
@@ -686,4 +695,5 @@ server.on("error", (error) => {
   process.exitCode = 1;
 });
 server.listen(port, "127.0.0.1", () =>
-  console.log((mock ? "Offline demo" : "DeepSeek " + model) + " ready at 127.0.0.1:" + port));
+  console.log((mock ? "Offline demo" : "DeepSeek " + model) + " ready at 127.0.0.1:" + port +
+    " (" + demo.guests.length + " guests)"));
