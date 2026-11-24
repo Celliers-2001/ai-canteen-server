@@ -2756,15 +2756,6 @@
       "seasoning": true
     },
     {
-      "id": "water",
-      "name": "水",
-      "cost": 1,
-      "shelfDays": 8,
-      "category": "seasoning",
-      "seasoning": false,
-      "liquid": true
-    },
-    {
       "id": "sushi_rice",
       "name": "寿司米",
       "cost": 6,
@@ -2840,6 +2831,86 @@
       "cost": 4,
       "shelfDays": 8,
       "category": "produce",
+      "seasoning": false
+    },
+    {
+      "id": "cucumber",
+      "name": "黄瓜",
+      "cost": 4,
+      "shelfDays": 4,
+      "category": "produce",
+      "seasoning": false
+    },
+    {
+      "id": "radish",
+      "name": "萝卜",
+      "cost": 4,
+      "shelfDays": 6,
+      "category": "produce",
+      "seasoning": false
+    },
+    {
+      "id": "lettuce",
+      "name": "生菜",
+      "cost": 3,
+      "shelfDays": 3,
+      "category": "produce",
+      "seasoning": false
+    },
+    {
+      "id": "bamboo_shoot",
+      "name": "笋",
+      "cost": 6,
+      "shelfDays": 4,
+      "category": "produce",
+      "seasoning": false
+    },
+    {
+      "id": "bitter_melon",
+      "name": "苦瓜",
+      "cost": 4,
+      "shelfDays": 4,
+      "category": "produce",
+      "seasoning": false
+    },
+    {
+      "id": "glass_noodles",
+      "name": "粉丝",
+      "cost": 5,
+      "shelfDays": 8,
+      "category": "produce",
+      "seasoning": false
+    },
+    {
+      "id": "softshell_turtle",
+      "name": "甲鱼",
+      "cost": 38,
+      "shelfDays": 4,
+      "category": "meat",
+      "seasoning": false
+    },
+    {
+      "id": "wagyu",
+      "name": "和牛",
+      "cost": 65,
+      "shelfDays": 4,
+      "category": "meat",
+      "seasoning": false
+    },
+    {
+      "id": "caviar",
+      "name": "鱼子酱",
+      "cost": 85,
+      "shelfDays": 3,
+      "category": "meat",
+      "seasoning": false
+    },
+    {
+      "id": "foie_gras",
+      "name": "鹅肝",
+      "cost": 55,
+      "shelfDays": 3,
+      "category": "meat",
       "seasoning": false
     }
   ],

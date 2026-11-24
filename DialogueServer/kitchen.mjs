@@ -1,3 +1,5 @@
+const legacyWater = { id: "water", name: "水", seasoning: false, liquid: true };
+
 export function readRecipe(demo, payload) {
   const method = demo.methods.find((item) => item.id === payload?.method);
   if (!method || !Array.isArray(payload.items) || payload.items.length > demo.ingredients.length) return null;
@@ -6,7 +8,7 @@ export function readRecipe(demo, payload) {
   const items = [];
   const used = new Set();
   for (const entry of payload.items) {
-    const food = demo.ingredients.find((item) => item.id === entry?.id);
+    const food = demo.ingredients.find((item) => item.id === entry?.id) || (entry?.id === "water" ? legacyWater : null);
     if (!food || used.has(food.id) || !Number.isSafeInteger(entry.amount) || entry.amount < 0 ||
         (food.seasoning ? entry.amount > 100 : entry.amount > 1_000_000)) return null;
     const staleAmount = entry.staleAmount ?? 0;
@@ -68,7 +70,7 @@ export function describeRecipe(recipe) {
 
 function seconds(ms) { return (ms / 1000).toFixed(2); }
 
-const proteins = new Set(["chicken", "beef", "duck", "pork", "shrimp", "crucian_carp"]);
+const proteins = new Set(["chicken", "beef", "duck", "pork", "shrimp", "crucian_carp", "softshell_turtle", "wagyu", "foie_gras"]);
 const dryMethods = new Set(["fry", "stirfry", "roast", "deep_fry"]);
 const wetMethods = new Set(["boil", "stew", "steam"]);
 const soupMethods = new Set(["boil", "stew"]);
@@ -99,7 +101,7 @@ function timelineTraits(recipe) {
     fromStock: soup("stock"),
     chickenNoodles: soup("chicken") && soup("noodles"),
     coldSalmon: added("salmon").some(step => heated(step.atMs) === 0),
-    westernBeef: added("beef").some(step => timeAfter(step.atMs, method => ["fry", "roast"].includes(method.id)) >= 1500),
+    westernBeef: added("beef").concat(added("wagyu")).some(step => timeAfter(step.atMs, method => ["fry", "roast"].includes(method.id)) >= 1500),
     westernNoodles: added("noodles").some(step =>
       timeAfter(step.atMs, method => ["boil", "stirfry"].includes(method.id)) >= 1500),
     freshHerbs: added("cilantro").concat(added("scallion")).some(step => heated(step.atMs) < 2500),
@@ -119,7 +121,7 @@ export function foodTraits(recipe) {
   const deepFrying = timeline?.deepFrying ?? (recipe.method.id === "deep_fry");
   const overcooked = timeline?.overcooked ?? (recipe.intensity >= 90 && dryMethods.has(recipe.method.id));
   const salty = amount("salt") >= 90 || (amount("soy") >= 90 && amount("salt") >= 75);
-  const ruined = noHeat || undercooked || salty || heavy >= 3 || (overcooked && (deepFrying || !has("water")));
+  const ruined = noHeat || undercooked || salty || heavy >= 3 || (overcooked && (deepFrying || !(has("water") || has("stock"))));
   const food = recipe.items.filter(item => !item.seasoning);
   const staleServings = food.reduce((total, item) => total + (item.staleAmount || 0), 0);
   const staleShare = staleServings / Math.max(1, food.reduce((total, item) => total + item.amount, 0));

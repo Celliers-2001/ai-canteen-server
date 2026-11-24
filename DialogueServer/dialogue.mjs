@@ -132,7 +132,9 @@ function getContext(payload) {
   const ownerSpoke = typeof payload.ownerSpoke === "boolean" ? payload.ownerSpoke :
     history.some(line => line.role === "user" && !line.content.startsWith("【上菜】"));
   return { guest, visit, history, servedDishes, servedDish, previousGreeting, event: payload.event,
-    protocol: payload.protocol, ownerSpoke, tension: payload.tension, satisfaction: payload.satisfaction, reason, recipe, profile, memories };
+    protocol: payload.protocol, ownerSpoke, tension: payload.tension, satisfaction: payload.satisfaction, reason, recipe, profile, memories,
+    priceTone: payload.event === "review" && typeof payload.priceTone === "string" && Object.hasOwn(priceReviewNotes, payload.priceTone)
+      ? payload.priceTone : "" };
 }
 
 function askedForFavorite(context) {
@@ -335,6 +337,27 @@ function offlineReview(context) {
   return { ratings, evaluation: (intro + meal + portion + serviceNote + finish).slice(0, 180) };
 }
 
+const priceReviewNotes = {
+  free: "这顿实际免单。按你的性格说一句对免费或老板好意的感受。",
+  bargain: "店主收费比你预期低。按你的语气写是否划算、值不值得再来。",
+  fair: "收费和你预期相符。可简单提到价格合理。",
+  expensive: "你付了款，但觉得收费比这顿吃得值的价钱高。说清价格影响了整体感受。",
+  refused: "店主报的价远超你的预期，你实际拒绝付账。可以直说这次的账单体验。",
+  rejected_food: "你因为菜品很糟而没有付款。不要写成老板主动免单，也不要说是嫌贵。"
+};
+
+function offlinePriceComment(context) {
+  const brief = context.guest.speechPace === "quiet";
+  switch (context.priceTone) {
+    case "free": return brief ? "老板免单了。" : "老板最后说不用付，走的时候还挺意外的。";
+    case "bargain": return brief ? "价格挺实在。" : "结账比我想的便宜，这个价算值。";
+    case "expensive": return brief ? "收费偏贵。" : "最后付了钱，但这次的分量和味道没好到值这个价。";
+    case "refused": return brief ? "要价太高，没付。" : "最后的要价高出我的预期太多，我没付账。";
+    case "rejected_food": return "菜实在吃不下，这顿没有付款。";
+    default: return "";
+  }
+}
+
 function offlineReply(context) {
   const { guest, visit, history, servedDish, event } = context;
   if (event === "cook") return mockCook(context.recipe);
@@ -350,7 +373,8 @@ function offlineReply(context) {
   }
   if (event === "review") {
     const result = offlineReview(context);
-    return { ...result, memoryNote: result.evaluation.slice(0, 120) };
+    const evaluation = result.evaluation + offlinePriceComment(context);
+    return { ...result, evaluation, memoryNote: result.evaluation.slice(0, 120) };
   }
 
   const reaction = mockReaction(context);
@@ -463,6 +487,8 @@ function makeReviewPrompt(context) {
       "至少有一道分量超过你需要，别说自己吃完了整盘。可以提实际剩下食物或份量不适合一个人。" : "",
     context.servedDishes.some(severeOverserving) ? "实际剩下的很多。这会影响整体体验，总分最多 3.5 分，服务分独立。" : "",
     "写给其他可能来吃的顾客，像真人发在点评区。按角色口吻，可很短，也可分两三句。高分可以说「推荐！」「下次还会点」，低分可以说「这道避雷」或给具体提醒，中间分数就事论事。用一句可验证的理由支撑判断，别复制宣传话，不强求固定开头。不要编造朋友、价格、排队时间、店内设施或没发生的服务。",
+    context.priceTone ? ("本次真实结账：" + priceReviewNotes[context.priceTone] +
+      "把价格感受自然融入评语，不编实际金额。三个分数按菜品和交流给基础分，游戏会单独计算价格对总分的影响。") : "",
     context.ownerSpoke ? "" : "店主全程没有说话，服务分最高 2.5 分。",
     "服务分只评店主实际的态度和交流。礼貌、有回应、主动关心或解释清楚时给 4.5–5 分。敷衍或冒犯才降服务分，菜不好吃、没上菜、客人本身心情差都不能拉低良好服务的评分。菜品独立给分。评语具体说这次的菜品和交流，最后独立给总分。",
     context.reason === "unhappy" ? "你对这次体验不满。可能是等餐太久、对话不舒服或出品太差，结合实际记录说出离开的原因；矢野可以比当面更尖锐。" : "",
@@ -708,7 +734,11 @@ const server = createServer(async (req, res) => {
     const unknownVisit = [9, 10, protocol].includes(payload?.protocol) &&
       typeof payload.guestId === "string" && typeof payload.visitId === "string" &&
       !demo.guests.some(guest => guest.id === payload.guestId && guest.visits.some(visit => visit.id === payload.visitId));
-    send(res, unknownVisit ? 409 : 400, { error: unknownVisit ? "roster_mismatch" : "invalid_request" });
+    const recipes = [payload?.recipe, ...(Array.isArray(payload?.servedDishes) ? payload.servedDishes.slice(0, 24).map(dish => dish?.recipe) : [])];
+    const unknownFood = recipes.some(recipe => Array.isArray(recipe?.items) && recipe.items.some(item =>
+      typeof item?.id === "string" && item.id !== "water" && !demo.ingredients.some(food => food.id === item.id)));
+    send(res, unknownVisit || unknownFood ? 409 : 400,
+      { error: unknownVisit ? "roster_mismatch" : unknownFood ? "catalog_mismatch" : "invalid_request" });
     return;
   }
   if (activeRequests >= maxActive) { send(res, 429, { error: "busy" }); return; }
@@ -748,7 +778,8 @@ const server = createServer(async (req, res) => {
         reply.ratings.food = 0;
       }
     }
-    send(res, 200, { ...reply, protocol: context.protocol, mode: mock ? "mock" : (reply.mode || "deepseek") });
+    send(res, 200, { ...reply, priceAware: Boolean(context.priceTone), protocol: context.protocol,
+      mode: mock ? "mock" : (reply.mode || "deepseek") });
   } catch (error) {
     if (disconnected.signal.aborted) return;
     const code = timeout.aborted ? "timeout" :
