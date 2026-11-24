@@ -213,7 +213,8 @@ function offlineReview(context) {
   const { guest, servedDishes, reason } = context;
   const service = serviceEvidence(context);
   const awful = servedDishes.find((dish) => foodTraits(dish.recipe).ruined);
-  const weakFood = !!awful || hasDislikedNoodles(context);
+  const stale = servedDishes.find(dish => foodTraits(dish.recipe).staleTaste);
+  const weakFood = !!awful || !!stale || hasDislikedNoodles(context);
   const ratings = {
     overall: reason === "unhappy" ? 2 : weakFood ? 3 : reason === "satisfied" ? 9 : servedDishes.length ? 7 : 5,
     food: servedDishes.length ? (weakFood ? 2 : reason === "satisfied" ? 10 : 8) : 0,
@@ -224,6 +225,7 @@ function offlineReview(context) {
     service.count ? "和店主聊了几句。" : "和店主没怎么聊天。";
   const meal = !servedDishes.length ? "这次没有吃到菜。"
     : awful ? "这份" + mainIngredients(awful) + "实在难以下咽。"
+    : stale ? "这份" + mainIngredients(stale) + "吃着有明显的陈味。"
     : hasDislikedNoodles(context) ? "鸡汤面完全不合口味。"
     : "这次尝了" + servedDishes.slice(-3).map(mainIngredients).join("，还尝了") + "。";
   const finish = reason === "satisfied" ? "吃得很满足。"
@@ -252,6 +254,7 @@ function offlineReply(context) {
   if (event === "served") {
     const reply = reaction === "awful"
       ? (guest.id === "yano" ? "辛苦您了。我这份先放一放吧。" : "这一口我吃不下去。")
+      : foodTraits(servedDish.recipe).staleTaste ? "吃起来有点陈，后味不太舒服。"
       : reaction === "dislike" ? "这个口味不太适合我。"
       : "我尝了一口，挺合口味。";
     return { reply, reaction };
@@ -302,7 +305,7 @@ function makePrompt(context) {
     "你是《AI餐厅》里吧台正对面的客人，玩家是店主。只说自己的第一人称台词，不接管店家、不要描述舞台动作或当面宣读评语。你在店里不会告诉店主自己的姓名。被问起时自然回避。无固定菜单，称呼料理时用食材或做法。可以说想吃什么，但不能把提议当成已经上桌。",
     ...characterNotes(context),
     "剧情参考，客人对交流的不适程度：" + context.tension + "，已获得的用餐满足度：" + context.satisfaction + "。不读出这些数字。",
-    "实际尝到的成品：" + servedSummary(context) + "。只从味道、口感和你自己的口味偏好作出反应。你看不见料理台，不知道下料顺序、时间、火候数值或用量，别表现得亲眼见过做法。",
+    "实际尝到的成品：" + servedSummary(context) + "。只从味道、口感和个人口味作出反应。你看不见料理台，不知道下料顺序、用量或食材存放状况。能尝到陈味时只说味道；没有陈味时别猜食材是否新鲜。",
     event === "arrival" ?
       "心情沿用今天的固定心情。再围绕处境参考写一个具体细节和今天的口味倾向，开场的句式和内容要区别于上次。根据新处境分别判断饥饿程度和是否赶时间。饥饿只能写「不饿」「一般」或「很饿」。只有处境明确表明长时间没进食、明显体力消耗后没吃东西，或已经明显饿得难受，才写「很饿」。普通饭点、嘴馋、疲惫、烦躁或赶时间，都不足以判断为很饿。时间只能写「有空」或「赶时间」，只有确有近期事务才写赶时间。开场贴合新处境，可以自然提往事。按纯文本六行输出：心情：…\n处境：…\n口味：…\n饥饿：…\n时间：…\n开场：…" : "",
     event === "chat" && !context.servedDishes.length ?
@@ -319,6 +322,7 @@ function makeCookPrompt(recipe) {
     "描述虚构游戏《AI餐厅》中刚完成的料理。只写看得见、闻得到或尝得出的成品状态，不起菜名。按配方写，不添加没用的食材，也不要写操作教程。火候或味道失误时如实写出。",
     "配方和操作过程：" + describeRecipe(recipe) + "。重点考虑食材在每个步骤里实际待了多久、先后加入与换做法怎样改变成品。描述中不要透露操作时间、顺序、用量或具体步骤。",
     "游戏里的出品判断：" + recipeFacts(recipe),
+    "陈味由出品判断提供。如果结果没有提到陈味，不要自行推测食材不新鲜或存放过，也不要说味道在掩盖什么。",
     "只输出一行纯文本，以「描述：」开头，接 20 到 60 字的口味、质地和成品状态。"
   ].join("\n");
 }
@@ -327,7 +331,7 @@ function makeReviewPrompt(context) {
   return [
     "你扮演刚离开《AI餐厅》的客人。以第一人称评这次体验。称呼料理时用实际食材或做法。",
     ...characterNotes(context),
-    "实际尝到的成品：" + servedSummary(context) + "。从可尝到的味道和口感以及是否合个人口味评价，不推断具体做法。没上菜时说明未用餐，不要凭空评价味道。",
+    "实际尝到的成品：" + servedSummary(context) + "。按吃到的味道、口感和喜好评价，不推断具体做法或存放状况。只有吃到陈味才能评价陈味。没上菜时说明未用餐。",
     context.ownerSpoke ? "" : "店主全程没有说话，服务分最高 2.5 分。",
     "服务分只评店主实际的态度和交流。礼貌、有回应、主动关心或解释清楚时给 4.5–5 分。敷衍或冒犯才降服务分，菜不好吃、没上菜、客人本身心情差都不能拉低良好服务的评分。菜品独立给分。评语具体说这次的菜品和交流，最后独立给总分。",
     context.reason === "unhappy" ? "你对这次体验不满。可能是等餐太久、对话不舒服或出品太差，结合实际记录说出离开的原因；矢野可以比当面更尖锐。" : "",

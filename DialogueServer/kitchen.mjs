@@ -9,9 +9,12 @@ export function readRecipe(demo, payload) {
     const food = demo.ingredients.find((item) => item.id === entry?.id);
     if (!food || used.has(food.id) || !Number.isSafeInteger(entry.amount) || entry.amount < 0 ||
         (food.seasoning ? entry.amount > 100 : entry.amount > 1_000_000)) return null;
+    const staleAmount = entry.staleAmount ?? 0;
+    if (!Number.isSafeInteger(staleAmount) || staleAmount < 0 ||
+        staleAmount > entry.amount || (food.seasoning && staleAmount !== 0)) return null;
     used.add(food.id);
     if (entry.amount > 0)
-      items.push({ id: food.id, name: food.name, seasoning: food.seasoning, liquid: food.liquid, amount: entry.amount });
+      items.push({ id: food.id, name: food.name, seasoning: food.seasoning, liquid: food.liquid, amount: entry.amount, staleAmount });
   }
   if (!items.some((item) => !item.seasoning && !item.liquid)) return null;
 
@@ -117,8 +120,15 @@ export function foodTraits(recipe) {
   const overcooked = timeline?.overcooked ?? (recipe.intensity >= 90 && dryMethods.has(recipe.method.id));
   const salty = amount("salt") >= 90 || (amount("soy") >= 90 && amount("salt") >= 75);
   const ruined = noHeat || undercooked || salty || heavy >= 3 || (overcooked && (deepFrying || !has("water")));
+  const food = recipe.items.filter(item => !item.seasoning);
+  const staleServings = food.reduce((total, item) => total + (item.staleAmount || 0), 0);
+  const staleShare = staleServings / Math.max(1, food.reduce((total, item) => total + item.amount, 0));
+  const strongFlavor = amount("chili") * .9 + amount("black_pepper") * .9 + amount("garlic") * .7 +
+    amount("vinegar") * .45 + amount("soy") * .35 + amount("rosemary") * .35 +
+    amount("cilantro") * .3 + amount("sugar") * .28;
+  const staleTaste = staleShare > 0 && strongFlavor < 45 + staleShare * 28;
   return {
-    ruined, salty, noHeat, raw: undercooked, overcooked,
+    ruined, salty, noHeat, raw: undercooked, overcooked, staleTaste,
     spicy: amount("chili") >= 50,
     sweet: amount("sugar") >= 75,
     peppered: amount("black_pepper") >= 35,
@@ -162,7 +172,8 @@ export function recipeFacts(recipe) {
         traits.oilFreeFrying ? "外层没有形成明显的脆壳。" : "",
         traits.greasy ? "油分偏多，入口发腻。" : "",
         traits.fromStock ? "汁水鲜味明显。" : ""].filter(Boolean).join("");
-  return texture + taste || "口味和质地没有明显的失衡。";
+  const freshness = traits.staleTaste ? "后味有明显陈味，鲜香不足。" : "";
+  return texture + taste + freshness || "口味和质地没有明显的失衡。";
 }
 
 export function mockCook(recipe) {
@@ -174,6 +185,8 @@ export function foodEnjoyment(context, recipe, reaction) {
   const traits = foodTraits(recipe);
   const { guest } = context;
   if (traits.ruined || (guest.id === "jack" && traits.chickenNoodles)) return 0;
+  if (traits.staleTaste)
+    return reaction === "awful" ? 0 : Math.min(38, { dislike: 23, steady: 38 }[reaction] ?? 38);
   if (reaction) return { awful: 0, dislike: 23, steady: 52, liked: 81, full: 100 }[reaction] ?? 52;
   if (guest.likes && traits[guest.likes]) return 95;
   if (guest.id === "jack") return traits.western ? 83 : 26;
@@ -197,9 +210,9 @@ export function updateVisit(context, reaction) {
     if (traits.ruined) tension += guest.id === "yano" ? 2 : 4;
     else if (guest.id === "jack" && traits.chickenNoodles) tension += 3;
     else if (reaction === "awful") tension += guest.id === "yano" ? 1 : 2;
-    else if (reaction === "dislike") tension += 1;
+    else if (traits.staleTaste || reaction === "dislike") tension += 1;
     else if (reaction === "liked" || reaction === "full") satisfaction += reaction === "full" ? 2 : 1;
-    if (!traits.ruined && traits.sushi && guest.id === "yano") satisfaction = Math.max(satisfaction, 2);
+    if (!traits.ruined && !traits.staleTaste && traits.sushi && guest.id === "yano") satisfaction = Math.max(satisfaction, 2);
   }
 
   tension = Math.min(12, Math.max(0, tension));
@@ -227,7 +240,7 @@ export function mockReaction(context) {
   if (context.event !== "served") return "steady";
   const traits = foodTraits(context.servedDish.recipe);
   if (traits.ruined || (context.guest.id === "jack" && traits.chickenNoodles)) return "awful";
-  if (context.guest.id === "jack" && !traits.western) return "dislike";
+  if (traits.staleTaste || (context.guest.id === "jack" && !traits.western)) return "dislike";
   if (traits.spicy && ["lin", "zhou"].includes(context.guest.id)) return "dislike";
   if (context.guest.likes && traits[context.guest.likes]) return "full";
   return "liked";
