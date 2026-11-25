@@ -11,10 +11,9 @@
    CANTEEN_DIALOGUE_MAX_ACTIVE=8 node DialogueServer/dialogue.mjs
    ```
 
-3. 启动或重启对白网关，默认端口为本机的 18767。数据库应放在持久目录。已有部署可以继续用原来的 `CANTEEN_INVITE_DB`，或用 `CANTEEN_DIALOGUE_USAGE_DB` 指向同一个文件。
+3. 启动或重启对白网关，默认端口为本机的 18767。
 
    ```sh
-   CANTEEN_DIALOGUE_USAGE_DB=/var/lib/ai-canteen/dialogue-usage.sqlite \
    CANTEEN_DIALOGUE_TRUST_PROXY=1 node DialogueServer/gateway.mjs
    ```
 
@@ -28,20 +27,20 @@
    }
    ```
 
-5. 打开公开地址的 `/api/v1/dialogue/health`，确认返回 `{"status":"ok","access":"direct"}`。再从服务器本机访问 `http://127.0.0.1:18765/health`，确认内部对白进程返回模式和协议号。
+5. 打开公开地址的 `/api/v1/dialogue/health`，确认返回 `{"status":"ok","access":"direct","quota":"disabled"}`。再从服务器本机访问 `http://127.0.0.1:18765/health`，确认内部对白进程返回模式和协议号。
 6. 游戏端在 `Assets/Resources/DialogueConfig.json` 中将 `url` 填为该公开 HTTPS 根地址，再重新打包。美众点评的地址单独填在 `Assets/Resources/LeaderboardConfig.json`。用新包新建存档，开张后确认客人开场及主动发送的对白都有回复。
 
 本次新增食材需要同时更新 `Assets/Resources/CanteenDemo.json` 和 `DialogueServer/`。更新仓库后重启内部对白进程，新食材才能用于上菜后的对白和评价。旧版游戏对白仍按原协议访问。
 
-## 接口及使用限额
+## 对白接口
 
 | 请求 | 用途 |
 | --- | --- |
 | `GET /api/v1/dialogue/health` | 检查网关版本及可用性 |
 | `POST /api/v1/dialogue` | 直接请求顾客对白、做菜结果或评价 |
 
-对白入口对可以访问服务器地址的人开放。每个来源地址默认每分钟 16 次、每天 180 次、同时 2 个请求。全服默认每日上限 800 次，同时 8 个请求。每日额度按 UTC 日期重置。网关只将来源地址的哈希用于计数。关闭可信代理设置时，网关使用 TCP 连接地址，经过同一代理的玩家会共享一个限额。
+对白入口按实际请求处理，已取消每分钟、每天和全服的次数额度。网关默认同时处理 8 个请求，每个来源同时处理 2 个。达到同时处理上限时，游戏会显示「服务繁忙」，可稍后重试。部署者可用 `CANTEEN_DIALOGUE_MAX_ACTIVE` 调整全服同时处理数。
 
-使用 `CANTEEN_DIALOGUE_PER_MINUTE`、`CANTEEN_DIALOGUE_PER_DAY`、`CANTEEN_DIALOGUE_GLOBAL_PER_DAY` 和 `CANTEEN_DIALOGUE_MAX_ACTIVE` 调整额度。升级时沿用旧数据库可保留全服当日计数。
+旧部署的额度数据库和原有计数可以留存备查。重启后的网关不再读取或写入这些记录。
 
 本机开发时，`DialogueConfig.json` 的 `url` 留空可使用本机对白服务或离线演示。开发或验收时可用环境变量 `CANTEEN_DIALOGUE_URL` 覆盖配置。

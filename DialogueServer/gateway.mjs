@@ -1,18 +1,11 @@
 import { createHash } from "node:crypto";
 import { createServer } from "node:http";
 import { isIP } from "node:net";
-import { openQuotaStore } from "./quota.mjs";
 
 const port = setting("CANTEEN_DIALOGUE_GATEWAY_PORT", 18767, 65535);
 const localPort = setting("CANTEEN_DIALOGUE_UPSTREAM_PORT", 18765, 65535);
 const maxActive = setting("CANTEEN_DIALOGUE_MAX_ACTIVE", 8, 64);
-const limits = {
-  minute: setting("CANTEEN_DIALOGUE_PER_MINUTE", 16),
-  daily: setting("CANTEEN_DIALOGUE_PER_DAY", 180),
-  global: setting("CANTEEN_DIALOGUE_GLOBAL_PER_DAY", 800),
-};
 const trustProxy = process.env.CANTEEN_DIALOGUE_TRUST_PROXY === "1";
-const store = openQuotaStore();
 const active = new Map();
 let running = 0;
 
@@ -57,7 +50,7 @@ const server = createServer({ requestTimeout: 15000, headersTimeout: 10000 }, as
   let locked = false;
   try {
     if (req.method === "GET" && req.url === "/api/v1/dialogue/health")
-      return send(res, 200, { status: "ok", access: "direct" });
+      return send(res, 200, { status: "ok", access: "direct", quota: "disabled" });
     if (req.method !== "POST" || req.url !== "/api/v1/dialogue")
       return send(res, 404, { error: "not_found" });
 
@@ -79,9 +72,6 @@ const server = createServer({ requestTimeout: 15000, headersTimeout: 10000 }, as
     if (![9, 10, 11].includes(value?.protocol) ||
         !["arrival", "chat", "served", "review", "cook"].includes(value.event))
       return send(res, 400, { error: "invalid_request" });
-
-    const limit = store.reserve(id, Date.now(), limits);
-    if (limit) return send(res, 429, { error: limit });
 
     const disconnected = new AbortController();
     res.on("close", () => { if (!res.writableEnded) disconnected.abort(); });
@@ -116,5 +106,5 @@ const server = createServer({ requestTimeout: 15000, headersTimeout: 10000 }, as
 
 server.listen(port, "127.0.0.1", () => console.log("AI Canteen dialogue gateway on 127.0.0.1:" + port));
 for (const signal of ["SIGINT", "SIGTERM"]) {
-  process.on(signal, () => server.close(() => { store.close(); process.exit(0); }));
+  process.on(signal, () => server.close(() => process.exit(0)));
 }
