@@ -110,7 +110,7 @@ function timelineTraits(recipe) {
   };
 }
 
-export function foodTraits(recipe) {
+export function foodTraits(recipe, storedOvernight = false) {
   const amount = (id) => recipe.items.find((item) => item.id === id)?.amount || 0;
   const has = (...ids) => ids.every((id) => amount(id) > 0);
   const timeline = recipe.steps ? timelineTraits(recipe) : null;
@@ -124,13 +124,13 @@ export function foodTraits(recipe) {
   const ruined = noHeat || undercooked || salty || heavy >= 3 || (overcooked && (deepFrying || !(has("water") || has("stock"))));
   const food = recipe.items.filter(item => !item.seasoning);
   const staleServings = food.reduce((total, item) => total + (item.staleAmount || 0), 0);
-  const staleShare = staleServings / Math.max(1, food.reduce((total, item) => total + item.amount, 0));
+  const staleShare = storedOvernight ? 1 : staleServings / Math.max(1, food.reduce((total, item) => total + item.amount, 0));
   const strongFlavor = amount("chili") * .9 + amount("black_pepper") * .9 + amount("garlic") * .7 +
     amount("vinegar") * .45 + amount("soy") * .35 + amount("rosemary") * .35 +
     amount("cilantro") * .3 + amount("sugar") * .28;
   const staleTaste = staleShare > 0 && strongFlavor < 45 + staleShare * 28;
-  const mainStale = staleTaste ? food.reduce((worst, item) =>
-    (item.staleAmount || 0) > (worst?.staleAmount || 0) ? item : worst, null) : null;
+  const mainStale = staleTaste ? (storedOvernight ? food.find(item => !item.liquid) :
+    food.reduce((worst, item) => (item.staleAmount || 0) > (worst?.staleAmount || 0) ? item : worst, null)) : null;
   return {
     ruined, salty, noHeat, raw: undercooked, overcooked, staleTaste, staleIngredient: mainStale?.id,
     spicy: amount("chili") >= 50,
@@ -158,9 +158,17 @@ export function foodTraits(recipe) {
 export function readDish(demo, payload) {
   const recipe = readRecipe(demo, payload?.recipe);
   if (!recipe || typeof payload.description !== "string" || payload.description.length > 150) return null;
-  if (!payload.offeredPortions) return { description: payload.description, recipe };
-
   const offered = recipe.items.reduce((total, item) => total + (item.seasoning || item.liquid ? 0 : item.amount), 0);
+  if (payload.portionCount != null) {
+    const { portionCount, acceptedUnits, remainingUnits, appetitePortions } = payload;
+    if (![portionCount, acceptedUnits, remainingUnits, appetitePortions].every(Number.isSafeInteger) ||
+        portionCount < 1 || portionCount > 4 || appetitePortions < 3 || appetitePortions > 7 ||
+        acceptedUnits < 0 || remainingUnits < 0 || acceptedUnits > offered * 12 / portionCount ||
+        acceptedUnits + remainingUnits > appetitePortions * 12) return null;
+    return { description: payload.description, recipe, storedOvernight: payload.storedOvernight === true,
+      meal: { offered: offered / portionCount, accepted: acceptedUnits / 12, remaining: remainingUnits / 12 } };
+  }
+  if (!payload.offeredPortions) return { description: payload.description, recipe };
   const accepted = payload.acceptedPortions;
   const remaining = payload.mealRemaining;
   if (offered !== payload.offeredPortions || !Number.isInteger(accepted) || !Number.isInteger(remaining) ||
@@ -195,8 +203,8 @@ export function freshnessImpression(ingredient) {
   }
 }
 
-export function recipeFacts(recipe) {
-  const traits = foodTraits(recipe);
+export function recipeFacts(recipe, storedOvernight = false) {
+  const traits = foodTraits(recipe, storedOvernight);
   const texture = traits.noHeat ? "成品没有热气，食材依然是生的。"
     : traits.raw ? "肉类或水产内部偏生，质地生硬。"
     : traits.overcooked ? "部分食材焦硬发干。"
@@ -215,13 +223,13 @@ export function recipeFacts(recipe) {
   return texture + taste + freshness || "口味和质地没有明显的失衡。";
 }
 
-export function mockCook(recipe) {
+export function mockCook(recipe, storedOvernight = false) {
   const mains = recipe.items.filter(item => !item.seasoning && !item.liquid).map(item => item.name).join("、");
-  return { name: "料理", description: (mains + "的味道仍能辨认。" + recipeFacts(recipe)).slice(0, 150) };
+  return { name: "料理", description: (mains + "的味道仍能辨认。" + recipeFacts(recipe, storedOvernight)).slice(0, 150) };
 }
 
-export function foodEnjoyment(context, recipe, reaction) {
-  const traits = foodTraits(recipe);
+export function foodEnjoyment(context, recipe, reaction, storedOvernight) {
+  const traits = foodTraits(recipe, storedOvernight);
   const { guest } = context;
   if (traits.ruined || (guest.id === "jack" && traits.chickenNoodles)) return 0;
   if (traits.staleTaste)
@@ -245,7 +253,7 @@ export function updateVisit(context, reaction) {
     if (reaction === "full" && servedDishes.length && satisfaction > 0) satisfaction++;
   }
   if (event === "served") {
-    const traits = foodTraits(servedDish.recipe);
+    const traits = foodTraits(servedDish.recipe, servedDish.storedOvernight);
     if (traits.ruined) tension += guest.id === "yano" ? 2 : 4;
     else if (guest.id === "jack" && traits.chickenNoodles) tension += 3;
     else if (reaction === "awful") tension += guest.id === "yano" ? 1 : 2;
@@ -279,7 +287,7 @@ export function mockReaction(context) {
   if (context.event === "chat")
     return serviceTone(context.history.at(-1).content);
   if (context.event !== "served") return "steady";
-  const traits = foodTraits(context.servedDish.recipe);
+  const traits = foodTraits(context.servedDish.recipe, context.servedDish.storedOvernight);
   if (traits.ruined || (context.guest.id === "jack" && traits.chickenNoodles)) return "awful";
   if (traits.staleTaste || (context.guest.id === "jack" && !traits.western)) return "dislike";
   if (traits.spicy && ["lin", "zhou"].includes(context.guest.id)) return "dislike";

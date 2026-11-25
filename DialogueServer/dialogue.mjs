@@ -136,6 +136,8 @@ function getContext(payload) {
   const premiumCraving = premiumChoices.length ? premiumChoices[guest.visits.indexOf(visit) % premiumChoices.length] : "";
   return { guest, visit, history, servedDishes, servedDish, previousGreeting, event: payload.event,
     premiumChoices, premiumCraving,
+    appetitePortions: [3, 4, 5, 6, 7].includes(payload.appetitePortions) ? payload.appetitePortions : 5,
+    storedOvernight: payload.event === "cook" && payload.storedOvernight === true,
     protocol: payload.protocol, ownerSpoke, tension: payload.tension, satisfaction: payload.satisfaction, reason, recipe, profile, memories,
     priceTone: payload.event === "review" && typeof payload.priceTone === "string" && Object.hasOwn(priceReviewNotes, payload.priceTone)
       ? payload.priceTone : "" };
@@ -159,7 +161,7 @@ function tastedDish(dish) {
   const privateStep = /\d+(?:\.\d+)?\s*(?:秒|分钟|%|成火)|(?:先|再|随后|最后|接着).{0,12}(?:加入|下锅|转|撒上|煮|蒸|炸)|(?:烹饪尺度|用量|食材加入)/u;
   const observed = dish.description.split(/(?<=[，。；！？])/u)
     .filter(fragment => !privateStep.test(fragment)).join("").trim();
-  return [observed, recipeFacts(dish.recipe)].filter(Boolean).join(" ");
+  return [dish.storedOvernight ? "" : observed, recipeFacts(dish.recipe, dish.storedOvernight)].filter(Boolean).join(" ");
 }
 
 function servedSummary({ servedDishes }) {
@@ -182,7 +184,7 @@ function severeOverserving(dish) {
 function maybeAskForMore(context, reply) {
   const meal = context.servedDish?.meal;
   if (!meal || meal.accepted === 0 || meal.remaining === 0 || reply.departure || reply.foodRejected ||
-      ["awful", "dislike"].includes(reply.reaction) || foodTraits(context.servedDish.recipe).staleTaste) return "";
+      ["awful", "dislike"].includes(reply.reaction) || foodTraits(context.servedDish.recipe, context.servedDish.storedOvernight).staleTaste) return "";
 
   const hunger = context.profile?.hunger || context.visit.hunger;
   const rushed = (context.profile?.timePressure || context.visit.timePressure) === "rushed";
@@ -291,6 +293,9 @@ function offlineConversation(context, reaction) {
     return recent(["我今天有点" + (profile?.mood || visit.mood) + "。", "来之前遇到件小事，" + visit.situation + "。坐下来好多了。", "这会儿比刚进门好一点。"]);
   if (/工作|职业|下班|忙什么|发生什么|今天怎么样|今天干/.test(message))
     return recent(["说到今天，" + visit.situation + "。", "我今天最记得的就是刚才跟你说的那件事。你这边忙吗？", "先让我缓缓。我说完还想听听你今天怎么样。"]);
+  if (/分量|份量|吃多少|吃得下/.test(message))
+    return context.appetitePortions < 5 ? "我饭量不大，给我小份就好。" :
+      context.appetitePortions > 5 ? "我平时吃得多一点，可以稍微做足些。" : "按你平时一份的量来就好。";
   if (foodQuestion(message)) {
     if (guest.id === "yano" || guest.requestStyle === "delegates")
       return recent(["能温和一点就好，具体做什么听您的。", "我平时不挑，少一点重味就行。"]);
@@ -322,7 +327,7 @@ function offlineReview(context) {
   const service = serviceEvidence(context);
   const latest = servedDishes.at(-1);
   const awful = servedDishes.find(dish => foodTraits(dish.recipe).ruined);
-  const stale = servedDishes.find(dish => foodTraits(dish.recipe).staleTaste);
+  const stale = servedDishes.find(dish => foodTraits(dish.recipe, dish.storedOvernight).staleTaste);
   const oversized = servedDishes.find(dish => dish.meal?.accepted > 0 && dish.meal.offered > dish.meal.accepted);
   const dislikedNoodles = hasDislikedNoodles(context);
   const weakFood = awful || stale || dislikedNoodles;
@@ -344,7 +349,7 @@ function offlineReview(context) {
     ratings.overall >= 9 && guest.speechPace === "rapid" ? "推荐！" : "";
   const meal = !latest ? "坐了一会儿，走的时候还是空着肚子。"
     : dislikedNoodles && !awful && !stale ? "这碗鸡汤面不对我胃口，后来也没想再点。"
-    : "尝了口" + label + "。" + recipeFacts(dish.recipe);
+    : "尝了口" + label + "。" + recipeFacts(dish.recipe, dish.storedOvernight);
   const portion = oversized ? "拿上来比我能吃的多，剩了不少。" :
     latest?.meal?.accepted > 0 ? (wellFed ? "吃到最后刚好饱。" : "分量还没够，我原本还能吃点。") : "";
   const finish = ratings.overall >= 9 && !intro ? "下回来还会点这个。" :
@@ -378,7 +383,7 @@ function offlinePriceComment(context) {
 
 function offlineReply(context) {
   const { guest, visit, history, servedDish, event } = context;
-  if (event === "cook") return mockCook(context.recipe);
+  if (event === "cook") return mockCook(context.recipe, context.storedOvernight);
   if (event === "arrival") {
     const last = context.memories[0];
     const recalledDish = last?.dishes.at(-1);
@@ -405,15 +410,17 @@ function offlineReply(context) {
 
   const reaction = mockReaction(context);
   if (event === "served") {
+    const traits = foodTraits(servedDish.recipe, servedDish.storedOvernight);
+    const facts = recipeFacts(servedDish.recipe, servedDish.storedOvernight);
     const reply = reaction === "awful"
       ? (guest.id === "yano" ? "辛苦您了。我这份先放一放吧。" : "这一口我吃不下去。")
-      : foodTraits(servedDish.recipe).staleTaste ? freshnessImpression(foodTraits(servedDish.recipe).staleIngredient)
+      : traits.staleTaste ? freshnessImpression(traits.staleIngredient)
       : reaction === "dislike" ? "我吃了一口，这个味道跟我平时喜欢的不太一样。"
       : missedPremium(context) ? newSpokenLine(context, ["这份味道挺顺口。今天我还想试试" + context.premiumCraving + "。",
         "这口可以。我还是惦记" + context.premiumCraving + "。"])
-      : recipeFacts(servedDish.recipe) === "口味和质地没有明显的失衡。"
+      : facts === "口味和质地没有明显的失衡。"
         ? "我喜欢这种一口吃下去还认得出原味的。"
-        : recipeFacts(servedDish.recipe).split("。")[0] + "，这点挺合我胃口。";
+        : facts.split("。")[0] + "，这点挺合我胃口。";
     const meal = servedDish.meal;
     const portion = meal?.accepted > 0 && meal.offered > meal.accepted
       ? (guest.speechPace === "quiet" ? "分量太多，吃不下了。" : "这一盘对我有点多，吃不了这么多。") : "";
@@ -444,6 +451,8 @@ function characterNotes(context) {
     "性格：" + guest.personality + "。口味：" + guest.preference,
     guest.background ? "人物背景（只作参考）：" + guest.age + "岁，" + guest.gender + "性，" + guest.background + "。年龄和性别不决定说话方式，也不必报出背景。" : "",
     guest.voice ? "说话习惯：" + guest.voice + "。" : "",
+    context.appetitePortions < 5 ? "平时饭量偏小，谈到分量时可以请店主做小份。" :
+      context.appetitePortions > 5 ? "平时饭量偏大，谈到分量时可以请店主稍微做多一点。" : "",
     event === "arrival" ? "今天的固定心情：" + visit.mood + "。开场的处境参考：" + visit.situation + "。" :
       "这次的心情：" + today.mood + "。这次来店的处境：" + today.situation + "。",
     context.premiumCraving ? "这位客人这次专程想尝高级食材。今天最想吃：" + context.premiumCraving +
@@ -498,11 +507,11 @@ function makePrompt(context) {
   ].filter(Boolean).join("\n");
 }
 
-function makeCookPrompt(recipe) {
+function makeCookPrompt(recipe, storedOvernight) {
   return [
-    "描述虚构游戏《AI餐厅》中刚完成的料理。只写看得见、闻得到或尝得出的成品状态，不起菜名。按配方写，不添加没用的食材，也不要写操作教程。火候或味道失误时如实写出。",
+    "描述虚构游戏《AI餐厅》中准备上桌的料理。只写看得见、闻得到或尝得出的成品状态，不起菜名。按配方写，不添加没用的食材，也不要写操作教程。火候或味道失误时如实写出。",
     "配方和操作过程：" + describeRecipe(recipe) + "。重点考虑食材在每个步骤里实际待了多久、先后加入与换做法怎样改变成品。描述中不要透露操作时间、顺序、用量或具体步骤。",
-    "游戏里的出品判断：" + recipeFacts(recipe),
+    "游戏里的出品判断：" + recipeFacts(recipe, storedOvernight),
     "可感知的新鲜度线索由出品判断提供。用具体气味、质地和后味表达。没有相关线索时，别自行推测食材存放过或被调味遮盖。",
     "只输出一行纯文本，以「描述：」开头，接 20 到 60 字的口味、质地和成品状态。"
   ].join("\n");
@@ -623,7 +632,7 @@ function readOpening(content, context) {
 async function liveReplyOnce(context, signal, attempt) {
   const reviewing = context.event === "review";
   const cooking = context.event === "cook";
-  let prompt = cooking ? makeCookPrompt(context.recipe) : reviewing ? makeReviewPrompt(context) : makePrompt(context);
+  let prompt = cooking ? makeCookPrompt(context.recipe, context.storedOvernight) : reviewing ? makeReviewPrompt(context) : makePrompt(context);
   if (attempt > 1) {
     prompt += cooking ? "\n只返回一行成品描述，以「描述：」开头，不给菜命名。"  : reviewing
       ? "\n请各用一行输出总分、菜品、服务和评价。三个分数独立，评语只写菜品和服务。"
@@ -786,8 +795,10 @@ const server = createServer(async (req, res) => {
       await liveReply(context, AbortSignal.any([timeout, disconnected.signal]));
     const ratedRecipe = context.event === "cook" ? context.recipe : context.servedDish?.recipe;
     if (ratedRecipe) {
-      const traits = foodTraits(ratedRecipe);
-      reply.foodEnjoyment = foodEnjoyment(context, ratedRecipe, context.event === "served" ? reply.reaction : null);
+      const storedOvernight = context.event === "cook" ? context.storedOvernight : context.servedDish?.storedOvernight;
+      const traits = foodTraits(ratedRecipe, storedOvernight);
+      reply.foodEnjoyment = foodEnjoyment(context, ratedRecipe,
+        context.event === "served" ? reply.reaction : null, storedOvernight);
       if (context.event === "served" && severeOverserving(context.servedDish))
         reply.foodEnjoyment = Math.min(72, reply.foodEnjoyment);
       reply.foodRejected = traits.ruined ||
