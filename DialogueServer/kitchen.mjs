@@ -16,7 +16,7 @@ export function readRecipe(demo, payload) {
         staleAmount > entry.amount || (food.seasoning && staleAmount !== 0)) return null;
     used.add(food.id);
     if (entry.amount > 0)
-      items.push({ id: food.id, name: food.name, seasoning: food.seasoning, liquid: food.liquid, amount: entry.amount, staleAmount });
+      items.push({ id: food.id, name: food.name, seasoning: food.seasoning, liquid: food.liquid, premium: food.premium === true, amount: entry.amount, staleAmount });
   }
   if (!items.some((item) => !item.seasoning && !item.liquid)) return null;
 
@@ -70,7 +70,7 @@ export function describeRecipe(recipe) {
 
 function seconds(ms) { return (ms / 1000).toFixed(2); }
 
-const proteins = new Set(["chicken", "beef", "duck", "pork", "shrimp", "crucian_carp", "softshell_turtle", "wagyu", "foie_gras"]);
+const proteins = new Set(["chicken", "free_range_chicken", "beef", "duck", "pork", "shrimp", "crucian_carp", "softshell_turtle", "wagyu", "foie_gras"]);
 const dryMethods = new Set(["fry", "stirfry", "roast", "deep_fry"]);
 const wetMethods = new Set(["boil", "stew", "steam"]);
 const soupMethods = new Set(["boil", "stew"]);
@@ -99,7 +99,7 @@ function timelineTraits(recipe) {
     finalDry: dryMethods.has(last.id) && timeAfter(0, method => dryMethods.has(method.id)) >= 1200,
     wet: timeAfter(0, method => wetMethods.has(method.id)) >= 2500,
     fromStock: soup("stock"),
-    chickenNoodles: soup("chicken") && soup("noodles"),
+    chickenNoodles: (soup("chicken") || soup("free_range_chicken")) && soup("noodles"),
     coldSalmon: added("salmon").some(step => heated(step.atMs) === 0),
     westernBeef: added("beef").concat(added("wagyu")).some(step => timeAfter(step.atMs, method => ["fry", "roast"].includes(method.id)) >= 1500),
     westernNoodles: added("noodles").some(step =>
@@ -145,12 +145,13 @@ export function foodTraits(recipe) {
     crispFrying: deepFrying && amount("oil") >= 35,
     greasy: amount("oil") >= 90,
     fromStock: timeline?.fromStock ?? (soupMethods.has(recipe.method.id) && has("stock")),
-    chickenNoodles: timeline?.chickenNoodles ?? (soupMethods.has(recipe.method.id) && has("chicken", "noodles")),
+    chickenNoodles: timeline?.chickenNoodles ?? (soupMethods.has(recipe.method.id) && has("noodles") && (has("chicken") || has("free_range_chicken"))),
     sushi: (timeline?.coldSalmon ?? (!recipe.method.adjustable && has("salmon"))) &&
       (has("sushi_rice") || has("rice", "vinegar")),
-    western: (timeline?.westernBeef ?? (has("beef") && ["fry", "roast"].includes(recipe.method.id))) ||
+    western: (timeline?.westernBeef ?? ((has("beef") || has("wagyu")) && ["fry", "roast"].includes(recipe.method.id))) ||
+      has("iberico_ham") || (has("foie_gras") && !undercooked) ||
       ((timeline?.westernNoodles ?? (has("noodles") && ["boil", "stirfry"].includes(recipe.method.id))) &&
-        has("garlic") && !has("chicken") && !has("soy"))
+        has("garlic") && !has("chicken") && !has("free_range_chicken") && !has("soy"))
   };
 }
 
@@ -167,13 +168,22 @@ export function readDish(demo, payload) {
   return { description: payload.description, recipe, meal: { offered, accepted, remaining } };
 }
 
+export function atePremiumDish(dish) {
+  return Boolean(dish && (!dish.meal || dish.meal.accepted > 0) &&
+    dish.recipe.items.some(item => item.premium));
+}
+
 export function freshnessImpression(ingredient) {
   switch (ingredient) {
+    case "uni": return "海胆入口少了鲜甜，余味有点涩。";
+    case "geoduck": return "蚌肉少了脆劲，嚼到后面有股闷腥。";
+    case "iberico_ham": return "火腿的油脂香有点散，后味发闷。";
     case "shrimp": return "虾肉松软，咽下去有股腥味一直挂着。";
     case "crucian_carp": return "鱼肉吃着发散，嘴里留着一层不太舒服的腥气。";
     case "salmon": return "鱼肉少了该有的紧实感，尾味有点闷腥。";
     case "duck":
     case "pork": return "肉香上不来，嚼完后嘴里还粘着一股发闷的油味。";
+    case "free_range_chicken":
     case "chicken":
     case "beef": return "刚入口还能尝到调味，嚼久了有一股不舒服的闷味。";
     case "rice":
@@ -273,6 +283,8 @@ export function mockReaction(context) {
   if (traits.ruined || (context.guest.id === "jack" && traits.chickenNoodles)) return "awful";
   if (traits.staleTaste || (context.guest.id === "jack" && !traits.western)) return "dislike";
   if (traits.spicy && ["lin", "zhou"].includes(context.guest.id)) return "dislike";
+  if (atePremiumDish(context.servedDish) &&
+      context.servedDish.recipe.items.some(item => context.guest.premiumFavorites?.includes(item.id))) return "full";
   if (context.guest.likes && traits[context.guest.likes]) return "full";
   return "liked";
 }

@@ -197,7 +197,12 @@
       "speechPace": "quiet",
       "requestStyle": "direct",
       "background": "对西式料理有固定标准的顾客",
-      "reviewHabit": "negative"
+      "reviewHabit": "negative",
+      "premiumFavorites": [
+        "wagyu",
+        "iberico_ham",
+        "foie_gras"
+      ]
     },
     {
       "id": "wang",
@@ -565,7 +570,12 @@
       "speechPace": "steady",
       "requestStyle": "gradual",
       "background": "给纪录片剪辑的后期",
-      "reviewHabit": "always"
+      "reviewHabit": "always",
+      "premiumFavorites": [
+        "wagyu",
+        "iberico_ham",
+        "free_range_chicken"
+      ]
     },
     {
       "id": "gu",
@@ -715,7 +725,12 @@
       "speechPace": "steady",
       "requestStyle": "direct",
       "background": "在不同街区跑采访的记者",
-      "reviewHabit": "negative"
+      "reviewHabit": "negative",
+      "premiumFavorites": [
+        "foie_gras",
+        "wagyu",
+        "caviar"
+      ]
     },
     {
       "id": "yan",
@@ -819,7 +834,12 @@
       "speechPace": "quiet",
       "requestStyle": "direct",
       "background": "修家具的木工师傅",
-      "reviewHabit": "negative"
+      "reviewHabit": "negative",
+      "premiumFavorites": [
+        "wagyu",
+        "foie_gras",
+        "iberico_ham"
+      ]
     },
     {
       "id": "fei",
@@ -1232,7 +1252,12 @@
       "speechPace": "quiet",
       "requestStyle": "reserved",
       "background": "经营陶作工坊",
-      "reviewHabit": "always"
+      "reviewHabit": "always",
+      "premiumFavorites": [
+        "geoduck",
+        "uni",
+        "caviar"
+      ]
     },
     {
       "id": "wen",
@@ -1552,7 +1577,12 @@
           ]
         }
       ],
-      "reviewHabit": "always"
+      "reviewHabit": "always",
+      "premiumFavorites": [
+        "free_range_chicken",
+        "wagyu",
+        "iberico_ham"
+      ]
     },
     {
       "id": "songyun",
@@ -1924,7 +1954,12 @@
           "foodHint": "煎嫩猪肉"
         }
       ],
-      "reviewHabit": "always"
+      "reviewHabit": "always",
+      "premiumFavorites": [
+        "iberico_ham",
+        "free_range_chicken",
+        "foie_gras"
+      ]
     },
     {
       "id": "liangmi",
@@ -2036,7 +2071,12 @@
           "foodHint": "牛肉米饭"
         }
       ],
-      "reviewHabit": "negative"
+      "reviewHabit": "negative",
+      "premiumFavorites": [
+        "wagyu",
+        "geoduck",
+        "softshell_turtle"
+      ]
     },
     {
       "id": "yingshi",
@@ -2887,7 +2927,8 @@
       "cost": 38,
       "shelfDays": 4,
       "category": "meat",
-      "seasoning": false
+      "seasoning": false,
+      "premium": true
     },
     {
       "id": "wagyu",
@@ -2895,7 +2936,8 @@
       "cost": 65,
       "shelfDays": 4,
       "category": "meat",
-      "seasoning": false
+      "seasoning": false,
+      "premium": true
     },
     {
       "id": "caviar",
@@ -2903,7 +2945,8 @@
       "cost": 85,
       "shelfDays": 3,
       "category": "meat",
-      "seasoning": false
+      "seasoning": false,
+      "premium": true
     },
     {
       "id": "foie_gras",
@@ -2911,7 +2954,44 @@
       "cost": 55,
       "shelfDays": 3,
       "category": "meat",
-      "seasoning": false
+      "seasoning": false,
+      "premium": true
+    },
+    {
+      "id": "uni",
+      "name": "海胆",
+      "cost": 60,
+      "shelfDays": 3,
+      "category": "meat",
+      "seasoning": false,
+      "premium": true
+    },
+    {
+      "id": "iberico_ham",
+      "name": "伊比利亚火腿",
+      "cost": 44,
+      "shelfDays": 7,
+      "category": "meat",
+      "seasoning": false,
+      "premium": true
+    },
+    {
+      "id": "free_range_chicken",
+      "name": "走地鸡",
+      "cost": 27,
+      "shelfDays": 4,
+      "category": "meat",
+      "seasoning": false,
+      "premium": true
+    },
+    {
+      "id": "geoduck",
+      "name": "象拔蚌",
+      "cost": 49,
+      "shelfDays": 3,
+      "category": "meat",
+      "seasoning": false,
+      "premium": true
     }
   ],
   "methods": [
