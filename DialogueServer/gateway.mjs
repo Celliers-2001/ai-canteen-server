@@ -1,11 +1,14 @@
 import { createHash } from "node:crypto";
 import { createServer } from "node:http";
 import { isIP } from "node:net";
+import { openQuotaStore } from "./quota.mjs";
 
 const port = setting("CANTEEN_DIALOGUE_GATEWAY_PORT", 18767, 65535);
 const localPort = setting("CANTEEN_DIALOGUE_UPSTREAM_PORT", 18765, 65535);
 const maxActive = setting("CANTEEN_DIALOGUE_MAX_ACTIVE", 8, 64);
+const limits = { perIpPerMinute: 20, perIpPerDay: 500, globalPerDay: 4000 };
 const trustProxy = process.env.CANTEEN_DIALOGUE_TRUST_PROXY === "1";
+const store = openQuotaStore();
 const active = new Map();
 let running = 0;
 
@@ -50,7 +53,7 @@ const server = createServer({ requestTimeout: 15000, headersTimeout: 10000 }, as
   let locked = false;
   try {
     if (req.method === "GET" && req.url === "/api/v1/dialogue/health")
-      return send(res, 200, { status: "ok", access: "direct", quota: "disabled" });
+      return send(res, 200, { status: "ok", access: "direct", quota: "per-ip-and-global", limits, dailyResetUtc: "00:00" });
     if (req.method !== "POST" || req.url !== "/api/v1/dialogue")
       return send(res, 404, { error: "not_found" });
 
@@ -76,6 +79,10 @@ const server = createServer({ requestTimeout: 15000, headersTimeout: 10000 }, as
     const disconnected = new AbortController();
     res.on("close", () => { if (!res.writableEnded) disconnected.abort(); });
     if (res.destroyed) return;
+
+    const limit = store.reserve(id, Date.now(), limits);
+    if (limit) return send(res, 429, { error: limit });
+
     const timeout = AbortSignal.timeout(33000);
     let result;
     try {
@@ -106,5 +113,5 @@ const server = createServer({ requestTimeout: 15000, headersTimeout: 10000 }, as
 
 server.listen(port, "127.0.0.1", () => console.log("AI Canteen dialogue gateway on 127.0.0.1:" + port));
 for (const signal of ["SIGINT", "SIGTERM"]) {
-  process.on(signal, () => server.close(() => process.exit(0)));
+  process.on(signal, () => server.close(() => { store.close(); process.exit(0); }));
 }
