@@ -98,14 +98,23 @@ function simulate(recipe) {
   const pan = { lots: [], method: recipe.method.id, lastHeat: "", oil: 0, liquid: 0, stock: 0, stockTime: 0,
     shortOnOil: false, waterInOil: false };
   let from = 0;
+  let heat = 0;
+  let skillTotal = 0;
   for (const step of steps) {
-    heatBatch(pan, (step.atMs - from) / 1000);
+    const duration = (step.atMs - from) / 1000;
+    if (methods[pan.method] && pan.lots.length && duration > 0) {
+      heat += duration;
+      skillTotal += duration * (pan.level - 1);
+    }
+    heatBatch(pan, duration);
     if (step.method) {
       const next = step.method.id;
       if (airHeat.has(next) && simmering.has(pan.method)) pan.liquid = 0;
       pan.method = next;
+      pan.level = step.level ?? recipe.level ?? 1;
     } else {
       if (step.item.id === "oil") pan.oil += step.amount;
+      if (step.item.id === "water" && step.item.seasoning) pan.liquid += step.amount / 35;
       if (step.item.liquid) {
         pan.liquid += step.amount;
         if (step.item.id === "stock") pan.stock += step.amount;
@@ -114,7 +123,13 @@ function simulate(recipe) {
     }
     from = step.atMs;
   }
-  heatBatch(pan, (elapsedMs - from) / 1000);
+  const remaining = (elapsedMs - from) / 1000;
+  if (methods[pan.method] && pan.lots.length && remaining > 0) {
+    heat += remaining;
+    skillTotal += remaining * ((pan.level ?? recipe.level ?? 1) - 1);
+  }
+  pan.skill = heat > 0 ? skillTotal / heat : (recipe.level ?? 1) - 1;
+  heatBatch(pan, remaining);
   return pan;
 }
 
@@ -130,6 +145,7 @@ function state(lot, coldFinish) {
     return result(lot.crust >= 3.5 ? "外面有一层干香，芯里已经吸足水" : type === "rice" ? "吸足水分，米粒柔软有弹性" : "软弹，还有一点咬劲");
   }
 
+  if (lot.heat < .35 && coldFinish && lot.item.id === "radish") return result("薄切后脆爽，带一点清甜");
   if (lot.heat < .35 && readyCold.has(type)) {
     return result(type === "leaf" || type === "crispVegetable" ? "清脆爽口" :
       type === "cured" ? "咸鲜，脂香清楚" : type === "onion" ? "脆，带点辛香" :
@@ -222,7 +238,7 @@ export function analyzeCooking(recipe) {
     raw: states.some(entry => entry.fault === "raw"),
     scorched: states.some(entry => entry.fault === "burnt") || garlicScorched || sugarScorched,
     garlicScorched, sugarScorched,
-    texturePenalty: Math.max(0, ...states.map(entry => entry.penalty)),
+    texturePenalty: Math.max(0, ...states.map(entry => entry.penalty - (entry.fault ? 0 : Math.floor(pan.skill)))),
     portions,
     wet: mains.some(lot => lot.wet >= 2),
     finalDry: !coldFinish && mains.some(lot => lot.crust >= 1.1 && lot.moisture <= 1.5),

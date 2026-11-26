@@ -21,6 +21,8 @@ db.exec(
   ");" +
   "CREATE TABLE IF NOT EXISTS removed (owner TEXT NOT NULL, id TEXT NOT NULL, PRIMARY KEY (owner, id));" +
   "CREATE TABLE IF NOT EXISTS profiles (owner TEXT NOT NULL, slot TEXT NOT NULL, avatar TEXT NOT NULL DEFAULT '', PRIMARY KEY (owner, slot));" +
+  "CREATE TABLE IF NOT EXISTS restaurant_growth (owner TEXT NOT NULL, slot TEXT NOT NULL, " +
+  "standard INTEGER NOT NULL, specialties TEXT NOT NULL, PRIMARY KEY (owner, slot));" +
   "CREATE TABLE IF NOT EXISTS reviews (" +
   "  owner TEXT NOT NULL, slot TEXT NOT NULL, id TEXT NOT NULL, guest_id TEXT NOT NULL, guest TEXT NOT NULL," +
   "  date TEXT NOT NULL, evaluation TEXT NOT NULL, overall INTEGER NOT NULL, service INTEGER NOT NULL," +
@@ -65,6 +67,10 @@ const getRestaurant = db.prepare(
 const setAvatar = db.prepare(
   "INSERT INTO profiles (owner, slot, avatar) VALUES (?, ?, ?) ON CONFLICT (owner, slot) DO UPDATE SET avatar = excluded.avatar"
 );
+const removeGrowth = db.prepare("DELETE FROM restaurant_growth WHERE owner = ? AND slot = ?");
+const getGrowth = db.prepare("SELECT standard, specialties FROM restaurant_growth WHERE owner = ? AND slot = ?");
+const saveGrowth = db.prepare("INSERT INTO restaurant_growth VALUES (?, ?, ?, ?) " +
+  "ON CONFLICT (owner, slot) DO UPDATE SET standard = excluded.standard, specialties = excluded.specialties");
 const addReview = db.prepare(
   "INSERT OR IGNORE INTO reviews (owner, slot, id, guest_id, guest, date, evaluation, overall, service, food, offline) " +
   "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
@@ -149,6 +155,7 @@ function sync(owner, token, payload) {
       markRemoved.run(owner, id);
       removeStore.run(owner, id);
       removeProfile.run(owner, id);
+      removeGrowth.run(owner, id);
       removeReviews.run(owner, id);
     }
     for (const row of payload.stores) {
@@ -201,11 +208,19 @@ function publishProfile(owner, slot, token, payload) {
     throw new RequestError(400, "Invalid restaurant profile");
   }
 
+  const hasGrowth = payload.restaurantStandard != null || payload.signatureDishes != null;
+  if (hasGrowth && (!whole(payload.restaurantStandard, 1, 5) || !Array.isArray(payload.signatureDishes) ||
+      payload.signatureDishes.length > 3 || payload.signatureDishes.some(name =>
+        typeof name !== "string" || !name.trim() || name.length > 40))) {
+    throw new RequestError(400, "Invalid restaurant growth");
+  }
+
   transact(() => {
     authorizeOwner(owner, token, false);
     if (isRemoved.get(owner, slot)) return;
     if (!getRestaurant.get(owner, slot)) throw new RequestError(404, "Restaurant not found");
     setAvatar.run(owner, slot, payload.avatar);
+    if (hasGrowth) saveGrowth.run(owner, slot, payload.restaurantStandard, JSON.stringify(payload.signatureDishes));
     for (const review of payload.reviews) {
       addReview.run(owner, slot, review.id, review.guestId, review.guest, review.date, review.evaluation,
         review.overall, review.service, review.food, Number(review.offline));
@@ -218,6 +233,9 @@ function getProfile(owner, slot, search) {
   if (!whole(page, 1, 1000000)) throw new RequestError(400, "Invalid page");
   const store = getRestaurant.get(owner, slot);
   if (!store) throw new RequestError(404, "Restaurant not found");
+  const growth = getGrowth.get(owner, slot);
+  store.restaurantStandard = growth?.standard ?? 1;
+  store.signatureDishes = growth ? JSON.parse(growth.specialties) : [];
   const { total, participants } = countReviews.get(owner, slot);
   const pageSize = 20;
   const pages = Math.max(1, Math.ceil(total / pageSize));

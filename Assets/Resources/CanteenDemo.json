@@ -1423,7 +1423,7 @@
       "gender": "女",
       "age": 31,
       "portraitId": "lin",
-      "background": "河道监测员",
+      "background": "公职人员，负责河道监测",
       "generosity": 48,
       "patience": 4,
       "speechPace": "quiet",
@@ -1702,7 +1702,7 @@
       "gender": "女",
       "age": 38,
       "portraitId": "lin",
-      "background": "在音像档案馆工作的修复员",
+      "background": "银行信贷经理，业余喜欢修复旧音像",
       "generosity": 49,
       "patience": 4,
       "speechPace": "quiet",
@@ -2681,7 +2681,8 @@
       "cost": 12,
       "shelfDays": 4,
       "category": "meat",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 1
     },
     {
       "id": "egg",
@@ -2689,7 +2690,8 @@
       "cost": 5,
       "shelfDays": 7,
       "category": "meat",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 1
     },
     {
       "id": "beef",
@@ -2697,7 +2699,8 @@
       "cost": 20,
       "shelfDays": 5,
       "category": "meat",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 3
     },
     {
       "id": "salmon",
@@ -2705,7 +2708,8 @@
       "cost": 18,
       "shelfDays": 3,
       "category": "meat",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 3
     },
     {
       "id": "noodles",
@@ -2713,7 +2717,8 @@
       "cost": 4,
       "shelfDays": 5,
       "category": "produce",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 1
     },
     {
       "id": "duck",
@@ -2721,7 +2726,8 @@
       "cost": 16,
       "shelfDays": 4,
       "category": "meat",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 3
     },
     {
       "id": "rice",
@@ -2729,7 +2735,8 @@
       "cost": 4,
       "shelfDays": 8,
       "category": "produce",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 1
     },
     {
       "id": "pork",
@@ -2737,63 +2744,72 @@
       "cost": 14,
       "shelfDays": 4,
       "category": "meat",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 2
     },
     {
       "id": "rosemary",
       "name": "迷迭香",
       "cost": 5,
       "category": "seasoning",
-      "seasoning": true
+      "seasoning": true,
+      "tier": 0
     },
     {
       "id": "vinegar",
       "name": "醋",
       "cost": 4,
       "category": "seasoning",
-      "seasoning": true
+      "seasoning": true,
+      "tier": 0
     },
     {
       "id": "soy",
       "name": "酱油",
       "cost": 5,
       "category": "seasoning",
-      "seasoning": true
+      "seasoning": true,
+      "tier": 0
     },
     {
       "id": "salt",
       "name": "盐",
       "cost": 2,
       "category": "seasoning",
-      "seasoning": true
+      "seasoning": true,
+      "tier": 0
     },
     {
       "id": "chili",
       "name": "辣椒",
       "cost": 4,
       "category": "seasoning",
-      "seasoning": true
+      "seasoning": true,
+      "tier": 0
     },
     {
       "id": "scallion",
       "name": "葱",
       "cost": 3,
       "category": "seasoning",
-      "seasoning": true
+      "seasoning": true,
+      "tier": 0
     },
     {
       "id": "garlic",
       "name": "蒜",
       "cost": 3,
       "category": "seasoning",
-      "seasoning": true
+      "seasoning": true,
+      "tier": 0
     },
     {
       "id": "cilantro",
       "name": "香菜",
       "cost": 3,
       "category": "seasoning",
-      "seasoning": true
+      "seasoning": true,
+      "tier": 0
     },
     {
       "id": "sushi_rice",
@@ -2801,28 +2817,32 @@
       "cost": 6,
       "shelfDays": 8,
       "category": "produce",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 2
     },
     {
       "id": "sugar",
       "name": "白糖",
       "cost": 4,
       "category": "seasoning",
-      "seasoning": true
+      "seasoning": true,
+      "tier": 0
     },
     {
       "id": "black_pepper",
       "name": "黑胡椒",
       "cost": 6,
       "category": "seasoning",
-      "seasoning": true
+      "seasoning": true,
+      "tier": 0
     },
     {
       "id": "oil",
       "name": "油",
       "cost": 5,
       "category": "seasoning",
-      "seasoning": true
+      "seasoning": true,
+      "tier": 0
     },
     {
       "id": "stock",
@@ -2831,7 +2851,8 @@
       "shelfDays": 3,
       "category": "seasoning",
       "seasoning": false,
-      "liquid": true
+      "liquid": true,
+      "tier": 1
     },
     {
       "id": "potato",
@@ -2839,7 +2860,8 @@
       "cost": 4,
       "shelfDays": 8,
       "category": "produce",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 1
     },
     {
       "id": "tomato",
@@ -2847,7 +2869,8 @@
       "cost": 5,
       "shelfDays": 5,
       "category": "produce",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 1
     },
     {
       "id": "shrimp",
@@ -2855,7 +2878,8 @@
       "cost": 15,
       "shelfDays": 3,
       "category": "meat",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 3
     },
     {
       "id": "crucian_carp",
@@ -2863,7 +2887,8 @@
       "cost": 13,
       "shelfDays": 3,
       "category": "meat",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 3
     },
     {
       "id": "onion",
@@ -2871,7 +2896,8 @@
       "cost": 4,
       "shelfDays": 8,
       "category": "produce",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 1
     },
     {
       "id": "cucumber",
@@ -2879,7 +2905,8 @@
       "cost": 4,
       "shelfDays": 4,
       "category": "produce",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 2
     },
     {
       "id": "radish",
@@ -2887,7 +2914,8 @@
       "cost": 4,
       "shelfDays": 6,
       "category": "produce",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 2
     },
     {
       "id": "lettuce",
@@ -2895,7 +2923,8 @@
       "cost": 3,
       "shelfDays": 3,
       "category": "produce",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 1
     },
     {
       "id": "bamboo_shoot",
@@ -2903,7 +2932,8 @@
       "cost": 6,
       "shelfDays": 4,
       "category": "produce",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 2
     },
     {
       "id": "bitter_melon",
@@ -2911,7 +2941,8 @@
       "cost": 4,
       "shelfDays": 4,
       "category": "produce",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 2
     },
     {
       "id": "glass_noodles",
@@ -2919,7 +2950,8 @@
       "cost": 5,
       "shelfDays": 8,
       "category": "produce",
-      "seasoning": false
+      "seasoning": false,
+      "tier": 2
     },
     {
       "id": "softshell_turtle",
@@ -2928,7 +2960,8 @@
       "shelfDays": 4,
       "category": "meat",
       "seasoning": false,
-      "premium": true
+      "premium": true,
+      "tier": 4
     },
     {
       "id": "wagyu",
@@ -2937,7 +2970,8 @@
       "shelfDays": 4,
       "category": "meat",
       "seasoning": false,
-      "premium": true
+      "premium": true,
+      "tier": 4
     },
     {
       "id": "caviar",
@@ -2946,7 +2980,8 @@
       "shelfDays": 3,
       "category": "meat",
       "seasoning": false,
-      "premium": true
+      "premium": true,
+      "tier": 4
     },
     {
       "id": "foie_gras",
@@ -2955,7 +2990,8 @@
       "shelfDays": 3,
       "category": "meat",
       "seasoning": false,
-      "premium": true
+      "premium": true,
+      "tier": 4
     },
     {
       "id": "uni",
@@ -2964,7 +3000,8 @@
       "shelfDays": 3,
       "category": "meat",
       "seasoning": false,
-      "premium": true
+      "premium": true,
+      "tier": 4
     },
     {
       "id": "iberico_ham",
@@ -2973,7 +3010,8 @@
       "shelfDays": 7,
       "category": "meat",
       "seasoning": false,
-      "premium": true
+      "premium": true,
+      "tier": 4
     },
     {
       "id": "free_range_chicken",
@@ -2982,7 +3020,8 @@
       "shelfDays": 4,
       "category": "meat",
       "seasoning": false,
-      "premium": true
+      "premium": true,
+      "tier": 4
     },
     {
       "id": "geoduck",
@@ -2991,7 +3030,16 @@
       "shelfDays": 3,
       "category": "meat",
       "seasoning": false,
-      "premium": true
+      "premium": true,
+      "tier": 4
+    },
+    {
+      "id": "water",
+      "name": "水",
+      "cost": 1,
+      "category": "seasoning",
+      "seasoning": true,
+      "tier": 0
     }
   ],
   "methods": [

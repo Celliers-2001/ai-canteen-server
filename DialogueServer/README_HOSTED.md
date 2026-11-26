@@ -33,6 +33,8 @@
 
 本次新增食材需要同时更新 `Assets/Resources/CanteenDemo.json` 和 `DialogueServer/`。更新仓库后重启内部对白进程，新食材才能用于上菜后的对白和评价。旧版游戏对白仍按原协议访问。
 
+餐厅成长版本需要同时更新并重启内部对白服务和排行榜服务。内部对白服务读取 `Assets/Resources/CanteenDemo.json` 与 `Assets/Resources/CanteenRecipes.json`。排行榜会在现有数据库里自动添加餐厅规格和主打菜记录。对白请求沿用原协议和额度。
+
 ## 对白接口
 
 | 请求 | 用途 |

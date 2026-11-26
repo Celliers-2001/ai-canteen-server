@@ -1,6 +1,27 @@
 import { analyzeCooking, seasoningStrength } from "./cooking.mjs";
 
 const legacyWater = { id: "water", name: "水", seasoning: false, liquid: true };
+const seasoningWater = { id: "water", name: "水", seasoning: true, liquid: false };
+const skill = level => Number.isInteger(level) ? Math.max(1, Math.min(10, level)) : 1;
+
+function knownRecipe(demo, recipe, id) {
+  const entry = demo.recipes?.find(dish => dish.id === id && dish.method === recipe.method.id);
+  if (!entry || recipe.intensity < entry.minHeat || recipe.intensity > entry.maxHeat) return null;
+  const main = recipe.items.filter(item => !item.seasoning);
+  if (main.length !== entry.items.length || main.some(item =>
+    !entry.items.some(required => item.id === required.id && item.amount === required.amount))) return null;
+  if (entry.seasoning.some(required => !recipe.items.some(item =>
+    item.id === required.id && Math.abs(item.amount - required.amount) <= 10))) return null;
+  if (entry.prewarm) {
+    const nextMethod = recipe.steps?.findIndex((step, i) => i > 0 && step.method);
+    if (!(nextMethod > 0) || recipe.steps[0].method.id !== "boil" ||
+        recipe.steps[nextMethod].atMs < (entry.prewarmMs ?? 18000) * .75 ||
+        recipe.steps.slice(0, nextMethod).filter(step => step.item?.id === entry.prewarm)
+          .reduce((amount, step) => amount + step.amount, 0) !== entry.items.find(item => item.id === entry.prewarm).amount)
+      return null;
+  }
+  return entry.name;
+}
 
 export function readRecipe(demo, payload) {
   const method = demo.methods.find((item) => item.id === payload?.method);
@@ -10,7 +31,8 @@ export function readRecipe(demo, payload) {
   const items = [];
   const used = new Set();
   for (const entry of payload.items) {
-    const food = demo.ingredients.find((item) => item.id === entry?.id) || (entry?.id === "water" ? legacyWater : null);
+    const food = entry?.id === "water" ? (payload.methodLevel > 0 ? seasoningWater : legacyWater) :
+      demo.ingredients.find(item => item.id === entry?.id);
     if (!food || used.has(food.id) || !Number.isSafeInteger(entry.amount) || entry.amount < 0 ||
         (food.seasoning ? entry.amount > 100 : entry.amount > 1_000_000)) return null;
     const staleAmount = entry.staleAmount ?? 0;
@@ -22,7 +44,7 @@ export function readRecipe(demo, payload) {
   }
   if (!items.some(item => !item.seasoning)) return null;
 
-  const recipe = { method, intensity, items };
+  const recipe = { method, intensity, items, level: skill(payload.methodLevel) };
   if (payload.steps == null || (Array.isArray(payload.steps) && payload.steps.length === 0))
     return !payload.elapsedMs ? recipe : null;
 
@@ -41,7 +63,7 @@ export function readRecipe(demo, payload) {
     if (step.method) {
       currentMethod = demo.methods.find(item => item.id === step.method);
       if (!currentMethod || step.id || step.amount) return null;
-      steps.push({ atMs: lastTime, method: currentMethod });
+      steps.push({ atMs: lastTime, method: currentMethod, level: skill(step.level) });
     } else {
       const item = itemById.get(step.id);
       if (!currentMethod || !item || !Number.isInteger(step.amount) || step.amount <= 0) return null;
@@ -54,7 +76,9 @@ export function readRecipe(demo, payload) {
 
   if (!steps[0].method || steps[0].atMs !== 0 || currentMethod.id !== method.id ||
       items.some(item => added.get(item.id) !== item.amount)) return null;
-  return { ...recipe, elapsedMs, steps };
+  Object.assign(recipe, { elapsedMs, steps });
+  recipe.name = knownRecipe(demo, recipe, payload.recipeId);
+  return recipe;
 }
 
 export function foodTraits(recipe, storedOvernight = false) {
@@ -212,6 +236,8 @@ export function foodEnjoyment(context, recipe, reaction, storedOvernight) {
   else if (guest.id === "jack") enjoyment = traits.western ? 83 : 26;
   else if (traits.spicy && ["lin", "zhou"].includes(guest.id)) enjoyment = 30;
   else enjoyment = guest.likes && traits[guest.likes] ? 95 : 70;
+  if (enjoyment >= 45 && recipe.name && !storedOvernight && traits.texturePenalty < 20) enjoyment += 8;
+  if (enjoyment >= 45) enjoyment += (recipe.level - 1) * 2;
   return Math.min(enjoyment, 100 - traits.texturePenalty);
 }
 
