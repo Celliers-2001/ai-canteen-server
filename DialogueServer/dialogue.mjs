@@ -205,7 +205,7 @@ function maybeAskForMore(context, reply) {
 }
 
 function mainIngredients(dish) {
-  return dish.recipe.items.filter(item => !item.seasoning && !item.liquid).map(item => item.name).join("、");
+  return dish.recipe.items.filter(item => !item.seasoning).map(item => item.name).join("、");
 }
 
 function serviceEvidence(context) {
@@ -744,7 +744,7 @@ const server = createServer(async (req, res) => {
     return;
   }
   if (req.method === "GET" && req.url === "/health") {
-    send(res, 200, { mode: mock ? "mock" : "deepseek", protocol, guests: demo.guests.length, cooking: "ingredient-timeline" });
+    send(res, 200, { mode: mock ? "mock" : "deepseek", protocol, guests: demo.guests.length, cooking: "ingredient-timeline", seasoning: "portion-scaled" });
     return;
   }
   if (req.method !== "POST" || req.url !== "/reply") {

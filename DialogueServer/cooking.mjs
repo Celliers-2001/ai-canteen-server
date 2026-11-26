@@ -27,6 +27,10 @@ const simmering = new Set(["boil", "stew"]);
 const airHeat = new Set(["fry", "stirfry", "roast", "deep_fry"]);
 const readyCold = new Set(["leaf", "tomato", "crispVegetable", "onion", "cured", "coldFish", "coldSeafood", "delicate"]);
 
+export function seasoningStrength(amount, portions) {
+  return amount * 5 / Math.max(1, portions);
+}
+
 function record(item, amount) {
   return { item, amount, heat: 0, hydration: 0, wet: 0, stew: 0, moisture: 0, brown: 0, crust: 0, friedCrust: 0, dry: 0 };
 }
@@ -47,13 +51,13 @@ function heatBatch(pan, time) {
 
   // Surface effects lag behind the switch from a bath of water to dry heat.
   const mains = pan.lots.reduce((sum, lot) => sum + (!lot.item.seasoning && !lot.item.liquid ? lot.amount : 0), 0);
-  const oil = pan.oil;
-  const validFry = method === "deep_fry" && oil >= 18 + Math.min(10, mains) * 4 && pan.liquid === 0;
+  const enoughOil = seasoningStrength(pan.oil, mains) >= 34;
+  const validFry = method === "deep_fry" && enoughOil && pan.liquid === 0;
   const crowded = airHeat.has(method) && mains > 3;
   const load = crowded ? Math.max(.67, 1 - (mains - 3) * .035) : 1;
   const liquidTime = !style.absorb && pan.liquid > 0 ? Math.min(time, pan.liquid * 2.8) : 0;
   if (method === "deep_fry") {
-    pan.shortOnOil ||= oil < 18 + Math.min(10, mains) * 4;
+    pan.shortOnOil ||= !enoughOil;
     pan.waterInOil ||= pan.liquid > 0;
   }
 
@@ -80,7 +84,7 @@ function heatBatch(pan, time) {
     if (validFry) lot.friedCrust += color * 1.24;
   }
 
-  if (simmering.has(method) && pan.stock > 0 && mains > 0) pan.stockTime += time;
+  if (simmering.has(method) && pan.stock > 0) pan.stockTime += time;
   if (!style.absorb) pan.liquid = Math.max(0, pan.liquid - liquidTime / 2.8);
   pan.lastHeat = method;
 }
@@ -191,9 +195,16 @@ export function analyzeCooking(recipe) {
   if (cached) return cached;
   const pan = simulate(recipe);
   const coldFinish = !recipe.method.adjustable;
-  const mains = pan.lots.filter(lot => !lot.item.seasoning && !lot.item.liquid);
+  const food = pan.lots.filter(lot => !lot.item.seasoning);
+  const mains = food.filter(lot => !lot.item.liquid);
   const states = mains.map(lot => state(lot, coldFinish));
-  const mainCount = mains.reduce((count, lot) => count + lot.amount, 0);
+  if (!mains.length) {
+    for (const lot of food) {
+      const warm = lot.heat >= 2;
+      states.push({ lot, text: warm ? "有热气，汁水清润" : "带凉意，汤味比较淡", penalty: warm || coldFinish ? 0 : 12, fault: "" });
+    }
+  }
+  const portions = food.reduce((count, lot) => count + lot.amount, 0);
   const any = (id, condition) => mains.some(lot => lot.item.id === id && condition(lot));
   const stages = (ids, condition) => ids.some(id => any(id, condition));
   const readyRice = states.some(entry => (entry.lot.item.id === "sushi_rice" || entry.lot.item.id === "rice") && entry.penalty < 10);
@@ -212,7 +223,7 @@ export function analyzeCooking(recipe) {
     scorched: states.some(entry => entry.fault === "burnt") || garlicScorched || sugarScorched,
     garlicScorched, sugarScorched,
     texturePenalty: Math.max(0, ...states.map(entry => entry.penalty)),
-    mainCount,
+    portions,
     wet: mains.some(lot => lot.wet >= 2),
     finalDry: !coldFinish && mains.some(lot => lot.crust >= 1.1 && lot.moisture <= 1.5),
     crispFrying: !coldFinish && pan.lastHeat === "deep_fry" && mains.some(lot => lot.friedCrust >= 5 && lot.moisture < .8),

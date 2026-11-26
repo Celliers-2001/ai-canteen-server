@@ -1,4 +1,4 @@
-import { analyzeCooking } from "./cooking.mjs";
+import { analyzeCooking, seasoningStrength } from "./cooking.mjs";
 
 const legacyWater = { id: "water", name: "水", seasoning: false, liquid: true };
 
@@ -20,7 +20,7 @@ export function readRecipe(demo, payload) {
     if (entry.amount > 0)
       items.push({ id: food.id, name: food.name, seasoning: food.seasoning, liquid: food.liquid, premium: food.premium === true, amount: entry.amount, staleAmount });
   }
-  if (!items.some((item) => !item.seasoning && !item.liquid)) return null;
+  if (!items.some(item => !item.seasoning)) return null;
 
   const recipe = { method, intensity, items };
   if (payload.steps == null || (Array.isArray(payload.steps) && payload.steps.length === 0))
@@ -60,14 +60,15 @@ export function readRecipe(demo, payload) {
 export function foodTraits(recipe, storedOvernight = false) {
   const cooked = analyzeCooking(recipe);
   const amount = id => recipe.items.find(item => item.id === id)?.amount || 0;
-  const portionScale = 1 + Math.max(0, cooked.mainCount - 1) * .42;
-  const liquid = cooked.inBroth ? .42 + amount("stock") * .37 : 0;
-  const measured = id => amount(id) / (portionScale + liquid);
-  const saltLoad = measured("salt") + measured("soy") * .64;
-  const salty = saltLoad >= 55;
-  const overpowering = [measured("chili"), measured("sugar"), measured("vinegar")].filter(value => value >= 82).length;
-  const greasy = amount("oil") / portionScale >= 82 && !cooked.crispFrying && !cooked.inBroth;
-  const ruined = cooked.noHeat || cooked.raw || cooked.scorched || cooked.waterInOil || saltLoad >= 77 || overpowering >= 2;
+  const measured = id => seasoningStrength(amount(id), cooked.portions);
+  const salt = measured("salt");
+  const soy = measured("soy");
+  const saltLoad = Math.max(salt, soy) + Math.min(salt, soy) * .55;
+  const salty = saltLoad >= 80;
+  const strongestFlavor = Math.max(...["chili", "sugar", "vinegar", "garlic", "black_pepper", "rosemary", "cilantro", "scallion"].map(measured));
+  const overpowering = strongestFlavor >= 82;
+  const greasy = measured("oil") >= 86 && !cooked.crispFrying && !cooked.inBroth;
+  const ruined = cooked.noHeat || cooked.raw || cooked.scorched || cooked.waterInOil || saltLoad >= 100 || strongestFlavor >= 150;
   const food = recipe.items.filter(item => !item.seasoning);
   const staleServings = food.reduce((total, item) => total + (item.staleAmount || 0), 0);
   const staleShare = storedOvernight ? 1 : staleServings / Math.max(1, food.reduce((total, item) => total + item.amount, 0));
@@ -75,14 +76,15 @@ export function foodTraits(recipe, storedOvernight = false) {
     measured("vinegar") * (cooked.lostVinegarAroma ? .22 : .55) + measured("soy") * .43 +
     measured("rosemary") * .4 + measured("cilantro") * .3 + measured("sugar") * .28;
   const staleTaste = staleShare > 0 && strongFlavor < 40 + staleShare * 28;
-  const mainStale = staleTaste ? (storedOvernight ? food.find(item => !item.liquid) :
+  const mainStale = staleTaste ? (storedOvernight ? (food.find(item => !item.liquid) ?? food[0]) :
     food.reduce((worst, item) => (item.staleAmount || 0) > (worst?.staleAmount || 0) ? item : worst, null)) : null;
   return {
-    ...cooked, ruined, salty, staleTaste, staleIngredient: mainStale?.id,
-    texturePenalty: Math.max(cooked.texturePenalty, salty ? 29 : 0, greasy ? 13 : 0,
+    ...cooked, ruined, salty, overpowering, staleTaste, staleIngredient: mainStale?.id,
+    balancedSalt: saltLoad >= 35 && saltLoad < 80,
+    texturePenalty: Math.max(cooked.texturePenalty, salty ? 29 : 0, overpowering ? 19 : 0, greasy ? 13 : 0,
       cooked.oilFreeFrying && !cooked.crispFrying ? 16 : 0, storedOvernight && cooked.finalDry ? 12 : 0),
     spicy: measured("chili") >= 39,
-    sweet: measured("sugar") >= 53,
+    sweet: measured("sugar") >= 39,
     peppered: measured("black_pepper") >= 26,
     greasy,
     crispFrying: cooked.crispFrying && !storedOvernight && !ruined,
@@ -94,7 +96,9 @@ export function foodTraits(recipe, storedOvernight = false) {
 export function readDish(demo, payload) {
   const recipe = readRecipe(demo, payload?.recipe);
   if (!recipe || typeof payload.description !== "string" || payload.description.length > 150) return null;
-  const offered = recipe.items.reduce((total, item) => total + (item.seasoning || item.liquid ? 0 : item.amount), 0);
+  const countLiquids = payload.liquidsCountAsPortions === true;
+  const offered = recipe.items.reduce((total, item) =>
+    total + (!item.seasoning && (countLiquids || !item.liquid) ? item.amount : 0), 0);
   if (payload.portionCount != null) {
     const { portionCount, acceptedUnits, remainingUnits, appetitePortions } = payload;
     if (![portionCount, acceptedUnits, remainingUnits, appetitePortions].every(Number.isSafeInteger) ||
@@ -177,7 +181,8 @@ export function recipeFacts(recipe, storedOvernight = false) {
   const notes = [
     fault,
     texture.length ? texture.join("，") + "。" : "",
-    traits.salty && !traits.ruined ? "入口偏咸。" : "",
+    traits.salty && !traits.ruined ? "入口偏咸。" : traits.balancedSalt && !traits.ruined ? "咸淡适中。" : "",
+    traits.overpowering && !traits.ruined ? "调味偏重，盖住了一些原味。" : "",
     traits.oilFreeFrying && !traits.crispFrying ? "油量偏少，外表没有炸酥。" : "",
     traits.greasy ? "入口有些油腻。" : "",
     traits.spicy ? "辣味明显。" : "",
