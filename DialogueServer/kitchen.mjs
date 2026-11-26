@@ -1,3 +1,5 @@
+import { analyzeCooking } from "./cooking.mjs";
+
 const legacyWater = { id: "water", name: "水", seasoning: false, liquid: true };
 
 export function readRecipe(demo, payload) {
@@ -55,103 +57,37 @@ export function readRecipe(demo, payload) {
   return { ...recipe, elapsedMs, steps };
 }
 
-export function describeRecipe(recipe) {
-  if (recipe.steps) {
-    const duration = seconds(recipe.elapsedMs);
-    const timeline = recipe.steps.map(step => seconds(step.atMs) + "秒 " + (step.method
-      ? "切到" + step.method.name
-      : "加入" + step.item.name + (step.item.seasoning ? step.amount + "%" : " ×" + step.amount)));
-    return "总时长 " + duration + " 秒；" + timeline.join("；") + "；" + duration + " 秒出锅";
-  }
-  const scale = recipe.method.adjustable ? "（烹饪尺度：" + recipe.intensity + "%）" : "";
-  return recipe.method.name + scale + " · " + recipe.items.map((item) =>
-    item.name + (item.seasoning ? "（" + item.amount + "%）" : "")).join("、");
-}
-
-function seconds(ms) { return (ms / 1000).toFixed(2); }
-
-const proteins = new Set(["chicken", "free_range_chicken", "beef", "duck", "pork", "shrimp", "crucian_carp", "softshell_turtle", "wagyu", "foie_gras"]);
-const dryMethods = new Set(["fry", "stirfry", "roast", "deep_fry"]);
-const wetMethods = new Set(["boil", "stew", "steam"]);
-const soupMethods = new Set(["boil", "stew"]);
-
-function timelineTraits(recipe) {
-  const methods = recipe.steps.filter(step => step.method);
-  const additions = recipe.steps.filter(step => step.item);
-  const segments = methods.map((step, index) => ({
-    method: step.method,
-    from: step.atMs,
-    to: methods[index + 1]?.atMs ?? recipe.elapsedMs,
-  }));
-  const timeAfter = (at, condition) => segments.reduce((sum, segment) => sum +
-    (condition(segment.method) ? Math.max(0, segment.to - Math.max(segment.from, at)) : 0), 0);
-  const did = id => timeAfter(0, method => method.id === id) > 0;
-  const added = id => additions.filter(step => step.item.id === id);
-  const heated = at => timeAfter(at, method => method.adjustable);
-  const soup = id => added(id).some(step => timeAfter(step.atMs, method => soupMethods.has(method.id)) >= 2000);
-  const last = segments.findLast(segment => segment.to > segment.from)?.method || recipe.method;
-  return {
-    noHeat: heated(0) === 0 && last.adjustable,
-    raw: additions.some(step => proteins.has(step.item.id) && heated(step.atMs) <= 4000),
-    overcooked: additions.some(step => !step.item.seasoning && !step.item.liquid &&
-      timeAfter(step.atMs, method => dryMethods.has(method.id)) >= 18000),
-    deepFrying: did("deep_fry"),
-    finalDry: dryMethods.has(last.id) && timeAfter(0, method => dryMethods.has(method.id)) >= 1200,
-    wet: timeAfter(0, method => wetMethods.has(method.id)) >= 2500,
-    fromStock: soup("stock"),
-    chickenNoodles: (soup("chicken") || soup("free_range_chicken")) && soup("noodles"),
-    coldSalmon: added("salmon").some(step => heated(step.atMs) === 0),
-    westernBeef: added("beef").concat(added("wagyu")).some(step => timeAfter(step.atMs, method => ["fry", "roast"].includes(method.id)) >= 1500),
-    westernNoodles: added("noodles").some(step =>
-      timeAfter(step.atMs, method => ["boil", "stirfry"].includes(method.id)) >= 1500),
-    freshHerbs: added("cilantro").concat(added("scallion")).some(step => heated(step.atMs) < 2500),
-    mellowHerbs: added("cilantro").concat(added("scallion")).some(step => heated(step.atMs) >= 7000),
-    freshPepper: added("black_pepper").some(step => heated(step.atMs) < 2500),
-  };
-}
-
 export function foodTraits(recipe, storedOvernight = false) {
-  const amount = (id) => recipe.items.find((item) => item.id === id)?.amount || 0;
-  const has = (...ids) => ids.every((id) => amount(id) > 0);
-  const timeline = recipe.steps ? timelineTraits(recipe) : null;
-  const needsHeat = recipe.items.some(item => proteins.has(item.id));
-  const noHeat = timeline?.noHeat ?? (recipe.method.adjustable && recipe.intensity === 0);
-  const undercooked = timeline?.raw ?? (needsHeat && (!recipe.method.adjustable || recipe.intensity <= 20));
-  const heavy = recipe.items.filter((item) => item.seasoning && item.amount >= 90).length;
-  const deepFrying = timeline?.deepFrying ?? (recipe.method.id === "deep_fry");
-  const overcooked = timeline?.overcooked ?? (recipe.intensity >= 90 && dryMethods.has(recipe.method.id));
-  const salty = amount("salt") >= 90 || (amount("soy") >= 90 && amount("salt") >= 75);
-  const ruined = noHeat || undercooked || salty || heavy >= 3 || (overcooked && (deepFrying || !(has("water") || has("stock"))));
+  const cooked = analyzeCooking(recipe);
+  const amount = id => recipe.items.find(item => item.id === id)?.amount || 0;
+  const portionScale = 1 + Math.max(0, cooked.mainCount - 1) * .42;
+  const liquid = cooked.inBroth ? .42 + amount("stock") * .37 : 0;
+  const measured = id => amount(id) / (portionScale + liquid);
+  const saltLoad = measured("salt") + measured("soy") * .64;
+  const salty = saltLoad >= 55;
+  const overpowering = [measured("chili"), measured("sugar"), measured("vinegar")].filter(value => value >= 82).length;
+  const greasy = amount("oil") / portionScale >= 82 && !cooked.crispFrying && !cooked.inBroth;
+  const ruined = cooked.noHeat || cooked.raw || cooked.scorched || cooked.waterInOil || saltLoad >= 77 || overpowering >= 2;
   const food = recipe.items.filter(item => !item.seasoning);
   const staleServings = food.reduce((total, item) => total + (item.staleAmount || 0), 0);
   const staleShare = storedOvernight ? 1 : staleServings / Math.max(1, food.reduce((total, item) => total + item.amount, 0));
-  const strongFlavor = amount("chili") * .9 + amount("black_pepper") * .9 + amount("garlic") * .7 +
-    amount("vinegar") * .45 + amount("soy") * .35 + amount("rosemary") * .35 +
-    amount("cilantro") * .3 + amount("sugar") * .28;
-  const staleTaste = staleShare > 0 && strongFlavor < 45 + staleShare * 28;
+  const strongFlavor = measured("chili") * .95 + measured("black_pepper") * .9 + measured("garlic") * .75 +
+    measured("vinegar") * (cooked.lostVinegarAroma ? .22 : .55) + measured("soy") * .43 +
+    measured("rosemary") * .4 + measured("cilantro") * .3 + measured("sugar") * .28;
+  const staleTaste = staleShare > 0 && strongFlavor < 40 + staleShare * 28;
   const mainStale = staleTaste ? (storedOvernight ? food.find(item => !item.liquid) :
     food.reduce((worst, item) => (item.staleAmount || 0) > (worst?.staleAmount || 0) ? item : worst, null)) : null;
   return {
-    ruined, salty, noHeat, raw: undercooked, overcooked, staleTaste, staleIngredient: mainStale?.id,
-    spicy: amount("chili") >= 50,
-    sweet: amount("sugar") >= 75,
-    peppered: amount("black_pepper") >= 35,
-    freshPepper: timeline?.freshPepper,
-    freshHerbs: timeline?.freshHerbs,
-    mellowHerbs: timeline?.mellowHerbs,
-    wet: timeline?.wet,
-    finalDry: timeline?.finalDry,
-    oilFreeFrying: deepFrying && !has("oil"),
-    crispFrying: deepFrying && amount("oil") >= 35,
-    greasy: amount("oil") >= 90,
-    fromStock: timeline?.fromStock ?? (soupMethods.has(recipe.method.id) && has("stock")),
-    chickenNoodles: timeline?.chickenNoodles ?? (soupMethods.has(recipe.method.id) && has("noodles") && (has("chicken") || has("free_range_chicken"))),
-    sushi: (timeline?.coldSalmon ?? (!recipe.method.adjustable && has("salmon"))) &&
-      (has("sushi_rice") || has("rice", "vinegar")),
-    western: (timeline?.westernBeef ?? ((has("beef") || has("wagyu")) && ["fry", "roast"].includes(recipe.method.id))) ||
-      has("iberico_ham") || (has("foie_gras") && !undercooked) ||
-      ((timeline?.westernNoodles ?? (has("noodles") && ["boil", "stirfry"].includes(recipe.method.id))) &&
-        has("garlic") && !has("chicken") && !has("free_range_chicken") && !has("soy"))
+    ...cooked, ruined, salty, staleTaste, staleIngredient: mainStale?.id,
+    texturePenalty: Math.max(cooked.texturePenalty, salty ? 29 : 0, greasy ? 13 : 0,
+      cooked.oilFreeFrying && !cooked.crispFrying ? 16 : 0, storedOvernight && cooked.finalDry ? 12 : 0),
+    spicy: measured("chili") >= 39,
+    sweet: measured("sugar") >= 53,
+    peppered: measured("black_pepper") >= 26,
+    greasy,
+    crispFrying: cooked.crispFrying && !storedOvernight && !ruined,
+    western: cooked.western || (cooked.cookedNoodles && amount("garlic") > 0 &&
+      !amount("chicken") && !amount("free_range_chicken") && !amount("soy")),
   };
 }
 
@@ -203,29 +139,61 @@ export function freshnessImpression(ingredient) {
   }
 }
 
+export function recipeFault(recipe, storedOvernight = false) {
+  const traits = foodTraits(recipe, storedOvernight);
+  const names = fault => traits.states.find(entry => entry.fault === fault);
+  if (traits.waterInOil) return "油和汤水混在一起，表面软塌，炸不出脆壳。";
+  if (traits.raw) {
+    const entry = names("raw");
+    return entry.lot.item.name + entry.text + "。";
+  }
+  if (traits.garlicScorched) return "蒜发黑，整口带着焦苦味。";
+  if (traits.sugarScorched) return "糖熬过了，表面发黑发苦。";
+  if (traits.scorched) {
+    const entry = names("burnt");
+    return entry.lot.item.name + entry.text + "。";
+  }
+  if (traits.salty) return "入口太咸，原本的鲜味被盖住了。";
+  if (traits.noHeat) return "刚摆好盘，食材还没受热。";
+  return "调味太重，原本的味道被盖住了。";
+}
+
 export function recipeFacts(recipe, storedOvernight = false) {
   const traits = foodTraits(recipe, storedOvernight);
-  const texture = traits.noHeat ? "成品没有热气，食材依然是生的。"
-    : traits.raw ? "肉类或水产内部偏生，质地生硬。"
-    : traits.overcooked ? "部分食材焦硬发干。"
-    : traits.crispFrying && traits.finalDry ? "外层酥脆。"
-    : traits.finalDry ? (traits.wet ? "外层干香，里面仍润。" : "外层有干香。")
-    : traits.wet ? "食材湿润偏软。" : "";
-  const taste = traits.salty ? "咸味过重。"
-    : traits.ruined && !traits.noHeat && !traits.raw && !traits.overcooked ? "味道被过重的调味压住。"
-    : [traits.spicy ? "明显偏辣。" : "", traits.sweet ? "明显偏甜。" : "",
-        traits.freshPepper ? "黑胡椒香鲜明，停在表面。" : traits.peppered ? "带融入汁水的胡椒辛香。" : "",
-        traits.freshHerbs ? "葱或香菜的清香明显。" : traits.mellowHerbs ? "青香已经融进底味。" : "",
-        traits.oilFreeFrying ? "外层没有形成明显的脆壳。" : "",
-        traits.greasy ? "油分偏多，入口发腻。" : "",
-        traits.fromStock ? "汁水鲜味明显。" : ""].filter(Boolean).join("");
-  const freshness = traits.staleTaste ? freshnessImpression(traits.staleIngredient) : "";
-  return texture + taste + freshness || "口味和质地没有明显的失衡。";
+  const prioritized = traits.states.slice().sort((a, b) => b.penalty - a.penalty || b.lot.amount - a.lot.amount);
+  const fault = traits.ruined ? recipeFault(recipe, storedOvernight) : "";
+  const seen = new Set();
+  const texture = [];
+  for (const entry of prioritized) {
+    const text = storedOvernight && traits.finalDry && entry.text.startsWith("外层脆")
+      ? "外层回软了，少了脆劲" : entry.text;
+    const line = entry.lot.item.name + text;
+    if (seen.has(line) || fault.includes(line)) continue;
+    seen.add(line);
+    texture.push(line);
+    if (texture.length >= 3) break;
+  }
+
+  const notes = [
+    fault,
+    texture.length ? texture.join("，") + "。" : "",
+    traits.salty && !traits.ruined ? "入口偏咸。" : "",
+    traits.oilFreeFrying && !traits.crispFrying ? "油量偏少，外表没有炸酥。" : "",
+    traits.greasy ? "入口有些油腻。" : "",
+    traits.spicy ? "辣味明显。" : "",
+    traits.sweet ? "甜味明显。" : "",
+    traits.freshPepper ? "胡椒香很鲜明。" : traits.peppered ? "胡椒辛香混在底味里。" : "",
+    traits.freshHerbs ? "还能闻到葱或香菜的清香。" :
+      traits.mellowHerbs ? "葱或香菜的清香变淡，混进了底味。" : "",
+    traits.freshVinegar ? "醋香清楚。" : traits.lostVinegarAroma ? "还有酸味，醋香比较淡。" : "",
+    traits.fromStock ? (traits.inBroth ? "汤汁鲜味明显。" : "底味带有汤汁的鲜香。") : "",
+    traits.staleTaste ? freshnessImpression(traits.staleIngredient) : "",
+  ];
+  return notes.filter(Boolean).join("");
 }
 
 export function mockCook(recipe, storedOvernight = false) {
-  const mains = recipe.items.filter(item => !item.seasoning && !item.liquid).map(item => item.name).join("、");
-  return { name: "料理", description: (mains + "的味道仍能辨认。" + recipeFacts(recipe, storedOvernight)).slice(0, 150) };
+  return { name: "料理", description: recipeFacts(recipe, storedOvernight).slice(0, 150) };
 }
 
 export function foodEnjoyment(context, recipe, reaction, storedOvernight) {
@@ -234,11 +202,12 @@ export function foodEnjoyment(context, recipe, reaction, storedOvernight) {
   if (traits.ruined || (guest.id === "jack" && traits.chickenNoodles)) return 0;
   if (traits.staleTaste)
     return reaction === "awful" ? 0 : Math.min(38, { dislike: 23, steady: 38 }[reaction] ?? 38);
-  if (reaction) return { awful: 0, dislike: 23, steady: 52, liked: 81, full: 100 }[reaction] ?? 52;
-  if (guest.likes && traits[guest.likes]) return 95;
-  if (guest.id === "jack") return traits.western ? 83 : 26;
-  if (traits.spicy && ["lin", "zhou"].includes(guest.id)) return 30;
-  return 70;
+  let enjoyment;
+  if (reaction) enjoyment = { awful: 0, dislike: 23, steady: 52, liked: 81, full: 100 }[reaction] ?? 52;
+  else if (guest.id === "jack") enjoyment = traits.western ? 83 : 26;
+  else if (traits.spicy && ["lin", "zhou"].includes(guest.id)) enjoyment = 30;
+  else enjoyment = guest.likes && traits[guest.likes] ? 95 : 70;
+  return Math.min(enjoyment, 100 - traits.texturePenalty);
 }
 
 export function updateVisit(context, reaction) {
@@ -290,7 +259,8 @@ export function mockReaction(context) {
   const traits = foodTraits(context.servedDish.recipe, context.servedDish.storedOvernight);
   if (traits.ruined || (context.guest.id === "jack" && traits.chickenNoodles)) return "awful";
   if (traits.staleTaste || (context.guest.id === "jack" && !traits.western)) return "dislike";
-  if (traits.spicy && ["lin", "zhou"].includes(context.guest.id)) return "dislike";
+  if (traits.texturePenalty >= 24 || (traits.spicy && ["lin", "zhou"].includes(context.guest.id))) return "dislike";
+  if (traits.texturePenalty >= 16) return "steady";
   if (atePremiumDish(context.servedDish) &&
       context.servedDish.recipe.items.some(item => context.guest.premiumFavorites?.includes(item.id))) return "full";
   if (context.guest.likes && traits[context.guest.likes]) return "full";

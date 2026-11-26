@@ -28,7 +28,7 @@
    }
    ```
 
-5. 打开公开地址的 `/api/v1/dialogue/health`，确认 `status` 为 `ok`、`quota` 为 `per-ip-and-global`，且 `limits` 对应 20、500 和 4000 次。再从服务器本机访问 `http://127.0.0.1:18765/health`，确认内部对白进程返回模式和协议号。
+5. 打开公开地址的 `/api/v1/dialogue/health`，确认 `status` 为 `ok`、`quota` 为 `per-ip-and-global`，且 `limits` 对应 20、500 和 4000 次。再从服务器本机访问 `http://127.0.0.1:18765/health`，确认内部对白进程返回模式、协议号及 `cooking: ingredient-timeline`。新出品规则需要同一版本的 `dialogue.mjs`、`kitchen.mjs` 和 `cooking.mjs`。
 6. 游戏端在 `Assets/Resources/DialogueConfig.json` 中将 `url` 填为该公开 HTTPS 根地址，再重新打包。美众点评的地址单独填在 `Assets/Resources/LeaderboardConfig.json`。用新包新建存档，开张后确认客人开场及主动发送的对白都有回复。
 
 本次新增食材需要同时更新 `Assets/Resources/CanteenDemo.json` 和 `DialogueServer/`。更新仓库后重启内部对白进程，新食材才能用于上菜后的对白和评价。旧版游戏对白仍按原协议访问。

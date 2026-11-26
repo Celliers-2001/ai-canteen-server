@@ -1,7 +1,7 @@
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { setTimeout as delay } from "node:timers/promises";
-import { readRecipe, readDish, describeRecipe, foodTraits, recipeFacts, mockCook,
+import { readRecipe, readDish, foodTraits, recipeFacts, recipeFault, mockCook,
   updateVisit, mockReaction, serviceTone, farewell, foodEnjoyment, freshnessImpression, atePremiumDish } from "./kitchen.mjs";
 
 const port = 18765;
@@ -157,10 +157,7 @@ function missedPremium(context) {
 }
 
 function tastedDish(dish) {
-  const privateStep = /\d+(?:\.\d+)?\s*(?:秒|分钟|%|成火)|(?:先|再|随后|最后|接着).{0,12}(?:加入|下锅|转|撒上|煮|蒸|炸)|(?:烹饪尺度|用量|食材加入)/u;
-  const observed = dish.description.split(/(?<=[，。；！？])/u)
-    .filter(fragment => !privateStep.test(fragment)).join("").trim();
-  return [dish.storedOvernight ? "" : observed, recipeFacts(dish.recipe, dish.storedOvernight)].filter(Boolean).join(" ");
+  return recipeFacts(dish.recipe, dish.storedOvernight).slice(0, 160);
 }
 
 function servedSummary({ servedDishes }) {
@@ -319,11 +316,12 @@ function offlineReview(context) {
   const { guest, servedDishes, reason, history } = context;
   const service = serviceEvidence(context);
   const latest = servedDishes.at(-1);
-  const awful = servedDishes.find(dish => foodTraits(dish.recipe).ruined);
+  const awful = servedDishes.find(dish => foodTraits(dish.recipe, dish.storedOvernight).ruined);
   const stale = servedDishes.find(dish => foodTraits(dish.recipe, dish.storedOvernight).staleTaste);
   const oversized = servedDishes.find(dish => dish.meal?.accepted > 0 && dish.meal.offered > dish.meal.accepted);
   const dislikedNoodles = hasDislikedNoodles(context);
-  const weakFood = awful || stale || dislikedNoodles;
+  const rough = servedDishes.find(dish => foodTraits(dish.recipe, dish.storedOvernight).texturePenalty >= 20);
+  const weakFood = awful || stale || dislikedNoodles || rough;
   const wellFed = latest?.meal ? latest.meal.remaining === 0 : reason === "satisfied";
   const excessive = servedDishes.some(severeOverserving);
   const ratings = {
@@ -336,7 +334,7 @@ function offlineReview(context) {
       ? "老板有提前打招呼，等的时候心里有数。"
       : service.considerate ? "老板愿意听我说想吃什么，交流起来挺舒服。" :
         service.count ? "跟老板聊了几句，话能接上。" : "";
-  const dish = awful || stale || latest;
+  const dish = awful || stale || rough || latest;
   const label = dish ? mainIngredients(dish) : "";
   const intro = weakFood && (guest.id === "jack" || guest.speechPace === "rapid") ? "这道避雷。" :
     ratings.overall >= 9 && guest.speechPace === "rapid" ? "推荐！" : "";
@@ -399,13 +397,11 @@ function offlineReply(context) {
     const traits = foodTraits(servedDish.recipe, servedDish.storedOvernight);
     const facts = recipeFacts(servedDish.recipe, servedDish.storedOvernight);
     const reply = reaction === "awful"
-      ? (guest.id === "yano" ? "辛苦您了。我这份先放一放吧。" : "这一口我吃不下去。")
+      ? (traits.ruined ? recipeFault(servedDish.recipe, servedDish.storedOvernight) : "这味儿实在不合我胃口。")
       : traits.staleTaste ? freshnessImpression(traits.staleIngredient)
       : reaction === "dislike" ? "我吃了一口，这个味道跟我平时喜欢的不太一样。"
       : missedPremium(context) ? "这份味道挺顺口。我今天还想试点少见的用料。"
-      : facts === "口味和质地没有明显的失衡。"
-        ? "我喜欢这种一口吃下去还认得出原味的。"
-        : facts.split("。")[0] + "，这点挺合我胃口。";
+      : facts.split("。")[0] + (traits.texturePenalty >= 16 ? "。这个口感差点意思。" : "，这点挺合我胃口。");
     const meal = servedDish.meal;
     const portion = meal?.accepted > 0 && meal.offered > meal.accepted
       ? (guest.speechPace === "quiet" ? "分量太多，吃不下了。" : "这一盘对我有点多，吃不了这么多。") : "";
@@ -482,7 +478,7 @@ function makePrompt(context) {
     event === "chat" && !context.servedDishes.length ?
       "自然回应店主正在聊的主题。只有话题涉及料理时才谈吃什么，主动催菜由游戏按实际等候触发。" : "",
     event === "served" ? "新上的这一份尝起来：" + tastedDish(servedDish) +
-      "。比较它和自己喜欢的口味。" + servingImpression(servedDish) +
+      "。从其中选一个细节，用客人的话比较它和自己喜欢的口味。夹生、焦苦和口感过火都照实说。" + servingImpression(servedDish) +
       "可以自然提分量合适或吃不下。别报份量数字，别说自己把整盘吃完了。此条重点是尝菜感受，续点会另用一条接话。" : "",
     followUps ? ("主要台词写在一行" + (event === "arrival" ? "（开场字段）" : "") +
       "。有具体的新信息时，在其后另写「接话1：…」" + (followUps > 1 ? "和可选的「接话2：…」" : "") +
@@ -495,12 +491,13 @@ function makePrompt(context) {
 }
 
 function makeCookPrompt(recipe, storedOvernight) {
+  const used = recipe.items.map(item => item.name).join("、");
   return [
-    "描述虚构游戏《AI餐厅》中准备上桌的料理。只写看得见、闻得到或尝得出的成品状态，不起菜名。按配方写，不添加没用的食材，也不要写操作教程。火候或味道失误时如实写出。",
-    "配方和操作过程：" + describeRecipe(recipe) + "。重点考虑食材在每个步骤里实际待了多久、先后加入与换做法怎样改变成品。描述中不要透露操作时间、顺序、用量或具体步骤。",
-    "游戏里的出品判断：" + recipeFacts(recipe, storedOvernight),
-    "可感知的新鲜度线索由出品判断提供。用具体气味、质地和后味表达。没有相关线索时，别自行推测食材存放过或被调味遮盖。",
-    "只输出一行纯文本，以「描述：」开头，接 20 到 60 字的口味、质地和成品状态。"
+    "为虚构游戏《AI餐厅》的已成型料理写一小条感官补充。下方的成品状态已经由实际操作计算，原样遵循。",
+    "这次实际使用的食材和调味：" + used + "。",
+    "出品状态：" + recipeFacts(recipe, storedOvernight),
+    "只写一种与出品状态一致的香气或味道。禁止补充食材、菜名、火候判断、处理顺序或厨房用时。信息不足时写「描述：无」。",
+    "仅返回一行「描述：…」，最多 28 字。"
   ].join("\n");
 }
 
@@ -680,10 +677,15 @@ async function liveReplyOnce(context, signal, attempt) {
   if (typeof content !== "string" || !content.trim()) throw invalidReply("empty");
 
   if (cooking) {
-    const description = /^\s*描述\s*[:：]\s*([^\r\n]+)\s*$/m.exec(content)?.[1].trim();
-    if (!description) throw invalidReply("dish_description");
-    const facts = foodTraits(context.recipe).ruined ? " " + recipeFacts(context.recipe) : "";
-    return { name: "料理", description: (description.slice(0, 110) + facts).slice(0, 150) };
+    const result = mockCook(context.recipe, context.storedOvernight);
+    const note = /^\s*描述\s*[:：]\s*([^\r\n]+)\s*$/m.exec(content)?.[1].trim();
+    if (note && note !== "无" && note.length <= 32 && !/秒|分钟|[0-9%％]|夹生|半生|熟透|火候|焦黑|脆壳|脆皮|软烂|发柴|没熟|过火/.test(note) &&
+        !foodTraits(context.recipe, context.storedOvernight).ruined) {
+      const used = new Set(context.recipe.items.map(item => item.id));
+      if (!demo.ingredients.some(ingredient => !used.has(ingredient.id) && ingredient.name.length > 1 && note.includes(ingredient.name)))
+        result.description = (result.description + note).slice(0, 150);
+    }
+    return result;
   }
   if (reviewing) {
     const result = readReview(content);
@@ -742,7 +744,7 @@ const server = createServer(async (req, res) => {
     return;
   }
   if (req.method === "GET" && req.url === "/health") {
-    send(res, 200, { mode: mock ? "mock" : "deepseek", protocol, guests: demo.guests.length });
+    send(res, 200, { mode: mock ? "mock" : "deepseek", protocol, guests: demo.guests.length, cooking: "ingredient-timeline" });
     return;
   }
   if (req.method !== "POST" || req.url !== "/reply") {
@@ -786,6 +788,12 @@ const server = createServer(async (req, res) => {
     if (ratedRecipe) {
       const storedOvernight = context.event === "cook" ? context.storedOvernight : context.servedDish?.storedOvernight;
       const traits = foodTraits(ratedRecipe, storedOvernight);
+      if (context.event === "served" && traits.ruined) {
+        reply.reply = recipeFault(ratedRecipe, storedOvernight);
+        reply.reaction = "awful";
+        reply.bookingMatched = false;
+        reply.followUps = [];
+      }
       reply.foodEnjoyment = foodEnjoyment(context, ratedRecipe,
         context.event === "served" ? reply.reaction : null, storedOvernight);
       if (context.event === "served" && severeOverserving(context.servedDish))
@@ -807,6 +815,15 @@ const server = createServer(async (req, res) => {
       if (context.servedDishes.some(severeOverserving) || missedPremium(context))
         reply.ratings.overall = Math.min(7, reply.ratings.overall);
       if (missedPremium(context)) reply.ratings.food = Math.min(7, reply.ratings.food);
+      const assessed = context.servedDishes.map(dish => foodTraits(dish.recipe, dish.storedOvernight));
+      if (assessed.length && assessed.every(dish => dish.ruined)) {
+        reply.ratings.overall = Math.min(4, reply.ratings.overall);
+        reply.ratings.food = Math.min(2, reply.ratings.food);
+      } else if (assessed.some(dish => dish.ruined)) {
+        reply.ratings.food = Math.min(7, reply.ratings.food);
+      } else if (assessed.length && assessed.every(dish => dish.texturePenalty >= 20)) {
+        reply.ratings.food = Math.min(7, reply.ratings.food);
+      }
       if (!context.servedDishes.length) {
         reply.ratings.overall = 0;
         reply.ratings.food = 0;
