@@ -26,10 +26,13 @@ db.exec(
   "CREATE TABLE IF NOT EXISTS reviews (" +
   "  owner TEXT NOT NULL, slot TEXT NOT NULL, id TEXT NOT NULL, guest_id TEXT NOT NULL, guest TEXT NOT NULL," +
   "  date TEXT NOT NULL, evaluation TEXT NOT NULL, overall INTEGER NOT NULL, service INTEGER NOT NULL," +
-  "  food INTEGER NOT NULL, offline INTEGER NOT NULL, PRIMARY KEY (owner, slot, id)" +
+  "  food INTEGER NOT NULL, offline INTEGER NOT NULL, paid_cents INTEGER, PRIMARY KEY (owner, slot, id)" +
   ");" +
   "CREATE INDEX IF NOT EXISTS reviews_by_date ON reviews(owner, slot, date DESC, id DESC);"
 );
+
+if (!db.prepare("PRAGMA table_info(reviews)").all().some(column => column.name === "paid_cents"))
+  db.exec("ALTER TABLE reviews ADD COLUMN paid_cents INTEGER");
 
 const findOwner = db.prepare("SELECT token_hash FROM owners WHERE id = ?");
 const addOwner = db.prepare("INSERT INTO owners (id, token_hash) VALUES (?, ?)");
@@ -72,15 +75,17 @@ const getGrowth = db.prepare("SELECT standard, specialties FROM restaurant_growt
 const saveGrowth = db.prepare("INSERT INTO restaurant_growth VALUES (?, ?, ?, ?) " +
   "ON CONFLICT (owner, slot) DO UPDATE SET standard = excluded.standard, specialties = excluded.specialties");
 const addReview = db.prepare(
-  "INSERT OR IGNORE INTO reviews (owner, slot, id, guest_id, guest, date, evaluation, overall, service, food, offline) " +
-  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+  "INSERT INTO reviews (owner, slot, id, guest_id, guest, date, evaluation, overall, service, food, offline, paid_cents) " +
+  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+  "ON CONFLICT (owner, slot, id) DO UPDATE SET paid_cents = excluded.paid_cents " +
+  "WHERE reviews.paid_cents IS NULL AND excluded.paid_cents IS NOT NULL"
 );
 const countReviews = db.prepare(
   "SELECT COUNT(*) AS total, COUNT(DISTINCT CASE WHEN guest_id = '' THEN guest ELSE guest_id END) AS participants " +
   "FROM reviews WHERE owner = ? AND slot = ?"
 );
 const listReviews = db.prepare(
-  "SELECT id, guest_id AS guestId, guest, date, evaluation, overall, service, food, offline " +
+  "SELECT id, guest_id AS guestId, guest, date, evaluation, overall, service, food, offline, paid_cents AS paidCents " +
   "FROM reviews WHERE owner = ? AND slot = ? ORDER BY date DESC, id DESC LIMIT ? OFFSET ?"
 );
 
@@ -208,6 +213,18 @@ function publishProfile(owner, slot, token, payload) {
     throw new RequestError(400, "Invalid restaurant profile");
   }
 
+  const payments = new Map();
+  const paymentRows = payload.payments ?? [];
+  const reviewIds = new Set(payload.reviews.map(review => review.id));
+  if (!Array.isArray(paymentRows) || paymentRows.length > reviewIds.size)
+    throw new RequestError(400, "Invalid review payments");
+  for (const payment of paymentRows) {
+    if (!payment || !reviewIds.has(payment.id) || payments.has(payment.id) ||
+        !whole(payment.paidCents, 0, 99_999_999))
+      throw new RequestError(400, "Invalid review payments");
+    payments.set(payment.id, payment.paidCents);
+  }
+
   const hasGrowth = payload.restaurantStandard != null || payload.signatureDishes != null;
   if (hasGrowth && (!whole(payload.restaurantStandard, 1, 5) || !Array.isArray(payload.signatureDishes) ||
       payload.signatureDishes.length > 3 || payload.signatureDishes.some(name =>
@@ -223,7 +240,7 @@ function publishProfile(owner, slot, token, payload) {
     if (hasGrowth) saveGrowth.run(owner, slot, payload.restaurantStandard, JSON.stringify(payload.signatureDishes));
     for (const review of payload.reviews) {
       addReview.run(owner, slot, review.id, review.guestId, review.guest, review.date, review.evaluation,
-        review.overall, review.service, review.food, Number(review.offline));
+        review.overall, review.service, review.food, Number(review.offline), payments.get(review.id) ?? null);
     }
   });
 }
@@ -240,9 +257,10 @@ function getProfile(owner, slot, search) {
   const pageSize = 20;
   const pages = Math.max(1, Math.ceil(total / pageSize));
   const current = Math.min(pages, page);
-  const reviews = listReviews.all(owner, slot, pageSize, (current - 1) * pageSize)
-    .map(review => ({ ...review, offline: Boolean(review.offline) }));
-  return { store, reviews, total, participants, page: current, pages };
+  const rows = listReviews.all(owner, slot, pageSize, (current - 1) * pageSize);
+  const payments = rows.filter(row => row.paidCents != null).map(({ id, paidCents }) => ({ id, paidCents }));
+  const reviews = rows.map(({ paidCents, ...review }) => ({ ...review, offline: Boolean(review.offline) }));
+  return { store, reviews, payments, total, participants, page: current, pages };
 }
 
 function getList(search) {
